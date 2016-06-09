@@ -28,7 +28,7 @@ class Swc():
     
     def __init__(self, filename=''):
         self.header = ''
-        self.data = []
+        self.data = {}
 
         if (filename != ''):
             self.filename = filename
@@ -50,10 +50,11 @@ class Swc():
                                 'pos':[float(record[2]), float(record[3]), float(record[4])],
                                 'radius':float(record[5]),
                                 'parent':int(record[6])}
-                    self.data.append(one_data)
+                    self.data[int(record[0])] = one_data
 
 if __name__ == '__main__':
-    swc = Swc('simple.swc')
+
+    swc = Swc(os.path.join('data', 'simple.swc'))
     print swc.data
     
 

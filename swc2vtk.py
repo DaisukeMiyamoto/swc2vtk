@@ -17,9 +17,9 @@ DATASET UNSTRUCTURED_GRID
 '''
 
     def __init__(self):
-        self.stoptime = 100
         self.header = self.header_base
         
+        self.swc_list = []
         self.point_list = []
         self.cell_list = []
 
@@ -28,29 +28,72 @@ DATASET UNSTRUCTURED_GRID
         self.point_list.append([x, y, z])
         
 
-    def add_cube(self, x=0, y=0, z=0, data=1.0):
+    def add_cube(self, x=0, y=0, z=0, size=1.0, data=1.0):
         point_start = len(self.point_list)
         points = [0, 1, 2, 3, 4, 5, 6, 7]
         points = [i+point_start for i in points]
         
         self.point_list.append((0+x, 0+y, 0+z))
-        self.point_list.append((1+x, 0+y, 0+z))
-        self.point_list.append((1+x, 1+y, 0+z))
-        self.point_list.append((0+x, 1+y, 0+z))
-        self.point_list.append((0+x, 0+y, 1+z))
-        self.point_list.append((1+x, 0+y, 1+z))
-        self.point_list.append((1+x, 1+y, 1+z))
-        self.point_list.append((0+x, 1+y, 1+z))
+        self.point_list.append((size+x, 0+y, 0+z))
+        self.point_list.append((size+x, size+y, 0+z))
+        self.point_list.append((0+x, size+y, 0+z))
+        self.point_list.append((0+x, 0+y, size+z))
+        self.point_list.append((size+x, 0+y, size+z))
+        self.point_list.append((size+x, size+y, size+z))
+        self.point_list.append((0+x, size+y, size+z))
         cell = {'type':12, 'points':points, 'data':data}
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename):
-        swc = Swc(swc_filename)
-        for (i, record) in enumerate(swc.data):
-            self.add_cube(record['pos'][0], record['pos'][1], record['pos'][2], float(i)/len(swc.data) )
 
-    
+    def add_cuboid(self, x=0, y=0, z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_x=0.0, rot_y=0.0, data=1.0):
+        point_start = len(self.point_list)
+        points = [0, 1, 2, 3, 4, 5, 6, 7]
+        points = [i+point_start for i in points]
+        
+        self.point_list.append((0+x,      0+y,      0+z))
+        self.point_list.append((size_x+x, 0+y,      0+z))
+        self.point_list.append((size_x+x, size_y+y, 0+z))
+        self.point_list.append((0+x,      size_y+y, 0+z))
+        self.point_list.append((0+x,      0+y,      size_z+z))
+        self.point_list.append((size+x,   0+y,      size_z+z))
+        self.point_list.append((size+x,   size_y+y, size_z+z))
+        self.point_list.append((0+x,      size_y+y, size_z+z))
+        cell = {'type':12, 'points':points, 'data':data}
+        
+        self.cell_list.append(cell)
+
+
+    def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
+        point_start = len(self.point_list)
+
+        self.add_point(p1_x, p1_y, p1_z)
+        self.add_point(p2_x, p2_y, p2_z)
+        cell = {'type':3, 'points':[point_start, point_start+1], 'data':data}
+        
+        self.cell_list.append(cell)
+
+
+    def add_swc_with_line(self, swc_filename):
+        self.swc_list.append(Swc(swc_filename))
+        datasize = len(self.swc_list[-1].data)
+            
+        for record in self.swc_list[-1].data.values():
+            print record
+            if record['parent'] > 0:                
+                parent_record = self.swc_list[-1].data[record['parent']]
+                self.add_line(record['pos'][0], record['pos'][1], record['pos'][2], 
+                              parent_record['pos'][0], parent_record['pos'][1], parent_record['pos'][2],
+                              float(record['id'])/datasize)
+
+
+    def add_swc_with_cube(self, swc_filename):
+        self.swc_list.append(Swc(swc_filename))
+        datasize = len(self.swc_list[-1].data)
+
+        for record in self.swc_list[-1].data.values():
+                self.add_cube(record['pos'][0], record['pos'][1], record['pos'][2], record['radius']*2, float(record['id'])/datasize)
+        
 
     def _point2text(self):
         text = 'POINTS %d float\n' % (len(self.point_list))
@@ -90,7 +133,6 @@ DATASET UNSTRUCTURED_GRID
         vtkdata += self.header
         vtkdata += self._point2text()
         vtkdata += self._cell2text()
-        print vtkdata        
         
         with open (filename, 'w') as file:
             file.write(vtkdata)
@@ -102,15 +144,18 @@ DATASET UNSTRUCTURED_GRID
 
 if __name__ == '__main__':
 
+
     filename = 'swc.vtk'
     vtkgen = VtkGenerator()
     
-    #for i in range(10):
-    #    vtkgen.add_cube(i, i, 0, i*0.1)
+    for i in range(10):
+        vtkgen.add_cube(i, i, 0, i*1, i*0.1)
         
     #vtkgen.add_swc(os.path.join('data', 'simple.swc'))
-    vtkgen.add_swc(os.path.join('data', 'Swc_BN_1056.swc'))
+    #vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
+    vtkgen.add_swc_with_cube(os.path.join('data', 'Swc_BN_1056.swc'))
 
         
     vtkgen.write_vtk(filename)
-    vtkgen.show_state()
+    #vtkgen.show_state()
+    print vtkgen.swc_list[-1].data
