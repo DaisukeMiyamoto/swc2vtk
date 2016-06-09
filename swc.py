@@ -45,11 +45,11 @@ class Swc():
                 elif len(line) > 1:
                     record = line.strip().split(' ')
                     
-                    one_data = {'id':record[0], 
-                                'type':record[1],
-                                'pos':[record[2], record[3], record[4]],
-                                'radius':record[5],
-                                'parent':record[6]}
+                    one_data = {'id':int(record[0]), 
+                                'type':int(record[1]),
+                                'pos':[float(record[2]), float(record[3]), float(record[4])],
+                                'radius':float(record[5]),
+                                'parent':int(record[6])}
                     self.data.append(one_data)
 
 if __name__ == '__main__':

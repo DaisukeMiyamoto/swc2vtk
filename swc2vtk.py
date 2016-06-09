@@ -5,6 +5,9 @@ Created on Thu Jun  9 12:37:20 2016
 @author: nebula
 """
 
+import os
+from swc import Swc
+
 class VtkGenerator():
     header_base = '''\
 # vtk DataFile Version 3.0
@@ -41,6 +44,12 @@ DATASET UNSTRUCTURED_GRID
         cell = {'type':12, 'points':points, 'data':data}
         
         self.cell_list.append(cell)
+
+    def add_swc(self, swc_filename):
+        swc = Swc(swc_filename)
+        for (i, record) in enumerate(swc.data):
+            self.add_cube(record['pos'][0], record['pos'][1], record['pos'][2], float(i)/len(swc.data) )
+
     
 
     def _point2text(self):
@@ -75,7 +84,7 @@ DATASET UNSTRUCTURED_GRID
         return text
 
 
-    def write_vtk(self, filename, data):
+    def write_vtk(self, filename):
 
         vtkdata = ''
         vtkdata += self.header
@@ -93,19 +102,15 @@ DATASET UNSTRUCTURED_GRID
 
 if __name__ == '__main__':
 
-    filename = 'cube.vtk'
+    filename = 'swc.vtk'
     vtkgen = VtkGenerator()
     
-    data = ''
-    t = 0
-    for z in range(datasize['z']):
-        for y in range(datasize['y']):
-            for x in range(datasize['x']):
-                moving_z = (z + t) % datasize['z']
-                data += '%f\n' % (x + 2*y + 3*moving_z)
-
-    for i in range(10):
-        vtkgen.add_cube(i, i, 0, i*0.1)
+    #for i in range(10):
+    #    vtkgen.add_cube(i, i, 0, i*0.1)
         
-    vtkgen.write_vtk(filename, data)
+    #vtkgen.add_swc(os.path.join('data', 'simple.swc'))
+    vtkgen.add_swc(os.path.join('data', 'Swc_BN_1056.swc'))
+
+        
+    vtkgen.write_vtk(filename)
     vtkgen.show_state()
