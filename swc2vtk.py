@@ -91,20 +91,21 @@ DATASET UNSTRUCTURED_GRID
         print self.point_list
         print self.cell_list
 
+if __name__ == '__main__':
 
-filename = 'test6.vtk'
-vtkgen = VtkGenerator()
+    filename = 'cube.vtk'
+    vtkgen = VtkGenerator()
+    
+    data = ''
+    t = 0
+    for z in range(datasize['z']):
+        for y in range(datasize['y']):
+            for x in range(datasize['x']):
+                moving_z = (z + t) % datasize['z']
+                data += '%f\n' % (x + 2*y + 3*moving_z)
 
-data = ''
-t = 0
-for z in range(datasize['z']):
-    for y in range(datasize['y']):
-        for x in range(datasize['x']):
-            moving_z = (z + t) % datasize['z']
-            data += '%f\n' % (x + 2*y + 3*moving_z)
-
-vtkgen.add_cube(0, 0, 0, 0.0)
-vtkgen.add_cube(1, 0, 0, 0.2)
-vtkgen.add_cube(2, 0, 0, 0.4)
-vtkgen.write_vtk(filename, data)
-vtkgen.show_state()
+    for i in range(10):
+        vtkgen.add_cube(i, i, 0, i*0.1)
+        
+    vtkgen.write_vtk(filename, data)
+    vtkgen.show_state()
