@@ -79,7 +79,6 @@ DATASET UNSTRUCTURED_GRID
         datasize = len(self.swc_list[-1].data)
             
         for record in self.swc_list[-1].data.values():
-            print record
             if record['parent'] > 0:                
                 parent_record = self.swc_list[-1].data[record['parent']]
                 self.add_line(record['pos'][0], record['pos'][1], record['pos'][2], 
@@ -145,17 +144,28 @@ DATASET UNSTRUCTURED_GRID
 if __name__ == '__main__':
 
 
+    stoptime=100
     filename = 'swc.vtk'
+    filename_base = 'swc%d.vtk'
     vtkgen = VtkGenerator()
     
     for i in range(10):
         vtkgen.add_cube(i, i, 0, i*1, i*0.1)
-        
+
     #vtkgen.add_swc(os.path.join('data', 'simple.swc'))
     #vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
     vtkgen.add_swc_with_cube(os.path.join('data', 'Swc_BN_1056.swc'))
 
-        
-    vtkgen.write_vtk(filename)
+
+    for t in range(stoptime):
+        for i in range(len(vtkgen.cell_list)):
+            #vtkgen.cell_list[i]['data'] = vtkgen.cell_list[(i+1) % len(vtkgen.cell_list)]['data']
+            vtkgen.cell_list[i]['data'] += 0.01
+            if vtkgen.cell_list[i]['data'] > 1.0:
+                vtkgen.cell_list[i]['data'] = 0.0
+            
+        vtkgen.write_vtk(filename_base % t)
+
+
     #vtkgen.show_state()
-    print vtkgen.swc_list[-1].data
+    #print vtkgen.swc_list[-1].data
