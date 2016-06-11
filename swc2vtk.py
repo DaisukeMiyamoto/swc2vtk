@@ -7,6 +7,7 @@ Created on Thu Jun  9 12:37:20 2016
 
 import os
 from swc import Swc
+import numpy as np
 
 class VtkGenerator():
     header_base = '''\
@@ -46,21 +47,35 @@ DATASET UNSTRUCTURED_GRID
         self.cell_list.append(cell)
 
 
-    def add_cuboid(self, x=0, y=0, z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_x=0.0, rot_y=0.0, data=1.0):
+    def add_cuboid(self, pos_x=0, pos_y=0, pos_z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_y=0.0, rot_z=0.0, data=1.0):
         point_start = len(self.point_list)
         points = [0, 1, 2, 3, 4, 5, 6, 7]
         points = [i+point_start for i in points]
         
-        self.point_list.append((0+x,      0+y,      0+z))
-        self.point_list.append((size_x+x, 0+y,      0+z))
-        self.point_list.append((size_x+x, size_y+y, 0+z))
-        self.point_list.append((0+x,      size_y+y, 0+z))
-        self.point_list.append((0+x,      0+y,      size_z+z))
-        self.point_list.append((size+x,   0+y,      size_z+z))
-        self.point_list.append((size+x,   size_y+y, size_z+z))
-        self.point_list.append((0+x,      size_y+y, size_z+z))
-        cell = {'type':12, 'points':points, 'data':data}
-        
+        local_point_list = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
+                                     [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
+        local_point_list = [ v-[0.5, 0.0, 0.5] for v in local_point_list]
+
+
+        # scale
+        local_point_list = np.array([ v*[size_x, size_y, size_z] for v in local_point_list])
+
+        # rot z
+        local_point_list = np.array([ [v[0]*np.cos(rot_z)-v[1]*np.sin(rot_z), v[0]*np.sin(rot_z)+v[1]*np.cos(rot_z), v[2]] for v in local_point_list])
+
+        # rot y
+        local_point_list = np.array([ [v[0]*np.cos(rot_y)+v[2]*np.sin(rot_y), v[1], -v[0]*np.sin(rot_y)+v[2]*np.cos(rot_y)] for v in local_point_list])
+
+        # move
+        local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
+
+                                    
+        #np.concatenate((self.point_list, local_point_list))
+        self.point_list.extend(local_point_list)
+        #print self.point_list
+                                    
+
+        cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
 
