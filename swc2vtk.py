@@ -30,6 +30,8 @@ DATASET UNSTRUCTURED_GRID
         
 
     def add_cube(self, x=0, y=0, z=0, size=1.0, data=1.0):
+        self.add_cuboid(x, y, z, size, size, size, 0.0, 0.0, data)
+        '''
         point_start = len(self.point_list)
         points = [0, 1, 2, 3, 4, 5, 6, 7]
         points = [i+point_start for i in points]
@@ -45,6 +47,7 @@ DATASET UNSTRUCTURED_GRID
         cell = {'type':12, 'points':points, 'data':data}
         
         self.cell_list.append(cell)
+        '''
 
 
     def add_cuboid(self, pos_x=0, pos_y=0, pos_z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_y=0.0, rot_z=0.0, data=1.0):
@@ -55,7 +58,6 @@ DATASET UNSTRUCTURED_GRID
         local_point_list = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
                                      [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
         local_point_list = [ v-[0.5, 0.0, 0.5] for v in local_point_list]
-
 
         # scale
         local_point_list = np.array([ v*[size_x, size_y, size_z] for v in local_point_list])
@@ -71,13 +73,27 @@ DATASET UNSTRUCTURED_GRID
 
                                     
         #np.concatenate((self.point_list, local_point_list))
-        self.point_list.extend(local_point_list)
+        self.point_list.extend(local_point_list.tolist())
         #print self.point_list
                                     
 
         cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
+    def add_cuboid_p2p(self, pos1=[0,0,0], pos2=[2,0,0], size=1.0, data=0):
+
+        pos1 = np.array(pos1)
+        pos2 = np.array(pos2)
+       
+        local_pos = pos2 - pos1
+        
+        rot_y = -1 * np.arctan(local_pos[2] / local_pos[0])
+        rot_z = -1 * np.arctan(np.sign(local_pos[0])*np.sqrt(local_pos[0]**2 + local_pos[2]**2) / local_pos[1])
+        len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
+
+        self.add_cuboid(pos1[0], pos1[1], pos1[2], len, size , size, rot_y, rot_z, data)
+
+        
 
     def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
         point_start = len(self.point_list)
@@ -87,6 +103,17 @@ DATASET UNSTRUCTURED_GRID
         cell = {'type':3, 'points':[point_start, point_start+1], 'data':data}
         
         self.cell_list.append(cell)
+
+
+
+    def add_swc_with_cuboid(self, swc_filename):
+        self.swc_list.append(Swc(swc_filename))
+        datasize = len(self.swc_list[-1].data)
+            
+        for record in self.swc_list[-1].data.values():
+            if record['parent'] > 0:                
+                parent_record = self.swc_list[-1].data[record['parent']]
+                self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius']*2, float(record['id'])/datasize)
 
 
     def add_swc_with_line(self, swc_filename):
@@ -108,6 +135,7 @@ DATASET UNSTRUCTURED_GRID
         for record in self.swc_list[-1].data.values():
                 self.add_cube(record['pos'][0], record['pos'][1], record['pos'][2], record['radius']*2, float(record['id'])/datasize)
         
+
 
     def _point2text(self):
         text = 'POINTS %d float\n' % (len(self.point_list))
@@ -161,7 +189,7 @@ if __name__ == '__main__':
 
     stoptime=100
     filename = 'swc.vtk'
-    filename_base = 'swc%d.vtk'
+    filename_base = 'swc_cuboid%d.vtk'
     vtkgen = VtkGenerator()
     
     for i in range(10):
@@ -169,8 +197,8 @@ if __name__ == '__main__':
 
     #vtkgen.add_swc(os.path.join('data', 'simple.swc'))
     #vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
-    vtkgen.add_swc_with_cube(os.path.join('data', 'Swc_BN_1056.swc'))
-
+    #vtkgen.add_swc_with_cube(os.path.join('data', 'Swc_BN_1056.swc'))
+    vtkgen.add_swc_with_cuboid(os.path.join('data', 'Swc_BN_1056.swc'))
 
     for t in range(stoptime):
         for i in range(len(vtkgen.cell_list)):
