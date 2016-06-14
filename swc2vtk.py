@@ -31,23 +31,6 @@ DATASET UNSTRUCTURED_GRID
 
     def add_cube(self, x=0, y=0, z=0, size=1.0, data=1.0):
         self.add_cuboid(x, y, z, size, size, size, 0.0, 0.0, data)
-        '''
-        point_start = len(self.point_list)
-        points = [0, 1, 2, 3, 4, 5, 6, 7]
-        points = [i+point_start for i in points]
-        
-        self.point_list.append((0+x, 0+y, 0+z))
-        self.point_list.append((size+x, 0+y, 0+z))
-        self.point_list.append((size+x, size+y, 0+z))
-        self.point_list.append((0+x, size+y, 0+z))
-        self.point_list.append((0+x, 0+y, size+z))
-        self.point_list.append((size+x, 0+y, size+z))
-        self.point_list.append((size+x, size+y, size+z))
-        self.point_list.append((0+x, size+y, size+z))
-        cell = {'type':12, 'points':points, 'data':data}
-        
-        self.cell_list.append(cell)
-        '''
 
 
     def add_cuboid(self, pos_x=0, pos_y=0, pos_z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_y=0.0, rot_z=0.0, data=1.0):
@@ -57,7 +40,7 @@ DATASET UNSTRUCTURED_GRID
         
         local_point_list = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
                                      [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
-        local_point_list = [ v-[0.5, 0.0, 0.5] for v in local_point_list]
+        local_point_list = [ v-[0.0, 0.5, 0.5] for v in local_point_list]
 
         # scale
         local_point_list = np.array([ v*[size_x, size_y, size_z] for v in local_point_list])
@@ -80,15 +63,18 @@ DATASET UNSTRUCTURED_GRID
         cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
+
     def add_cuboid_p2p(self, pos1=[0,0,0], pos2=[2,0,0], size=1.0, data=0):
 
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
        
         local_pos = pos2 - pos1
+        print local_pos
         
-        rot_y = -1 * np.arctan(local_pos[2] / local_pos[0])
-        rot_z = -1 * np.arctan(np.sign(local_pos[0])*np.sqrt(local_pos[0]**2 + local_pos[2]**2) / local_pos[1])
+        rot_y = -np.arctan(local_pos[2] / local_pos[0])
+        rot_z = np.arctan(local_pos[1] / np.sqrt(local_pos[0]**2 + local_pos[2]**2))
+        
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
         self.add_cuboid(pos1[0], pos1[1], pos1[2], len, size , size, rot_y, rot_z, data)
