@@ -29,18 +29,36 @@ DATASET UNSTRUCTURED_GRID
         self.point_list.append([x, y, z])
         
         
-    def _gen_cylinder_point(self, div=10):
+    def _gen_cylinder_point(self, div=20):
 
         point_list = []
         point_order = []
+        
+        
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[0, 0, 0], [0, np.cos(theta), np.sin(theta)]])
+            
+            point_order.extend([len(point_order), len(point_order)+1])
+
+        point_order.extend([0, 1])
+
         for i in range(div):
             theta = float(i) / div * 2. * np.pi
             point_list.extend([[0, np.cos(theta), np.sin(theta)], [1, np.cos(theta), np.sin(theta)]])
             
-            point_order.extend([len(point_order), len(point_order)+1])
-   
-   
-        point_order.extend([0, 1])
+            point_order.extend([div*2+i*2, div*2+1+i*2])
+      
+        point_order.extend([div*2, div*2+1])
+      
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[1, 0, 0], [1, np.cos(theta), np.sin(theta)]])
+            
+            point_order.extend([div*2*2+i*2, div*2*2+1+i*2])
+
+        point_order.extend([div*2*2, div*2*2+1])
+      
         return(point_order, np.array(point_list))
         
         
@@ -111,7 +129,6 @@ DATASET UNSTRUCTURED_GRID
         pos2 = np.array(pos2)
        
         local_pos = pos2 - pos1
-        print local_pos
         
         rot_y = -np.arctan(local_pos[2] / local_pos[0])
         rot_z = np.arctan(local_pos[1] / np.sqrt(local_pos[0]**2 + local_pos[2]**2))
@@ -214,22 +231,31 @@ DATASET UNSTRUCTURED_GRID
 if __name__ == '__main__':
 
 
-    def test_swc_movie(stoptime=100):
-        filename = 'swc.vtk'
-        filename_base = 'swc_cuboid%d.vtk'
+    def test_swc_line_movie(stoptime=100):
+        filename_base = 'swc_line%d.vtk'
         vtkgen = VtkGenerator()
         
-        for i in range(10):
-            vtkgen.add_cube(i, i, 0, i*1, i*0.1)
     
-        #vtkgen.add_swc(os.path.join('data', 'simple.swc'))
-        #vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
-        #vtkgen.add_swc_with_cube(os.path.join('data', 'Swc_BN_1056.swc'))
-        vtkgen.add_swc_with_cuboid(os.path.join('data', 'Swc_BN_1056.swc'))
+        vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
     
         for t in range(stoptime):
             for i in range(len(vtkgen.cell_list)):
-                #vtkgen.cell_list[i]['data'] = vtkgen.cell_list[(i+1) % len(vtkgen.cell_list)]['data']
+                vtkgen.cell_list[i]['data'] += 0.02
+                if vtkgen.cell_list[i]['data'] > 1.0:
+                    vtkgen.cell_list[i]['data'] = 0.0
+                
+            vtkgen.write_vtk(filename_base % t)
+
+
+    def test_swc_movie(stoptime=100):
+        filename_base = 'swc_cuboid%d.vtk'
+        vtkgen = VtkGenerator()
+        
+        vtkgen.add_swc_with_cuboid(os.path.join('data', 'Swc_BN_1056.swc'))
+    
+        for t in range(stoptime):
+            print('t = %d' % t)
+            for i in range(len(vtkgen.cell_list)):
                 vtkgen.cell_list[i]['data'] += 0.01
                 if vtkgen.cell_list[i]['data'] > 1.0:
                     vtkgen.cell_list[i]['data'] = 0.0
@@ -237,18 +263,15 @@ if __name__ == '__main__':
             vtkgen.write_vtk(filename_base % t)
     
     
-        #vtkgen.show_state()
-        #print vtkgen.swc_list[-1].data
-    
-    def test_cylinder():
+    def test_cylinder(num):
         filename = 'cylinder.vtk'
         vtkgen = VtkGenerator()
 
 
-        for i in range(10):
-            vtkgen.add_cylinder(i*5, 0, 0, i*0.1, i*2, np.pi/2.0 + i*0.1, 0, 0.2*i)
+        for i in range(num):
+            vtkgen.add_cylinder(i*5, 0, 0, i*0.1+1, i*2+1, 0, 0, 0.2*i)
         
         vtkgen.write_vtk(filename)
         
-    test_cylinder()
-    test_swc_movie(10)
+    test_cylinder(1)
+    test_swc_movie(100)
