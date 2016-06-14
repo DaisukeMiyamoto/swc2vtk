@@ -130,8 +130,8 @@ DATASET UNSTRUCTURED_GRID
        
         local_pos = pos2 - pos1
         
-        rot_y = -np.arctan(local_pos[2] / local_pos[0])
-        rot_z = np.arctan(local_pos[1] / np.sqrt(local_pos[0]**2 + local_pos[2]**2))
+        rot_y = -np.arctan2(local_pos[2], local_pos[0])
+        rot_z = np.arctan2(local_pos[1], np.sqrt(local_pos[0]**2 + local_pos[2]**2))
         
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
@@ -231,20 +231,12 @@ DATASET UNSTRUCTURED_GRID
 if __name__ == '__main__':
 
 
-    def test_swc_line_movie(stoptime=100):
-        filename_base = 'swc_line%d.vtk'
+    def test_swc_line():
+        filename = 'swc_line.vtk'
         vtkgen = VtkGenerator()
-        
-    
-        vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))
-    
-        for t in range(stoptime):
-            for i in range(len(vtkgen.cell_list)):
-                vtkgen.cell_list[i]['data'] += 0.02
-                if vtkgen.cell_list[i]['data'] > 1.0:
-                    vtkgen.cell_list[i]['data'] = 0.0
-                
-            vtkgen.write_vtk(filename_base % t)
+            
+        vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))                
+        vtkgen.write_vtk(filename)
 
 
     def test_swc_movie(stoptime=100):
@@ -274,4 +266,5 @@ if __name__ == '__main__':
         vtkgen.write_vtk(filename)
         
     test_cylinder(1)
-    test_swc_movie(100)
+    test_swc_movie(1)
+    test_swc_line()
