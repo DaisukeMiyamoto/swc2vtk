@@ -141,8 +141,8 @@ DATASET UNSTRUCTURED_GRID
         print self.point_list
         print self.cell_list
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 
     stoptime=100
     filename = 'swc.vtk'
