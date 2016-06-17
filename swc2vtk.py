@@ -114,10 +114,7 @@ DATASET UNSTRUCTURED_GRID
         local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
 
                                     
-        #np.concatenate((self.point_list, local_point_list))
-        self.point_list.extend(local_point_list.tolist())
-        #print self.point_list
-                                    
+        self.point_list.extend(local_point_list.tolist())                                    
 
         cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
@@ -150,7 +147,7 @@ DATASET UNSTRUCTURED_GRID
         self.cell_list.append(cell)
 
 
-    def add_swc_with_cuboid(self, swc_filename):
+    def add_swc(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
         datasize = len(self.swc_list[-1].data)
             
@@ -243,7 +240,7 @@ if __name__ == '__main__':
         filename_base = 'swc_cuboid%d.vtk'
         vtkgen = VtkGenerator()
         
-        vtkgen.add_swc_with_cuboid(os.path.join('data', 'Swc_BN_1056.swc'))
+        vtkgen.add_swc(os.path.join('data', 'Swc_BN_1056.swc'))
     
         for t in range(stoptime):
             print('t = %d' % t)
