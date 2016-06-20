@@ -232,7 +232,7 @@ if __name__ == '__main__':
         filename = 'swc_line.vtk'
         vtkgen = VtkGenerator()
             
-        vtkgen.add_swc_with_line(os.path.join('data', 'Swc_BN_1056.swc'))                
+        vtkgen.add_swc_with_line(os.path.join('swc', 'Swc_BN_1056.swc'))                
         vtkgen.write_vtk(filename)
 
 
@@ -240,7 +240,7 @@ if __name__ == '__main__':
         filename_base = 'swc_cuboid%d.vtk'
         vtkgen = VtkGenerator()
         
-        vtkgen.add_swc(os.path.join('data', 'Swc_BN_1056.swc'))
+        vtkgen.add_swc(os.path.join('swc', 'Swc_BN_1056.swc'))
     
         for t in range(stoptime):
             print('t = %d' % t)
@@ -263,5 +263,5 @@ if __name__ == '__main__':
         vtkgen.write_vtk(filename)
         
     test_cylinder(1)
-    test_swc_movie(1)
+    test_swc_movie(100)
     test_swc_line()

@@ -5,6 +5,7 @@ Created on Tue Jun 14 20:00:41 2016
 @author: nebula
 """
 
+import os
 from swc2vtk import VtkGenerator
 
 filename_list = ['Swc_BN_1056', '0655regist', '0661regist',
