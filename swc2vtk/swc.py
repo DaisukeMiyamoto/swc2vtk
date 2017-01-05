@@ -56,6 +56,3 @@ if __name__ == '__main__':
 
     swc = Swc(os.path.join('data', 'simple.swc'))
     print swc.data
-    
-
-            

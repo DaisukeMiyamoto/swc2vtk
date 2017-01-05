@@ -6,7 +6,7 @@ Created on Tue Jun 14 20:00:41 2016
 """
 
 import os
-from swc2vtk import VtkGenerator
+from swc2vtk.swc2vtk import VtkGenerator
 
 filename_list = ['Swc_BN_1056', '0655regist', '0661regist',
                  '0663regist', '0664regist', '0965regist', '0969regist',

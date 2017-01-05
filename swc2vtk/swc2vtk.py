@@ -9,6 +9,7 @@ import os
 from swc import Swc
 import numpy as np
 
+
 class VtkGenerator():
     header_base = '''\
 # vtk DataFile Version 3.0
@@ -24,16 +25,12 @@ DATASET UNSTRUCTURED_GRID
         self.point_list = []
         self.cell_list = []
 
-
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
         
-        
     def _gen_cylinder_point(self, div=20):
-
         point_list = []
         point_order = []
-        
         
         for i in range(div):
             theta = float(i) / div * 2. * np.pi
@@ -240,7 +237,7 @@ DATASET UNSTRUCTURED_GRID
         vtkdata += self.header
         vtkdata += self._point2text()
         vtkdata += self._cell2text()
-        vtkdata += self._movingval2text()
+        # vtkdata += self._movingval2text()
         if fixval is not None:
             vtkdata += self._fixval2text(fixval=fixval)
 
@@ -291,5 +288,5 @@ if __name__ == '__main__':
         vtkgen.write_vtk(filename)
         
     test_cylinder(1)
-    test_swc_movie(100)
-    test_swc_line()
+    # test_swc_movie(100)
+    # test_swc_line()
