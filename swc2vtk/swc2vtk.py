@@ -58,7 +58,6 @@ DATASET UNSTRUCTURED_GRID
       
         return(point_order, np.array(point_list))
         
-        
     def add_cylinder(self, pos_x=0, pos_y=0, pos_z=0, radius=1.0, height=1.0, rot_y=0, rot_z=0, data=0.0):
 
         point_start = len(self.point_list)
@@ -77,7 +76,6 @@ DATASET UNSTRUCTURED_GRID
 
         # move
         local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
-
 
         self.point_list.extend(local_point_list)
 
@@ -110,12 +108,10 @@ DATASET UNSTRUCTURED_GRID
         # move
         local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
 
-                                    
-        self.point_list.extend(local_point_list.tolist())                                    
+        self.point_list.extend(local_point_list.tolist())
 
         cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
-
 
     def add_cuboid_p2p(self, pos1=[0,0,0], pos2=[2,0,0], size=1.0, data=0, draw_type=0):
 
@@ -129,10 +125,8 @@ DATASET UNSTRUCTURED_GRID
         
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
-        #self.add_cuboid(pos1[0], pos1[1], pos1[2], len, size , size, rot_y, rot_z, data)
+        # self.add_cuboid(pos1[0], pos1[1], pos1[2], len, size , size, rot_y, rot_z, data)
         self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
-
-        
 
     def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
         point_start = len(self.point_list)
@@ -143,7 +137,6 @@ DATASET UNSTRUCTURED_GRID
         
         self.cell_list.append(cell)
 
-
     def add_swc(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
         datasize = len(self.swc_list[-1].data)
@@ -152,7 +145,6 @@ DATASET UNSTRUCTURED_GRID
             if record['parent'] > 0:                
                 parent_record = self.swc_list[-1].data[record['parent']]
                 self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius'], float(record['id'])/datasize)
-
 
     def add_swc_with_line(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
@@ -165,7 +157,6 @@ DATASET UNSTRUCTURED_GRID
                               parent_record['pos'][0], parent_record['pos'][1], parent_record['pos'][2],
                               float(record['id'])/datasize)
 
-
     def add_swc_with_cube(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
         datasize = len(self.swc_list[-1].data)
@@ -173,15 +164,12 @@ DATASET UNSTRUCTURED_GRID
         for record in self.swc_list[-1].data.values():
                 self.add_cube(record['pos'][0], record['pos'][1], record['pos'][2], record['radius']*2, float(record['id'])/datasize)
         
-
-
     def _point2text(self):
         text = 'POINTS %d float\n' % (len(self.point_list))
         for point in self.point_list:
             text += '%f %f %f\n' % (point[0], point[1], point[2])
             
         return text
-    
 
     def _cell2text(self):
         num_data = sum([len(cell['points'])+1 for cell in self.cell_list])
@@ -229,22 +217,38 @@ DATASET UNSTRUCTURED_GRID
             text += '\n'
 
         return text
-        
 
-    def write_vtk(self, filename, fixval=None):
+    def _file2text(self, filename, title):
+        with open(filename, 'r') as f:
+            read_data = f.readlines()
+
+        text = ''
+        text += 'SCALARS ' + title + ' float 1\n'
+        text += 'LOOKUP_TABLE default\n'
+        for i in range(len(self.cell_list)):
+            text += read_data[i].rstrip() + '\n'
+
+        return text
+
+    def write_vtk(self, filename, fixval=None, datafile=None, datatitle='', movingval=False):
 
         vtkdata = ''
         vtkdata += self.header
         vtkdata += self._point2text()
         vtkdata += self._cell2text()
-        # vtkdata += self._movingval2text()
+
         if fixval is not None:
             vtkdata += self._fixval2text(fixval=fixval)
 
-            
+        if movingval:
+            vtkdata += self._movingval2text()
+
+        if datafile is not None:
+            vtkdata += self._file2text(datafile, datatitle)
+
+
         with open (filename, 'w') as file:
             file.write(vtkdata)
-            
 
     def show_state(self):
         print self.point_list
