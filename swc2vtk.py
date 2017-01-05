@@ -209,14 +209,42 @@ DATASET UNSTRUCTURED_GRID
         
         return text
 
+    def _fixval2text(self, title='fixval', fixval=0.0):
+        text = ''
+        text += 'SCALARS '+title+' float 1\n'
+        text += 'LOOKUP_TABLE default\n'
+        for cell in self.cell_list:
+            text += str(fixval)+'\n'
 
-    def write_vtk(self, filename):
+        return text
+
+    def _movingval2text(self, title='movingval', num=100):
+        text = ''
+        text += 'SCALARS '+title+' float ' + str(num) + '\n'
+        text += 'LOOKUP_TABLE default\n'
+
+        for i in range(len(self.cell_list)):
+            val = i
+            for j in range(num):
+                text += str(val) + ' '
+                val = (val + 1) % 512
+
+            text += '\n'
+
+        return text
+        
+
+    def write_vtk(self, filename, fixval=None):
 
         vtkdata = ''
         vtkdata += self.header
         vtkdata += self._point2text()
         vtkdata += self._cell2text()
-        
+        vtkdata += self._movingval2text()
+        if fixval is not None:
+            vtkdata += self._fixval2text(fixval=fixval)
+
+            
         with open (filename, 'w') as file:
             file.write(vtkdata)
             
