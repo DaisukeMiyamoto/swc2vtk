@@ -137,14 +137,15 @@ DATASET UNSTRUCTURED_GRID
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename):
+    def add_swc(self, swc_filename, diam_ratio=1.0):
         self.swc_list.append(Swc(swc_filename))
         datasize = len(self.swc_list[-1].data)
             
         for record in self.swc_list[-1].data.values():
             if record['parent'] > 0:                
                 parent_record = self.swc_list[-1].data[record['parent']]
-                self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius'], float(record['id'])/datasize)
+                self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                                    float(record['id']) / datasize)
 
     def add_swc_with_line(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
