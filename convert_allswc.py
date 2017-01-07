@@ -28,19 +28,34 @@ filename_list2 = [
     '0663_regist',
     '0664_regist',
     '0965_regist',
+    '0966_regist',
+    '0967_regist',
     '0969_regist',
     '0970_regist',
     '0973_regist',
     '0984_regist',
     '0986_regist',
+    '0988_regist',
+    '0993_regist',
+    '1009_regist',
+    '1020_regist',
+    '1068_regist',
+    '1080_regist',
     '090815_4_sn_reg'
     ]
 
+outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
 
 for i, filename in enumerate(filename_list2):
     print 'Processing: %s' % filename
     fixval = i * (256.0 / len(filename_list2))
     vtkgen = VtkGenerator()
-    vtkgen.add_swc(os.path.join('swc', filename+'.swc'))                
-    vtkgen.write_vtk(filename+'.vtk', fixval)
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+    vtkgen.write_vtk(outputpos + filename + '.vtk', fixval=fixval)
 
+for i, filename in enumerate(filename_list2):
+    print 'Processing: %s' % filename
+    fixval = i * (256.0 / len(filename_list2))
+    vtkgen = VtkGenerator()
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
+    vtkgen.write_vtk(outputpos + filename + '_flip.vtk', fixval=fixval)

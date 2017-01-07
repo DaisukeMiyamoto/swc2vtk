@@ -4,6 +4,7 @@ Created on Thu Jun  9 15:52:38 2016
 
 @author: nebula
 """
+import os
 
 '''
 from neuromorpho.org
@@ -29,6 +30,7 @@ class Swc():
     def __init__(self, filename=''):
         self.header = ''
         self.data = {}
+        self.scale = [1.0, 1.0, 1.0]
 
         if (filename != ''):
             self.filename = filename
@@ -40,19 +42,47 @@ class Swc():
         with open(self.filename, 'r') as f:
             for line in f:
                 if line[0] == '#':
-                    self.header += line                    
+                    self.header += line
+                    if 'SCALE' in line:
+                        record = line.split(' ')
+                        if record[1] == 'SCALE':
+                            self.scale[0] = float(record[2])
+                            self.scale[1] = float(record[3])
+                            self.scale[2] = float(record[4])
+                        else:
+                            self.scale[0] = float(record[1])
+                            self.scale[1] = float(record[2])
+                            self.scale[2] = float(record[3])
+
 
                 elif len(line) > 1:
                     record = line.strip().split(' ')
-                    
-                    one_data = {'id':int(record[0]), 
-                                'type':int(record[1]),
-                                'pos':[float(record[2]), float(record[3]), float(record[4])],
-                                'radius':float(record[5]),
-                                'parent':int(record[6])}
+
+                    one_data = {'id': int(record[0]),
+                                'type': int(record[1]),
+                                'pos': [float(record[2]) * self.scale[0], float(record[3]) * self.scale[1],
+                                        float(record[4]) * self.scale[2]],
+                                'radius': float(record[5]),
+                                'parent': int(record[6])}
                     self.data[int(record[0])] = one_data
 
-if __name__ == '__main__':
+    def shift(self, x=0, y=0, z=0):
+        for k, val in self.data.items():
+            val['pos'][0] += x
+            val['pos'][1] += y
+            val['pos'][2] += z
 
-    swc = Swc(os.path.join('data', 'simple.swc'))
+    def invert(self, x=False, y=False, z=False):
+        for k, val in self.data.items():
+            if x is True:
+                val['pos'][0] = -1.0 * val['pos'][0]
+            if y is True:
+                val['pos'][1] = -1.0 * val['pos'][1]
+            if z is True:
+                val['pos'][2] = -1.0 * val['pos'][2]
+
+if __name__ == '__main__':
+    swc = Swc(os.path.join('..', 'swc', 'simple.swc'))
+    swc.invert(True, False, False, )
+    swc.shift(100.0, 0, 0)
     print swc.data

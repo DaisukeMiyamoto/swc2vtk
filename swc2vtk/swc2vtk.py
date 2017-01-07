@@ -137,8 +137,12 @@ DATASET UNSTRUCTURED_GRID
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename, diam_ratio=1.0):
+    def add_swc(self, swc_filename, diam_ratio=1.0, shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False,
+                inv_z=False):
         self.swc_list.append(Swc(swc_filename))
+        self.swc_list[-1].invert(inv_x, inv_y, inv_z)
+        self.swc_list[-1].shift(shift_x, shift_y, shift_z)
+
         datasize = len(self.swc_list[-1].data)
             
         for record in self.swc_list[-1].data.values():
