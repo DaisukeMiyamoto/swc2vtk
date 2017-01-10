@@ -250,7 +250,7 @@ DATASET UNSTRUCTURED_GRID
             val = i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
                 # print(str(i) + ', ' + str(j))
-                text += str(val) + '\n'
+                text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
 
         return text
 

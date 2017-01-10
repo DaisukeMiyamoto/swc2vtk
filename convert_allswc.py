@@ -73,11 +73,11 @@ for filename in filelist:
     print 'Processing: %s' % filename
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), normalize_diam=True)
 
-vtkgen.write_vtk(outputpos + 'all_normalize.vtk', coloring=True)
+vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=True)
 
 vtkgen = VtkGenerator()
 for filename in filelist:
     print 'Processing: %s' % filename
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0, normalize_diam=True)
 
-vtkgen.write_vtk(outputpos + 'all_flip_normalize.vtk', coloring=True)
+vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True)
