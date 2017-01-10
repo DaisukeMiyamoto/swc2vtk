@@ -1,4 +1,7 @@
 # swc2vtk
+![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
+![license](https://img.shields.io/badge/license-apache-blue.svg)
+
 swc to vtk converter for visualization in ParaView
 
 ## Dependency
