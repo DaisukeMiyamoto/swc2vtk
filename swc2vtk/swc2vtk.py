@@ -6,6 +6,7 @@ Created on Thu Jun  9 12:37:20 2016
 """
 
 import os
+import math
 from swc import Swc
 import numpy as np
 
@@ -24,6 +25,7 @@ DATASET UNSTRUCTURED_GRID
         self.swc_list = []
         self.point_list = []
         self.cell_list = []
+        self.datafile_list = []
 
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
@@ -137,8 +139,8 @@ DATASET UNSTRUCTURED_GRID
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename, diam_ratio=1.0, shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False,
-                inv_z=False):
+    def add_swc(self, swc_filename, diam_ratio=1.0, normalize_diam=False,
+                shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
         self.swc_list.append(Swc(swc_filename))
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
         self.swc_list[-1].shift(shift_x, shift_y, shift_z)
@@ -146,7 +148,10 @@ DATASET UNSTRUCTURED_GRID
         datasize = len(self.swc_list[-1].data)
             
         for record in self.swc_list[-1].data.values():
-            if record['parent'] > 0:                
+            if normalize_diam:
+                record['radius'] = math.sqrt(record['radius'])
+
+            if record['parent'] > 0:
                 parent_record = self.swc_list[-1].data[record['parent']]
                 self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
                                     float(record['id']) / datasize)
@@ -223,40 +228,39 @@ DATASET UNSTRUCTURED_GRID
 
         return text
 
-    def _file2text(self, filename, title):
-        """
-
-        :param filename:
-        :param title:
-        :return:
-        """
-        with open(filename, 'r') as f:
-            read_data = f.readlines()
-
+    def _file2text(self, datafile_list, title):
         text = ''
         text += 'SCALARS ' + title + ' float 1\n'
         text += 'LOOKUP_TABLE default\n'
-        for i in range(len(self.cell_list)):
-            text += read_data[i].rstrip() + '\n'
+
+        for filename in datafile_list:
+            with open(filename, 'r') as f:
+                read_data = f.readlines()
+
+            for i in range(len(self.cell_list)):
+                text += read_data[i].rstrip() + '\n'
 
         return text
 
     def _coloringbyswc(self):
-        '''
-        NOT WORK
-        :return:
-        '''
         text = ''
         text += 'SCALARS coloring float 1\n'
         text += 'LOOKUP_TABLE default\n'
         for i, swc in enumerate(self.swc_list):
             val = i * (1.0 / len(self.swc_list))
-            for j in range(len(swc.data)):
+            for j in range(len(swc.data) - 1):
+                # print(str(i) + ', ' + str(j))
                 text += str(val) + '\n'
 
         return text
 
-    def write_vtk(self, filename, fixval=None, datafile=None, datatitle='', movingval=False, coloring=False):
+    def add_datafile(self, datafilename):
+        self.datafile_list.append(datafilename)
+
+    def clear_datafile(self):
+        self.datafile_list = []
+
+    def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False):
 
         vtkdata = ''
         vtkdata += self.header
@@ -269,8 +273,8 @@ DATASET UNSTRUCTURED_GRID
         if movingval:
             vtkdata += self._movingval2text()
 
-        if datafile is not None:
-            vtkdata += self._file2text(datafile, datatitle)
+        if len(self.datafile_list) > 0:
+            vtkdata += self._file2text(self.datafile_list, datatitle)
 
         if coloring:
             vtkdata += self._coloringbyswc()

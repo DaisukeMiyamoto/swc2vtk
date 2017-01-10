@@ -33,7 +33,7 @@ filelist_all = [
     '0663_regist',
     '0664_regist',
     '0965_regist',
-    '0966_regist',
+    # '0966_regist',
     '0967_regist',
     '0969_regist',
     '0970_regist',
@@ -71,13 +71,13 @@ filelist = filelist_all
 vtkgen = VtkGenerator()
 for filename in filelist:
     print 'Processing: %s' % filename
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), normalize_diam=True)
 
-vtkgen.write_vtk(outputpos + 'all.vtk', coloring=True)
+vtkgen.write_vtk(outputpos + 'all_normalize.vtk', coloring=True)
 
 vtkgen = VtkGenerator()
 for filename in filelist:
     print 'Processing: %s' % filename
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0, normalize_diam=True)
 
-vtkgen.write_vtk(outputpos + 'all_flip.vtk', coloring=True)
+vtkgen.write_vtk(outputpos + 'all_flip_normalize.vtk', coloring=True)
