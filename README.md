@@ -4,7 +4,7 @@
 ![license](https://img.shields.io/badge/Paraview-5.2-green.svg)
 ![license](https://img.shields.io/badge/NEURON-7.4-green.svg)
 
-swc to vtk converter for visualization in ParaView
+swc to vtk converter for visualizing neurons and neural circuit simulations in ParaView
 
 ## Dependency
 
@@ -63,3 +63,8 @@ vtkgen.write_vtk('simple2.vtk')
 vtkgen.clear_datafile('result3.dat')
 vtkgen.write_vtk('simple3.vtk')
 ```
+
+## Reference
+- SWC format: http://research.mssm.edu/cnic/swc.html
+- http://www.paraview.org/
+- http://www.vtk.org/
