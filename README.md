@@ -1,10 +1,10 @@
 # swc2vtk
 ![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
 ![license](https://img.shields.io/badge/license-apache-blue.svg)
-![license](https://img.shields.io/badge/Paraview-5.2-green.svg)
-![license](https://img.shields.io/badge/NEURON-7.4-green.svg)
+![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
+![NEURON](https://img.shields.io/badge/NEURON-7.4-green.svg)
 
-swc to vtk converter for visualization in ParaView
+swc to vtk converter for visualizing neurons and neural circuit simulations in ParaView
 
 ## Dependency
 
@@ -57,9 +57,20 @@ vtkgen.add_swc('simle.swc')
 vtkgen.add_datafile('result1.dat')
 vtkgen.write_vtk('simple1.vtk')
 
-vtkgen.clear_datafile('result2.dat')
+vtkgen.clear_datafile()
+vtkgen.add_datafile('result2.dat')
 vtkgen.write_vtk('simple2.vtk')
 
-vtkgen.clear_datafile('result3.dat')
+vtkgen.clear_datafile()
+vtkgen.add_datafile('result3.dat')
 vtkgen.write_vtk('simple3.vtk')
 ```
+
+## Output Examples
+### Coloring multiple SWC files
+![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
+
+## References
+- SWC format: http://research.mssm.edu/cnic/swc.html
+- http://www.paraview.org/
+- http://www.vtk.org/
