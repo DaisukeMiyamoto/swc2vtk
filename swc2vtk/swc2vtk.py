@@ -224,6 +224,12 @@ DATASET UNSTRUCTURED_GRID
         return text
 
     def _file2text(self, filename, title):
+        """
+
+        :param filename:
+        :param title:
+        :return:
+        """
         with open(filename, 'r') as f:
             read_data = f.readlines()
 
@@ -235,7 +241,22 @@ DATASET UNSTRUCTURED_GRID
 
         return text
 
-    def write_vtk(self, filename, fixval=None, datafile=None, datatitle='', movingval=False):
+    def _coloringbyswc(self):
+        '''
+        NOT WORK
+        :return:
+        '''
+        text = ''
+        text += 'SCALARS coloring float 1\n'
+        text += 'LOOKUP_TABLE default\n'
+        for i, swc in enumerate(self.swc_list):
+            val = i * (1.0 / len(self.swc_list))
+            for j in range(len(swc.data)):
+                text += str(val) + '\n'
+
+        return text
+
+    def write_vtk(self, filename, fixval=None, datafile=None, datatitle='', movingval=False, coloring=False):
 
         vtkdata = ''
         vtkdata += self.header
@@ -251,6 +272,8 @@ DATASET UNSTRUCTURED_GRID
         if datafile is not None:
             vtkdata += self._file2text(datafile, datatitle)
 
+        if coloring:
+            vtkdata += self._coloringbyswc()
 
         with open (filename, 'w') as file:
             file.write(vtkdata)

@@ -8,13 +8,18 @@ Created on Tue Jun 14 20:00:41 2016
 import os
 from swc2vtk.swc2vtk import VtkGenerator
 
-filename_list = ['Swc_BN_1056', '0655regist', '0661regist',
-                 '0663regist', '0664regist', '0965regist', '0969regist',
-                 '0970regist', '0973regist', '0984regist',
-                 '0986regist', '0988', '1020',
-                 '1068regist', '1080regist', '0967regist']
+filelist_simple = [
+    'simple',
+    'simple',
+    'simple',
+    'simple'
+]
 
-filename_list2 = [
+filelist_small = [
+    '0993_regist',
+]
+
+filelist_all = [
     '0004_regist',
     '0005_regist',
     '0008_regist',
@@ -45,17 +50,34 @@ filename_list2 = [
     ]
 
 outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
+# filelist = filelist_small
+filelist = filelist_all
 
-for i, filename in enumerate(filename_list2):
+# for i, filename in enumerate(filelist):
+#     print 'Processing: %s' % filename
+#     fixval = int(i * (256 / len(filelist)))
+#     vtkgen = VtkGenerator()
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+#     vtkgen.write_vtk(outputpos + filename + '.vtk')
+#
+# for i, filename in enumerate(filelist):
+#     print 'Processing: %s' % filename
+#     fixval = int(i * (256 / len(filelist)))
+#     vtkgen = VtkGenerator()
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
+#     vtkgen.write_vtk(outputpos + filename + '_flip.vtk')
+
+
+vtkgen = VtkGenerator()
+for filename in filelist:
     print 'Processing: %s' % filename
-    fixval = i * (256.0 / len(filename_list2))
-    vtkgen = VtkGenerator()
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(outputpos + filename + '.vtk', fixval=fixval)
 
-for i, filename in enumerate(filename_list2):
+vtkgen.write_vtk(outputpos + 'all.vtk', coloring=True)
+
+vtkgen = VtkGenerator()
+for filename in filelist:
     print 'Processing: %s' % filename
-    fixval = i * (256.0 / len(filename_list2))
-    vtkgen = VtkGenerator()
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
-    vtkgen.write_vtk(outputpos + filename + '_flip.vtk', fixval=fixval)
+
+vtkgen.write_vtk(outputpos + 'all_flip.vtk', coloring=True)
