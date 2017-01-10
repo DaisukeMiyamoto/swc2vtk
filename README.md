@@ -57,14 +57,16 @@ vtkgen.add_swc('simle.swc')
 vtkgen.add_datafile('result1.dat')
 vtkgen.write_vtk('simple1.vtk')
 
-vtkgen.clear_datafile('result2.dat')
+vtkgen.clear_datafile()
+vtkgen.add_datafile('result2.dat')
 vtkgen.write_vtk('simple2.vtk')
 
-vtkgen.clear_datafile('result3.dat')
+vtkgen.clear_datafile()
+vtkgen.add_datafile('result3.dat')
 vtkgen.write_vtk('simple3.vtk')
 ```
 
-## Reference
+## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
 - http://www.paraview.org/
 - http://www.vtk.org/
