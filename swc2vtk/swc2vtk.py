@@ -7,20 +7,27 @@ Created on Thu Jun  9 12:37:20 2016
 
 import os
 import math
-from swc import Swc
+from swc2vtk.swc import Swc
 import numpy as np
 
 
 class VtkGenerator():
     header_base = '''\
 # vtk DataFile Version 3.0
-VTK Example Cube
+SWC2VTK
 ASCII
 DATASET UNSTRUCTURED_GRID
+'''
+    volume_header_base = '''\
+# vtk DataFile Version 1.0
+SWC2VTK VOLUME
+ASCII
+DATASET STRUCTURED_POINTS
 '''
 
     def __init__(self):
         self.header = self.header_base
+        self.volume_header = self.volume_header_base
         
         self.swc_list = []
         self.point_list = []
@@ -84,10 +91,8 @@ DATASET UNSTRUCTURED_GRID
         cell = {'type':6, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
-
     def add_cube(self, x=0, y=0, z=0, size=1.0, data=0.0):
         self.add_cuboid(x, y, z, size, size, size, 0.0, 0.0, data)
-
 
     def add_cuboid(self, pos_x=0, pos_y=0, pos_z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_y=0.0, rot_z=0.0, data=1.0):
         point_start = len(self.point_list)
@@ -282,9 +287,29 @@ DATASET UNSTRUCTURED_GRID
         with open (filename, 'w') as file:
             file.write(vtkdata)
 
+    def write_volume_vtk(self, filename, origin=(0.0, 0.0, 0.0), ratio=(4.0, 4.0, 4.0), div=(256, 256, 64)):
+        vtkdata = ''
+        vtkdata += self.volume_header
+        vtkdata += 'DIMENSIONS %d %d %d\n' % (div[0], div[1], div[2])
+        vtkdata += 'ORIGIN %f %f %f\n' % (origin[0], origin[1], origin[2])
+        vtkdata += 'ASPECT_RATIO %f %f %f\n' % (ratio[0], ratio[1], ratio[2])
+        vtkdata += 'POINT_DATA %d\n' % (div[0] * div[1] * div[2])
+        vtkdata += 'SCALARS volume float\n'
+        vtkdata += 'LOOKUP_TABLE default\n'
+
+        with open (filename, 'w') as file:
+            file.write(vtkdata)
+
+            for i in range(div[2]):
+                for j in range(div[1]):
+                    for k in range(div[0]):
+                        file.write('%f\n' % (k * 1.0))
+
     def show_state(self):
-        print self.point_list
-        print self.cell_list
+        print(self.point_list)
+        print(self.cell_list)
+        print(self.swc_list)
+        print(self.datafile_list)
 
 
 if __name__ == '__main__':

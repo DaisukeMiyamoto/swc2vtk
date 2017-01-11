@@ -85,4 +85,4 @@ if __name__ == '__main__':
     swc = Swc(os.path.join('..', 'swc', 'simple.swc'))
     swc.invert(True, False, False, )
     swc.shift(100.0, 0, 0)
-    print swc.data
+    print(swc.data)
