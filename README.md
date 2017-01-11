@@ -67,6 +67,9 @@ vtkgen.write_vtk('simple3.vtk')
 ```
 
 ## Output Examples
+### single neuron
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_small.png)
+
 ### Coloring multiple SWC files
 ![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
 
