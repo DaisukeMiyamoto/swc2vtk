@@ -287,7 +287,21 @@ DATASET STRUCTURED_POINTS
         with open (filename, 'w') as file:
             file.write(vtkdata)
 
-    def write_volume_vtk(self, filename, origin=(0.0, 0.0, 0.0), ratio=(4.0, 4.0, 4.0), div=(256, 256, 64)):
+    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
+        point_weight = 0.01
+        for point in self.point_list:
+            pos = (int(round((point[0] - origin[0]) / ratio[0], 0)),
+                   int(round((point[1] - origin[1]) / ratio[1], 0)),
+                   int(round((point[2] - origin[2]) / ratio[2], 0)))
+            if pos[2] < 0 or 0 or pos[1] < 0 or pos[0] < 0 or pos[2] > len(world) or pos[1] > len(world[0]) or pos[
+                0] > len(world[0][0]):
+                print('Out of range: (%f, %f, %f)' % (point[0], point[1], point[2]))
+            else:
+                world[pos[2]][pos[1]][pos[0]] += point_weight
+
+        return world
+
+    def write_volume_vtk(self, filename, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0), div=(256, 256, 64)):
         vtkdata = ''
         vtkdata += self.volume_header
         vtkdata += 'DIMENSIONS %d %d %d\n' % (div[0], div[1], div[2])
@@ -297,13 +311,17 @@ DATASET STRUCTURED_POINTS
         vtkdata += 'SCALARS volume float\n'
         vtkdata += 'LOOKUP_TABLE default\n'
 
+        world = np.zeros((div[2], div[1], div[0]))
+
+        for swc in self.swc_list:
+            world = self._swc2volume(swc, world, origin, ratio)
+
         with open (filename, 'w') as file:
             file.write(vtkdata)
-
             for i in range(div[2]):
                 for j in range(div[1]):
                     for k in range(div[0]):
-                        file.write('%f\n' % (k * 1.0))
+                        file.write('%f\n' % (world[i][j][k]))
 
     def show_state(self):
         print(self.point_list)
