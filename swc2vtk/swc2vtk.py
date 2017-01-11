@@ -7,7 +7,7 @@ Created on Thu Jun  9 12:37:20 2016
 
 import os
 import math
-from swc2vtk.swc import Swc
+from swc import Swc
 import numpy as np
 
 

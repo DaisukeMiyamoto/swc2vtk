@@ -9,6 +9,8 @@ import os
 from swc2vtk.swc2vtk import VtkGenerator
 
 filename = 'simple'
+vtkfilename = '/home/nebula/work/paraview/volume/volume1.vtk'
+
 vtkgen = VtkGenerator()
 vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-vtkgen.write_volume_vtk('volume1.vtk')
+vtkgen.write_volume_vtk(vtkfilename)
