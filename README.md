@@ -16,7 +16,7 @@ swc to vtk converter for visualizing neurons and neural circuit simulations in P
 ```python
 import swc2vtk
 vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simle.swc')
+vtkgen.add_swc('simple.swc')
 vtkgen.write_vtk('simple.vtk')
 ```
 
@@ -24,9 +24,9 @@ vtkgen.write_vtk('simple.vtk')
 ```python
 import swc2vtk
 vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simle.swc')
-vtkgen.add_swc('simle1.swc')
-vtkgen.add_swc('simle2.swc')
+vtkgen.add_swc('simple.swc')
+vtkgen.add_swc('simple1.swc')
+vtkgen.add_swc('simple2.swc')
 vtkgen.write_vtk('combined.vtk')
 ```
 
@@ -34,7 +34,7 @@ vtkgen.write_vtk('combined.vtk')
 ```python
 import swc2vtk
 vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simle.swc')
+vtkgen.add_swc('simple.swc')
 vtkgen.add_datafile('result.dat')
 vtkgen.write_vtk('simple.vtk')
 ```
@@ -67,6 +67,11 @@ vtkgen.write_vtk('simple3.vtk')
 ```
 
 ## Output Examples
+### single neuron
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_small.png)
+
+- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_ospray.png)
+
 ### Coloring multiple SWC files
 ![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
 
