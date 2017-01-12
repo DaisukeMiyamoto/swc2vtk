@@ -8,6 +8,7 @@ Created on Thu Jun  9 12:37:20 2016
 import os
 import math
 from swc import Swc
+from GenPrimitives import GenPrimitives
 import numpy as np
 
 
@@ -37,41 +38,11 @@ DATASET STRUCTURED_POINTS
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
         
-    def _gen_cylinder_point(self, div=20):
-        point_list = []
-        point_order = []
-        
-        for i in range(div):
-            theta = float(i) / div * 2. * np.pi
-            point_list.extend([[0, 0, 0], [0, np.cos(theta), np.sin(theta)]])
-            
-            point_order.extend([len(point_order), len(point_order)+1])
-
-        point_order.extend([0, 1])
-
-        for i in range(div):
-            theta = float(i) / div * 2. * np.pi
-            point_list.extend([[0, np.cos(theta), np.sin(theta)], [1, np.cos(theta), np.sin(theta)]])
-            
-            point_order.extend([div*2+i*2, div*2+1+i*2])
-      
-        point_order.extend([div*2, div*2+1])
-      
-        for i in range(div):
-            theta = float(i) / div * 2. * np.pi
-            point_list.extend([[1, 0, 0], [1, np.cos(theta), np.sin(theta)]])
-            
-            point_order.extend([div*2*2+i*2, div*2*2+1+i*2])
-
-        point_order.extend([div*2*2, div*2*2+1])
-      
-        return(point_order, np.array(point_list))
-        
     def add_cylinder(self, pos_x=0, pos_y=0, pos_z=0, radius=1.0, height=1.0, rot_y=0, rot_z=0, data=0.0):
-
         point_start = len(self.point_list)
-        
-        points, local_point_list = self._gen_cylinder_point()
+
+        # points, local_point_list = self._gen_cylinder_point()
+        points, local_point_list = GenPrimitives.cylinder()
         points = [i+point_start for i in points]
 
         # scale
@@ -91,17 +62,11 @@ DATASET STRUCTURED_POINTS
         cell = {'type':6, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
-    def add_cube(self, x=0, y=0, z=0, size=1.0, data=0.0):
-        self.add_cuboid(x, y, z, size, size, size, 0.0, 0.0, data)
-
     def add_cuboid(self, pos_x=0, pos_y=0, pos_z=0, size_x=1.0, size_y=1.0, size_z=1.0, rot_y=0.0, rot_z=0.0, data=1.0):
         point_start = len(self.point_list)
-        points = [0, 1, 2, 3, 4, 5, 6, 7]
+
+        points, local_point_list = GenPrimitives.cuboid()
         points = [i+point_start for i in points]
-        
-        local_point_list = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
-                                     [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
-        local_point_list = [ v-[0.0, 0.5, 0.5] for v in local_point_list]
 
         # scale
         local_point_list = np.array([ v*[size_x, size_y, size_z] for v in local_point_list])
@@ -120,20 +85,33 @@ DATASET STRUCTURED_POINTS
         cell = {'type':12, 'points':points, 'data':data}        
         self.cell_list.append(cell)
 
-    def add_cuboid_p2p(self, pos1=[0,0,0], pos2=[2,0,0], size=1.0, data=0, draw_type=0):
+    def add_cube(self, x=0, y=0, z=0, size=1.0, data=0.0):
+        self.add_cuboid(x, y, z, size, size, size, 0.0, 0.0, data)
 
+    def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
+        point_start = len(self.point_list)
+
+        points, local_point_list = GenPrimitives.sphere()
+        points = [i + point_start for i in points]
+
+        # TODO: transform functions
+
+        self.point_list.extend(local_point_list)
+
+        cell = {'type': 6, 'points': points, 'data': data}
+        self.cell_list.append(cell)
+
+    def add_cylinder_p2p(self, pos1=[0, 0, 0], pos2=[2, 0, 0], size=1.0, data=0, draw_mode=0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
-       
         local_pos = pos2 - pos1
-        
+
         rot_y = -np.arctan2(local_pos[2], local_pos[0])
         rot_z = np.arctan2(local_pos[1], np.sqrt(local_pos[0]**2 + local_pos[2]**2))
-        
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
-        # self.add_cuboid(pos1[0], pos1[1], pos1[2], len, size , size, rot_y, rot_z, data)
-        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
+        if draw_mode == 0:
+            self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
 
     def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
         point_start = len(self.point_list)
@@ -144,7 +122,7 @@ DATASET STRUCTURED_POINTS
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename, diam_ratio=1.0, normalize_diam=False,
+    def add_swc(self, swc_filename, draw_mode=0, diam_ratio=1.0, normalize_diam=False,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
         self.swc_list.append(Swc(swc_filename))
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
@@ -158,8 +136,9 @@ DATASET STRUCTURED_POINTS
 
             if record['parent'] > 0:
                 parent_record = self.swc_list[-1].data[record['parent']]
-                self.add_cuboid_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
-                                    float(record['id']) / datasize)
+                self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                                      float(record['id']) / datasize, draw_mode=draw_mode)
+
 
     def add_swc_with_line(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
