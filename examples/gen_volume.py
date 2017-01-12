@@ -14,6 +14,12 @@ filelist_small = [
     '0993_regist',
 ]
 
+filelist_small2 = [
+    '200000',
+    '300000',
+    '301000',
+]
+
 filelist_all = [
     '0004_regist',
     '0005_regist',
