@@ -7,8 +7,10 @@ Created on Thu Jun  9 12:37:20 2016
 
 import os
 import math
-from swc import Swc
-from GenPrimitives import GenPrimitives
+# from swc2vtk.swc import Swc
+# from swc2vtk.genprimitives import GenPrimitives
+from swc2vtk.genprimitives import GenPrimitives
+from swc2vtk.swc import Swc
 import numpy as np
 
 
@@ -138,7 +140,6 @@ DATASET STRUCTURED_POINTS
                 parent_record = self.swc_list[-1].data[record['parent']]
                 self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
                                       float(record['id']) / datasize, draw_mode=draw_mode)
-
 
     def add_swc_with_line(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))

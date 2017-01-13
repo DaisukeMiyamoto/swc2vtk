@@ -5,7 +5,7 @@ Created on Sat Jun 11 14:49:53 2016
 @author: nebula
 """
 import numpy as np
-from swc2vtk.swc2vtk import VtkGenerator
+from swc2vtk.vtkgenerator import VtkGenerator
 
 if __name__ == '__main__':
 

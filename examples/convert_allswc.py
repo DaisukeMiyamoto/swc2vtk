@@ -6,7 +6,7 @@ Created on Tue Jun 14 20:00:41 2016
 """
 
 import os
-from swc2vtk.swc2vtk import VtkGenerator
+from swc2vtk.vtkgenerator import VtkGenerator
 
 filelist_simple = [
     'simple',
@@ -60,7 +60,7 @@ outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
 filelist = filelist_small2
 
 for i, filename in enumerate(filelist):
-    print 'Processing: %s' % filename
+    print('Processing: %s' % filename)
     fixval = int(i * (256 / len(filelist)))
     vtkgen = VtkGenerator()
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))

@@ -6,7 +6,7 @@ Created on Thu Jun  9 15:52:38 2016
 """
 
 import os
-from swc2vtk.swc2vtk import VtkGenerator
+from swc2vtk.vtkgenerator import VtkGenerator
 
 vtkfilename = '/home/nebula/work/paraview/volume/volume_all.vtk'
 
