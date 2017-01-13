@@ -37,6 +37,8 @@ DATASET STRUCTURED_POINTS
         self.cell_list = []
         self.datafile_list = []
 
+        self.converted = False
+
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
         
@@ -103,7 +105,7 @@ DATASET STRUCTURED_POINTS
         cell = {'type': 6, 'points': points, 'data': data}
         self.cell_list.append(cell)
 
-    def add_cylinder_p2p(self, pos1=[0, 0, 0], pos2=[2, 0, 0], size=1.0, data=0, draw_mode=0):
+    def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, draw_mode=0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
         local_pos = pos2 - pos1
@@ -124,22 +126,26 @@ DATASET STRUCTURED_POINTS
         
         self.cell_list.append(cell)
 
-    def add_swc(self, swc_filename, draw_mode=0, diam_ratio=1.0, normalize_diam=False,
+    def convert_swc(self, draw_mode=0, diam_ratio=1.0, normalize_diam=False):
+        self.converted = True
+
+        for swcdata in self.swc_list:
+            datasize = len(swcdata.data)
+            for record in swcdata.data.values():
+                if normalize_diam:
+                    record['radius'] = math.sqrt(record['radius'])
+
+                if record['parent'] > 0:
+                    parent_record = self.swc_list[-1].data[record['parent']]
+                    self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                                          float(record['id']) / datasize, draw_mode=draw_mode)
+
+    def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
+        self.converted = False
         self.swc_list.append(Swc(swc_filename))
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
         self.swc_list[-1].shift(shift_x, shift_y, shift_z)
-
-        datasize = len(self.swc_list[-1].data)
-            
-        for record in self.swc_list[-1].data.values():
-            if normalize_diam:
-                record['radius'] = math.sqrt(record['radius'])
-
-            if record['parent'] > 0:
-                parent_record = self.swc_list[-1].data[record['parent']]
-                self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
-                                      float(record['id']) / datasize, draw_mode=draw_mode)
 
     def add_swc_with_line(self, swc_filename):
         self.swc_list.append(Swc(swc_filename))
@@ -246,6 +252,8 @@ DATASET STRUCTURED_POINTS
         self.datafile_list = []
 
     def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False):
+        if not self.converted:
+            self.convert_swc()
 
         vtkdata = ''
         vtkdata += self.header

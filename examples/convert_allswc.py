@@ -16,7 +16,7 @@ filelist_simple = [
 ]
 
 filelist_small = [
-    '0993_regist',
+    '0664_regist',
 ]
 
 filelist_small2 = [
@@ -55,16 +55,17 @@ filelist_all = [
     '090815_4_sn_reg'
     ]
 
-outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
+# outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
+outputpos = ''
 # filelist = filelist_small
-filelist = filelist_small2
+filelist = filelist_small
 
 for i, filename in enumerate(filelist):
     print('Processing: %s' % filename)
     fixval = int(i * (256 / len(filelist)))
     vtkgen = VtkGenerator()
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(outputpos + filename + '.vtk')
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'))
 #
 # for i, filename in enumerate(filelist):
 #     print 'Processing: %s' % filename
