@@ -221,7 +221,7 @@ DATASET STRUCTURED_POINTS
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in range(len(self.cell_list)):
+            for i in range(len(read_data)):
                 text += read_data[i].rstrip() + '\n'
 
         return text
