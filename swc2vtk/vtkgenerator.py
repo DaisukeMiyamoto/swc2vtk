@@ -23,7 +23,7 @@ ASCII
 DATASET UNSTRUCTURED_GRID
 '''
     volume_header_base = '''\
-# vtk DataFile Version 1.0
+# vtk DataFile Version 3.0
 SWC2VTK VOLUME
 ASCII
 DATASET STRUCTURED_POINTS
@@ -200,11 +200,10 @@ DATASET STRUCTURED_POINTS
         text += 'LOOKUP_TABLE default\n'
 
         for filename in datafile_list:
-            print('Appending %s' % filename)
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in tqdm(range(len(read_data)), desc='Appending Datafile'):
+            for i in tqdm(range(len(read_data)), desc=('Appending Datafile: %s' % filename)):
                 if read_data[i][0] != '#':
                     for j in range(self.ncell_per_compartment):
                         text += read_data[i].rstrip() + '\n'
@@ -215,6 +214,7 @@ DATASET STRUCTURED_POINTS
         text = ''
         text += 'SCALARS coloring float 1\n'
         text += 'LOOKUP_TABLE default\n'
+
         for i, swc in enumerate(self.swc_list):
             val = i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
