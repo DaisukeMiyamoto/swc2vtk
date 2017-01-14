@@ -63,9 +63,12 @@ DATASET STRUCTURED_POINTS
             local_cell_list, local_point_list = GenPrimitives.cylinder(top_face_diam=radius_ratio)
         elif self.draw_mode == 2:
             local_cell_list, local_point_list = GenPrimitives.cylinder_3cell(top_face_diam=radius_ratio)
-            self.ncell_per_compartment = 3
+            self.ncell_per_compartment = len(local_cell_list)
         elif self.draw_mode == 3:
-                local_cell_list, local_point_list = GenPrimitives.cylinder(top_face_diam=radius_ratio)
+            local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder(top_face_diam=radius_ratio, height=height, radius=radius)
+            self.ncell_per_compartment = len(local_cell_list)
+            height = 1.0
+            radius = 1.0
 
         for cell in local_cell_list:
             cell['points'] = [i + point_start for i in cell['points']]
@@ -88,14 +91,18 @@ DATASET STRUCTURED_POINTS
 
     def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
         point_start = len(self.point_list)
-
-        local_cell_list, local_point_list = GenPrimitives.hemisphere()
+        # DEBUG:
+        local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
         # local_cell_list, local_point_list = GenPrimitives.sphere()
         for cell in local_cell_list:
             cell['points'] = [i + point_start for i in cell['points']]
             cell['data'] = data
 
-        # TODO: transform functions
+        # scale
+        local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
+
+        # move
+        local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
 
         self.point_list.extend(local_point_list)
         self.cell_list.extend(local_cell_list)

@@ -65,8 +65,9 @@ filelist = filelist_small2
 for i, filename in enumerate(filelist):
     fixval = int(i * (256 / len(filelist)))
     vtkgen = VtkGenerator()
+    vtkgen.set_draw_mode(3)
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), draw_mode=1, normalize_diam=True)
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True)
 
 # for i, filename in enumerate(filelist):
 #     fixval = int(i * (256 / len(filelist)))

@@ -13,7 +13,7 @@ outputpos = ''
 vtkgen = VtkGenerator()
 vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
 
-for i in range(3):
+for i in range(4):
     vtkgen.set_draw_mode(i)
     vtkgen.write_vtk(os.path.join(outputpos, filename + '_draw'+str(i)+'.vtk'))
 

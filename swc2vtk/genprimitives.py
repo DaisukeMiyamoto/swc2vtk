@@ -145,6 +145,47 @@ class GenPrimitives():
 
         return cell_list, np.array(point_list)
 
-    def hemisphere_cylinder(self, div=10):
+    @staticmethod
+    def hemisphere_cylinder(div=8, top_face_diam=1.0, height=1.0, radius=1.0):
         cell_list = []
         point_list = []
+        point_start = 0
+
+        # hemisphere point_list
+        for i in range(int(div/2)+1):
+            ph = np.pi * i / float(div)
+            y = np.cos(ph)
+            r = np.sin(ph)
+            for j in range(div):
+                th = 2.0 * np.pi * j / float(div)
+                x = r * np.cos(th)
+                z = r * np.sin(th)
+
+                point_list.append([-y*radius, z*radius, x*radius])
+                point_start += 1
+
+        # hemisphere cell_list
+        for i in range(int(div/2)):
+            points = []
+            for j in range(div):
+                points.extend([i*div+j, (i+1)*div+j])
+            points.extend([i*div, (i+1)*div])
+            cell = {'type': 6, 'points': points}
+            cell_list.append(cell)
+
+        # cylinder point_list
+        points = []
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[0, np.cos(theta)*radius, np.sin(theta)*radius], [height, np.cos(theta)*top_face_diam*radius, np.sin(theta)*top_face_diam*radius]])
+
+        # cylinder cell_list
+        for i in range(div):
+            points.extend([i * 2, i * 2 + 1])
+        points.extend([0, 1])
+        cell = {'type': 6, 'points': points}
+        points = [i + point_start for i in points]
+
+        cell_list.append(cell)
+
+        return cell_list, np.array(point_list)
