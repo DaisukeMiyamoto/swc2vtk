@@ -14,7 +14,6 @@ from swc2vtk.genprimitives import GenPrimitives
 from swc2vtk.swc import Swc
 
 
-
 class VtkGenerator():
     header_base = '''\
 # vtk DataFile Version 3.0
@@ -203,7 +202,7 @@ DATASET STRUCTURED_POINTS
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in tqdm(range(len(read_data)), desc=('Appending Datafile: %s' % filename)):
+            for i in range(len(read_data)):
                 if read_data[i][0] != '#':
                     for j in range(self.ncell_per_compartment):
                         text += read_data[i].rstrip() + '\n'
@@ -233,7 +232,7 @@ DATASET STRUCTURED_POINTS
         if not self.converted:
             self.convert_swc(diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
-        with open (filename, 'w') as file:
+        with open(filename, 'w') as file:
             file.write(self.header)
             file.write(self.point_text)
             file.write(self.cell_text)
