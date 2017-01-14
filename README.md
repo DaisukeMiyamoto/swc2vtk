@@ -80,10 +80,10 @@ vtkgen.write_volume_vtk('volume.vtk')
 ### Visualization Quality
 - `Draw Mode`
 change SWC compartment drawing method. Largeer number is better.
-- `0`: simple cylinder
-- `1`: one cylinder with variable top surface
-- `2`: one cylinder with three cell mode
-- `3`: one cylinder with a hemisphere
+  - `0`: simple cylinder
+  - `1`: one cylinder with variable top surface
+  - `2`: one cylinder with three cell mode
+  - `3`: one cylinder with a hemisphere
 
 ```
 vtkgen = VtkGenerator()
