@@ -78,14 +78,29 @@ vtkgen.write_volume_vtk('volume.vtk')
 
 ## Output Examples
 ### single neuron
-![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_small.png)
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron_small.png)
 
-- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_ospray.png)
+- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron.png)
 
 ### Coloring multiple SWC files
 ![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
 
 ### Volume Rendering
+
+## Settings
+### `draw_mode`
+change SWC compartment drawing method. Largeer number is better.
+- `0`: simple cylinder
+- `1`: one cylinder with variable top surface
+- `2`: one cylinder with three cell mode
+- `3`: one cylinder with a hemisphere
+
+```
+vtkgen = VtkGenerator()
+vtkgen.add_swc('simple.swc'))
+vtkgen.set_draw_mode(4)
+vtkgen.write_vtk('simple.vtk'))
+```
 
 ## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
