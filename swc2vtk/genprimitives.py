@@ -23,34 +23,75 @@ class GenPrimitives():
 
     @staticmethod
     def cylinder(div=8, top_face_diam=1.0):
+        cell_list = []
         point_list = []
-        point_order = []
+        points = []
 
         for i in range(div):
             theta = float(i) / div * 2. * np.pi
             point_list.extend([[0, 0, 0], [0, np.cos(theta), np.sin(theta)]])
 
-            point_order.extend([len(point_order), len(point_order) + 1])
+            points.extend([len(points), len(points) + 1])
 
-        point_order.extend([0, 1])
+        points.extend([0, 1])
 
         for i in range(div):
             theta = float(i) / div * 2. * np.pi
             point_list.extend([[0, np.cos(theta), np.sin(theta)], [1, np.cos(theta)*top_face_diam, np.sin(theta)*top_face_diam]])
+            points.extend([div * 2 + i * 2, div * 2 + 1 + i * 2])
 
-            point_order.extend([div * 2 + i * 2, div * 2 + 1 + i * 2])
-
-        point_order.extend([div * 2, div * 2 + 1])
+        points.extend([div * 2, div * 2 + 1])
 
         for i in range(div):
             theta = float(i) / div * 2. * np.pi
             point_list.extend([[1, 0, 0], [1, np.cos(theta)*top_face_diam, np.sin(theta)*top_face_diam]])
 
-            point_order.extend([div * 2 * 2 + i * 2, div * 2 * 2 + 1 + i * 2])
+            points.extend([div * 2 * 2 + i * 2, div * 2 * 2 + 1 + i * 2])
 
-        point_order.extend([div * 2 * 2, div * 2 * 2 + 1])
+        points.extend([div * 2 * 2, div * 2 * 2 + 1])
 
-        return point_order, np.array(point_list)
+        cell = {'type': 6, 'points': points}
+        cell_list.append(cell)
+
+        return cell_list, np.array(point_list)
+
+    @staticmethod
+    def cylinder_3cell(div=8, top_face_diam=1.0):
+        cell_list = []
+        point_list = []
+
+        points = []
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[0, 0, 0], [0, np.cos(theta), np.sin(theta)]])
+            points.extend([len(points), len(points) + 1])
+
+        points.extend([0, 1])
+        cell = {'type': 6, 'points': points}
+        cell_list.append(cell)
+
+        points = []
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[0, np.cos(theta), np.sin(theta)], [1, np.cos(theta)*top_face_diam, np.sin(theta)*top_face_diam]])
+            points.extend([div * 2 + i * 2, div * 2 + 1 + i * 2])
+
+        points.extend([div * 2, div * 2+1])
+        cell = {'type': 6, 'points': points}
+        cell_list.append(cell)
+
+        points = []
+        for i in range(div):
+            theta = float(i) / div * 2. * np.pi
+            point_list.extend([[1, 0, 0], [1, np.cos(theta)*top_face_diam, np.sin(theta)*top_face_diam]])
+
+            points.extend([div * 2 * 2 + i * 2, div * 2 * 2 + 1 + i * 2])
+
+        points.extend([div * 2 * 2, div * 2 * 2 + 1])
+        cell = {'type': 6, 'points': points}
+        cell_list.append(cell)
+
+        return cell_list, np.array(point_list)
 
     @staticmethod
     def sphere(div=10):

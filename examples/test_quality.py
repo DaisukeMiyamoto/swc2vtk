@@ -12,9 +12,8 @@ outputpos = ''
 
 vtkgen = VtkGenerator()
 vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-vtkgen.write_vtk(os.path.join(outputpos, filename + '_draw0.vtk'), draw_mode=0)
 
-vtkgen = VtkGenerator()
-vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-vtkgen.write_vtk(os.path.join(outputpos, filename + '_draw1.vtk'), draw_mode=1)
+for i in range(3):
+    vtkgen.set_draw_mode(i)
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '_draw'+str(i)+'.vtk'))
 
