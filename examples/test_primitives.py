@@ -17,5 +17,4 @@ vtkgen = VtkGenerator()
 # vtkgen.add_sphere()
 vtkgen.add_sphere()
 
-
 vtkgen.write_vtk(outputpos + filename)

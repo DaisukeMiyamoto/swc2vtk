@@ -76,13 +76,10 @@ DATASET STRUCTURED_POINTS
 
         # scale
         local_point_list = np.array([ v*[height, radius, radius] for v in local_point_list])
-
         # rot z
         local_point_list = np.array([ [v[0]*np.cos(rot_z)-v[1]*np.sin(rot_z), v[0]*np.sin(rot_z)+v[1]*np.cos(rot_z), v[2]] for v in local_point_list])
-
         # rot y
         local_point_list = np.array([ [v[0]*np.cos(rot_y)+v[2]*np.sin(rot_y), v[1], -v[0]*np.sin(rot_y)+v[2]*np.cos(rot_y)] for v in local_point_list])
-
         # move
         local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
 
@@ -91,16 +88,14 @@ DATASET STRUCTURED_POINTS
 
     def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
         point_start = len(self.point_list)
-        # DEBUG:
-        local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
-        # local_cell_list, local_point_list = GenPrimitives.sphere()
+        # local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
+        local_cell_list, local_point_list = GenPrimitives.sphere()
         for cell in local_cell_list:
             cell['points'] = [i + point_start for i in cell['points']]
             cell['data'] = data
 
         # scale
         local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
-
         # move
         local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
 
