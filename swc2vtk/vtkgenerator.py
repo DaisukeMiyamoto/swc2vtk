@@ -42,16 +42,18 @@ DATASET STRUCTURED_POINTS
         self.cell_text = ''
 
         self.converted = False
+        self.pre_draw_mode = 0
         self.ncell_per_compartment = 1
 
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
         
-    def add_cylinder(self, pos_x=0, pos_y=0, pos_z=0, radius=1.0, height=1.0, rot_y=0, rot_z=0, data=0.0):
+    def add_cylinder(self, pos_x=0, pos_y=0, pos_z=0, radius=1.0, height=1.0, rot_y=0, rot_z=0,
+                     data=0.0, radius_ratio=1.0):
         point_start = len(self.point_list)
 
         # points, local_point_list = self._gen_cylinder_point()
-        points, local_point_list = GenPrimitives.cylinder()
+        points, local_point_list = GenPrimitives.cylinder(top_face_diam=radius_ratio)
         points = [i+point_start for i in points]
 
         # scale
@@ -100,17 +102,18 @@ DATASET STRUCTURED_POINTS
     def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
         point_start = len(self.point_list)
 
-        points, local_point_list = GenPrimitives.sphere()
-        points = [i + point_start for i in points]
+        local_cell_list, local_point_list = GenPrimitives.hemisphere()
+        # local_cell_list, local_point_list = GenPrimitives.sphere()
+        for cell in local_cell_list:
+            cell['points'] = [i + point_start for i in cell['points']]
+            cell['data'] = data
 
         # TODO: transform functions
 
         self.point_list.extend(local_point_list)
+        self.cell_list.extend(local_cell_list)
 
-        cell = {'type': 6, 'points': points, 'data': data}
-        self.cell_list.append(cell)
-
-    def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0):
+    def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, radius_ratio=1.0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
         local_pos = pos2 - pos1
@@ -119,7 +122,7 @@ DATASET STRUCTURED_POINTS
         rot_z = np.arctan2(local_pos[1], np.sqrt(local_pos[0]**2 + local_pos[2]**2))
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
-        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
+        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data, radius_ratio=radius_ratio)
 
     def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
         point_start = len(self.point_list)
@@ -132,9 +135,13 @@ DATASET STRUCTURED_POINTS
 
     def convert_swc(self, draw_mode=0, diam_ratio=1.0, normalize_diam=False):
         self.converted = True
+        self.pre_draw_mode = draw_mode
+        # BUG:
+        # self.point_list = []
+        # self.cell_list = []
 
         for swc_data in self.swc_list:
-            print('Converting %s' % swc_data.filename)
+            print('\nConverting %s' % swc_data.filename)
             data_size = len(swc_data.data)
 
             for record in tqdm(swc_data.data.values()):
@@ -152,7 +159,7 @@ DATASET STRUCTURED_POINTS
                     if record['parent'] > 0:
                         parent_record = swc_data.data[record['parent']]
                         self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
-                                              float(record['id']) / data_size)
+                                              float(record['id']) / data_size, radius_ratio=(parent_record['radius']/record['radius']))
         self.point_text = self._point2text()
         self.cell_text = self._cell2text()
 
@@ -271,14 +278,13 @@ DATASET STRUCTURED_POINTS
 
     def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False,
                   draw_mode=0, diam_ratio=1.0, normalize_diam=False):
-        if not self.converted:
+        if (not self.converted) or draw_mode != self.pre_draw_mode:
             self.convert_swc(draw_mode=draw_mode, diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
         with open (filename, 'w') as file:
             file.write(self.header)
             file.write(self.point_text)
             file.write(self.cell_text)
-            print('options')
 
             if fixval is not None:
                 file.write(self._fixval2text(fixval=fixval))
@@ -312,7 +318,7 @@ DATASET STRUCTURED_POINTS
         vtkdata += 'DIMENSIONS %d %d %d\n' % (div[0], div[1], div[2])
         vtkdata += 'ORIGIN %f %f %f\n' % (origin[0], origin[1], origin[2])
         vtkdata += 'ASPECT_RATIO %f %f %f\n' % (ratio[0], ratio[1], ratio[2])
-        vtkdata += 'POINT_DATA %d\n' % (div[0] * div[1] * div[2])
+        vtkdata += 'POINT_DATA %d\n' % div[0] * div[1] * div[2]
         vtkdata += 'SCALARS volume float\n'
         vtkdata += 'LOOKUP_TABLE default\n'
 

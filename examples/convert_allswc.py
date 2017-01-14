@@ -60,14 +60,14 @@ filelist_all = [
 # outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
 outputpos = ''
 # filelist = filelist_small
-filelist = filelist_small
+filelist = filelist_small2
 
-# for i, filename in enumerate(filelist):
-#     fixval = int(i * (256 / len(filelist)))
-#     vtkgen = VtkGenerator()
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-#     vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'))
-#
+for i, filename in enumerate(filelist):
+    fixval = int(i * (256 / len(filelist)))
+    vtkgen = VtkGenerator()
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), draw_mode=1, normalize_diam=True)
+
 # for i, filename in enumerate(filelist):
 #     fixval = int(i * (256 / len(filelist)))
 #     vtkgen = VtkGenerator()
@@ -75,11 +75,11 @@ filelist = filelist_small
 #     vtkgen.write_vtk(outputpos + filename + '_flip.vtk')
 
 
-vtkgen = VtkGenerator()
-for filename in filelist:
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-
-vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True)
+# vtkgen = VtkGenerator()
+# for filename in filelist:
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+#
+# vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True)
 
 # vtkgen = VtkGenerator()
 # for filename in filelist:
