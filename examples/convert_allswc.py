@@ -22,6 +22,7 @@ filelist_small = [
 ]
 
 filelist_small2 = [
+    'Swc_BN_1056',
     '200000',
     '300000',
     '301000',

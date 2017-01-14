@@ -14,7 +14,6 @@ from swc2vtk.genprimitives import GenPrimitives
 from swc2vtk.swc import Swc
 
 
-
 class VtkGenerator():
     header_base = '''\
 # vtk DataFile Version 3.0
@@ -23,7 +22,7 @@ ASCII
 DATASET UNSTRUCTURED_GRID
 '''
     volume_header_base = '''\
-# vtk DataFile Version 1.0
+# vtk DataFile Version 3.0
 SWC2VTK VOLUME
 ASCII
 DATASET STRUCTURED_POINTS
@@ -76,13 +75,10 @@ DATASET STRUCTURED_POINTS
 
         # scale
         local_point_list = np.array([ v*[height, radius, radius] for v in local_point_list])
-
         # rot z
         local_point_list = np.array([ [v[0]*np.cos(rot_z)-v[1]*np.sin(rot_z), v[0]*np.sin(rot_z)+v[1]*np.cos(rot_z), v[2]] for v in local_point_list])
-
         # rot y
         local_point_list = np.array([ [v[0]*np.cos(rot_y)+v[2]*np.sin(rot_y), v[1], -v[0]*np.sin(rot_y)+v[2]*np.cos(rot_y)] for v in local_point_list])
-
         # move
         local_point_list = np.array([ v+[pos_x, pos_y, pos_z] for v in local_point_list])
 
@@ -91,16 +87,14 @@ DATASET STRUCTURED_POINTS
 
     def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
         point_start = len(self.point_list)
-        # DEBUG:
-        local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
-        # local_cell_list, local_point_list = GenPrimitives.sphere()
+        # local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
+        local_cell_list, local_point_list = GenPrimitives.sphere()
         for cell in local_cell_list:
             cell['points'] = [i + point_start for i in cell['points']]
             cell['data'] = data
 
         # scale
         local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
-
         # move
         local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
 
@@ -205,11 +199,10 @@ DATASET STRUCTURED_POINTS
         text += 'LOOKUP_TABLE default\n'
 
         for filename in datafile_list:
-            print('Appending %s' % filename)
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in tqdm(range(len(read_data)), desc='Appending Datafile'):
+            for i in range(len(read_data)):
                 if read_data[i][0] != '#':
                     for j in range(self.ncell_per_compartment):
                         text += read_data[i].rstrip() + '\n'
@@ -220,6 +213,7 @@ DATASET STRUCTURED_POINTS
         text = ''
         text += 'SCALARS coloring float 1\n'
         text += 'LOOKUP_TABLE default\n'
+
         for i, swc in enumerate(self.swc_list):
             val = i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
@@ -238,7 +232,7 @@ DATASET STRUCTURED_POINTS
         if not self.converted:
             self.convert_swc(diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
-        with open (filename, 'w') as file:
+        with open(filename, 'w') as file:
             file.write(self.header)
             file.write(self.point_text)
             file.write(self.cell_text)
