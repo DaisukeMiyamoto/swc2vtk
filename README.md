@@ -4,7 +4,7 @@
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
 ![NEURON](https://img.shields.io/badge/NEURON-7.4-green.svg)
 
-SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.
+SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.  
 This software helps to make easy and beautiful visualization of multi-compartmental neuron simulation.
 
 ## Dependency
