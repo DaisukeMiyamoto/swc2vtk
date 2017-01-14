@@ -17,6 +17,8 @@ filelist_simple = [
 
 filelist_small = [
     '0664_regist',
+    '0965_regist',
+    '0970_regist'
 ]
 
 filelist_small2 = [
@@ -60,31 +62,27 @@ outputpos = ''
 # filelist = filelist_small
 filelist = filelist_small
 
-for i, filename in enumerate(filelist):
-    print('Processing: %s' % filename)
-    fixval = int(i * (256 / len(filelist)))
-    vtkgen = VtkGenerator()
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'))
+# for i, filename in enumerate(filelist):
+#     fixval = int(i * (256 / len(filelist)))
+#     vtkgen = VtkGenerator()
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+#     vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'))
 #
 # for i, filename in enumerate(filelist):
-#     print 'Processing: %s' % filename
 #     fixval = int(i * (256 / len(filelist)))
 #     vtkgen = VtkGenerator()
 #     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
 #     vtkgen.write_vtk(outputpos + filename + '_flip.vtk')
 
 
-# vtkgen = VtkGenerator()
-# for filename in filelist:
-#     print 'Processing: %s' % filename
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), normalize_diam=True)
-#
-# vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=True)
+vtkgen = VtkGenerator()
+for filename in filelist:
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+
+vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True)
 
 # vtkgen = VtkGenerator()
 # for filename in filelist:
-#     print 'Processing: %s' % filename
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0, normalize_diam=True)
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
 #
-# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True)
+# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True, normalize_diam=True)

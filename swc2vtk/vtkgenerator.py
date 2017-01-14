@@ -7,11 +7,12 @@ Created on Thu Jun  9 12:37:20 2016
 
 import os
 import math
-# from swc2vtk.swc import Swc
-# from swc2vtk.genprimitives import GenPrimitives
+import numpy as np
+from tqdm import tqdm
+
 from swc2vtk.genprimitives import GenPrimitives
 from swc2vtk.swc import Swc
-import numpy as np
+
 
 
 class VtkGenerator():
@@ -37,7 +38,11 @@ DATASET STRUCTURED_POINTS
         self.cell_list = []
         self.datafile_list = []
 
+        self.point_text = ''
+        self.cell_text = ''
+
         self.converted = False
+        self.ncell_per_compartment = 1
 
     def add_point(self, x, y, z):
         self.point_list.append([x, y, z])
@@ -105,7 +110,7 @@ DATASET STRUCTURED_POINTS
         cell = {'type': 6, 'points': points, 'data': data}
         self.cell_list.append(cell)
 
-    def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, draw_mode=0):
+    def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
         local_pos = pos2 - pos1
@@ -114,8 +119,7 @@ DATASET STRUCTURED_POINTS
         rot_z = np.arctan2(local_pos[1], np.sqrt(local_pos[0]**2 + local_pos[2]**2))
         len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
-        if draw_mode == 0:
-            self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
+        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data)
 
     def add_line(self, p1_x=0, p1_y=0, p1_z=0, p2_x=1, p2_y=0, p2_z=0, data=0):
         point_start = len(self.point_list)
@@ -129,16 +133,28 @@ DATASET STRUCTURED_POINTS
     def convert_swc(self, draw_mode=0, diam_ratio=1.0, normalize_diam=False):
         self.converted = True
 
-        for swcdata in self.swc_list:
-            datasize = len(swcdata.data)
-            for record in swcdata.data.values():
+        for swc_data in self.swc_list:
+            print('Converting %s' % swc_data.filename)
+            data_size = len(swc_data.data)
+
+            for record in tqdm(swc_data.data.values()):
                 if normalize_diam:
                     record['radius'] = math.sqrt(record['radius'])
 
-                if record['parent'] > 0:
-                    parent_record = self.swc_list[-1].data[record['parent']]
-                    self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
-                                          float(record['id']) / datasize, draw_mode=draw_mode)
+                if draw_mode == 0:
+                    self.ncell_per_compartment = 1
+                    if record['parent'] > 0:
+                        parent_record = swc_data.data[record['parent']]
+                        self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                                              float(record['id']) / data_size)
+                elif draw_mode == 1:
+                    self.ncell_per_compartment = 1
+                    if record['parent'] > 0:
+                        parent_record = swc_data.data[record['parent']]
+                        self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                                              float(record['id']) / data_size)
+        self.point_text = self._point2text()
+        self.cell_text = self._cell2text()
 
     def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
@@ -167,7 +183,7 @@ DATASET STRUCTURED_POINTS
         
     def _point2text(self):
         text = 'POINTS %d float\n' % (len(self.point_list))
-        for point in self.point_list:
+        for point in tqdm(self.point_list):
             text += '%f %f %f\n' % (point[0], point[1], point[2])
             
         return text
@@ -225,11 +241,14 @@ DATASET STRUCTURED_POINTS
         text += 'LOOKUP_TABLE default\n'
 
         for filename in datafile_list:
+            print('Appending %s' % filename)
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in range(len(read_data)):
-                text += read_data[i].rstrip() + '\n'
+            for i in tqdm(range(len(read_data))):
+                if read_data[i][0] != '#':
+                    for j in range(self.ncell_per_compartment):
+                        text += read_data[i].rstrip() + '\n'
 
         return text
 
@@ -240,7 +259,6 @@ DATASET STRUCTURED_POINTS
         for i, swc in enumerate(self.swc_list):
             val = i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
-                # print(str(i) + ', ' + str(j))
                 text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
 
         return text
@@ -251,29 +269,28 @@ DATASET STRUCTURED_POINTS
     def clear_datafile(self):
         self.datafile_list = []
 
-    def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False):
+    def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False,
+                  draw_mode=0, diam_ratio=1.0, normalize_diam=False):
         if not self.converted:
-            self.convert_swc()
-
-        vtkdata = ''
-        vtkdata += self.header
-        vtkdata += self._point2text()
-        vtkdata += self._cell2text()
-
-        if fixval is not None:
-            vtkdata += self._fixval2text(fixval=fixval)
-
-        if movingval:
-            vtkdata += self._movingval2text()
-
-        if len(self.datafile_list) > 0:
-            vtkdata += self._file2text(self.datafile_list, datatitle)
-
-        if coloring:
-            vtkdata += self._coloringbyswc()
+            self.convert_swc(draw_mode=draw_mode, diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
         with open (filename, 'w') as file:
-            file.write(vtkdata)
+            file.write(self.header)
+            file.write(self.point_text)
+            file.write(self.cell_text)
+            print('options')
+
+            if fixval is not None:
+                file.write(self._fixval2text(fixval=fixval))
+
+            if movingval:
+                file.write(self._movingval2text())
+
+            if len(self.datafile_list) > 0:
+                file.write(self._file2text(self.datafile_list, datatitle))
+
+            if coloring:
+                file.write(self._coloringbyswc())
 
     def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
         point_weight = 0.01
@@ -347,7 +364,6 @@ if __name__ == '__main__':
     def test_cylinder(num):
         filename = 'cylinder.vtk'
         vtkgen = VtkGenerator()
-
 
         for i in range(num):
             vtkgen.add_cylinder(i*5, 0, 0, i*0.1+1, i*2+1, 0, 0, 0.2*i)

@@ -50,7 +50,7 @@ class GenPrimitives():
 
         point_order.extend([div * 2 * 2, div * 2 * 2 + 1])
 
-        return (point_order, np.array(point_list))
+        return point_order, np.array(point_list)
 
     @staticmethod
     def sphere(div=10):
@@ -59,4 +59,4 @@ class GenPrimitives():
 
         point_list = [v - [0.0, 0.5, 0.5] for v in point_list]
 
-        return (point_order, np.array(point_list))
+        return point_order, np.array(point_list)

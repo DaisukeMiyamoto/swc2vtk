@@ -7,6 +7,8 @@
 swc to vtk converter for visualizing neurons and neural circuit simulations in ParaView
 
 ## Dependency
+- tqdm
+- numpy
 
 ## Install
 
@@ -14,16 +16,16 @@ swc to vtk converter for visualizing neurons and neural circuit simulations in P
 
 ### Basic way to generate VTK file from one SWC file
 ```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
+from swc2vtk.vtkgenerator import VtkGenerator
+vtkgen = VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_vtk('simple.vtk')
 ```
 
 ### generate a VTK file from multiple SWC files
 ```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
+from swc2vtk.vtkgenerator import VtkGenerator
+vtkgen = VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_swc('simple1.swc')
 vtkgen.add_swc('simple2.swc')
@@ -32,8 +34,8 @@ vtkgen.write_vtk('combined.vtk')
 
 ### generate a VTK file from SWC file with simulation data
 ```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
+from swc2vtk.vtkgenerator import VtkGenerator
+vtkgen = VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_datafile('result.dat')
 vtkgen.write_vtk('simple.vtk')
@@ -50,9 +52,9 @@ row equals to SWC compartment
 
 ### generate VTK files from SWC file with sequential simulation data
 ```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simle.swc')
+from swc2vtk.vtkgenerator import VtkGenerator
+vtkgen = VtkGenerator()
+vtkgen.add_swc('simple.swc')
 
 vtkgen.add_datafile('result1.dat')
 vtkgen.write_vtk('simple1.vtk')
@@ -66,6 +68,14 @@ vtkgen.add_datafile('result3.dat')
 vtkgen.write_vtk('simple3.vtk')
 ```
 
+### generate VTK file for volume rendering
+```
+from swc2vtk.vtkgenerator import VtkGenerator
+vtkgen = VtkGenerator()
+vtkgen.add_swc('simple.swc')
+vtkgen.write_volume_vtk('volume.vtk')
+```
+
 ## Output Examples
 ### single neuron
 ![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_small.png)
@@ -74,6 +84,8 @@ vtkgen.write_vtk('simple3.vtk')
 
 ### Coloring multiple SWC files
 ![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
+
+### Volume Rendering
 
 ## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
