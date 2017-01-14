@@ -183,8 +183,8 @@ class GenPrimitives():
         for i in range(div):
             points.extend([i * 2, i * 2 + 1])
         points.extend([0, 1])
-        cell = {'type': 6, 'points': points}
         points = [i + point_start for i in points]
+        cell = {'type': 6, 'points': points}
 
         cell_list.append(cell)
 

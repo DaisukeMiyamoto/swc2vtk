@@ -122,10 +122,9 @@ DATASET STRUCTURED_POINTS
         self.converted = True
 
         for swc_data in self.swc_list:
-            print('\nConverting %s' % swc_data.filename)
             data_size = len(swc_data.data)
 
-            for record in tqdm(swc_data.data.values()):
+            for record in tqdm(swc_data.data.values(), desc='Converting: ' + swc_data.filename):
                 if normalize_diam:
                     record['radius'] = math.sqrt(record['radius'])
 
@@ -148,7 +147,7 @@ DATASET STRUCTURED_POINTS
 
     def _point2text(self):
         text = 'POINTS %d float\n' % (len(self.point_list))
-        for point in tqdm(self.point_list):
+        for point in tqdm(self.point_list, desc='Generating Points'):
             text += '%f %f %f\n' % (point[0], point[1], point[2])
             
         return text
@@ -210,7 +209,7 @@ DATASET STRUCTURED_POINTS
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
-            for i in tqdm(range(len(read_data))):
+            for i in tqdm(range(len(read_data)), desc='Appending Datafile'):
                 if read_data[i][0] != '#':
                     for j in range(self.ncell_per_compartment):
                         text += read_data[i].rstrip() + '\n'
@@ -239,7 +238,6 @@ DATASET STRUCTURED_POINTS
         if not self.converted:
             self.convert_swc(diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
-        print('Generating %s', filename)
         with open (filename, 'w') as file:
             file.write(self.header)
             file.write(self.point_text)
