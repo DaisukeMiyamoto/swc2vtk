@@ -42,7 +42,7 @@ vtkgen.write_vtk('simple.vtk')
 ```
 
 - data example  
-row equals to SWC compartment
+each rows correspondence to SWC compartments
 ```
 -65.0
 -65.0
@@ -69,23 +69,56 @@ vtkgen.write_vtk('simple3.vtk')
 ```
 
 ### generate VTK file for volume rendering
-```
+```python
 from swc2vtk.vtkgenerator import VtkGenerator
 vtkgen = VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_volume_vtk('volume.vtk')
 ```
 
+## Settings
+### Visualization Quality
+- `Draw Mode`
+change SWC compartment drawing method. Largeer number is better.
+  - `0`: simple cylinder
+  - `1`: one cylinder with variable top surface
+  - `2`: one cylinder with three cell mode
+  - `3`: one cylinder with a hemisphere
+
+```python
+vtkgen = VtkGenerator()
+vtkgen.add_swc('simple.swc'))
+vtkgen.set_draw_mode(4)
+vtkgen.write_vtk('simple.vtk'))
+```
+
+- `Division Number`
+```python
+vtkgen = VtkGenerator()
+vtkgen.add_swc('simple.swc'))
+vtkgen.set_division_number(20)
+vtkgen.write_vtk('simple.vtk'))
+```
+
+### adjust compartment diameter
+- `normalize_diam`
+
+
 ## Output Examples
-### single neuron
-![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_small.png)
+### Single Neuron Morphology
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron_small.png)
 
-- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/0965_ospray.png)
+- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron.png)
 
-### Coloring multiple SWC files
+### Coloring Multiple SWC Files
 ![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
 
+### Single Neuron Simulation
+
+### Neural Circuit Simulation
+
 ### Volume Rendering
+
 
 ## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
