@@ -8,10 +8,15 @@ Created on Thu Jun  9 15:52:38 2016
 import os
 from swc2vtk.vtkgenerator import VtkGenerator
 
-vtkfilename = '/home/nebula/work/paraview/volume/volume_all.vtk'
 
 filelist_small = [
-    '0993_regist',
+    '0004_regist',
+    '0005_regist',
+    '0008_regist',
+    '0009_regist',
+    '0012_regist',
+    '0017_regist',
+    '0986_regist',
 ]
 
 filelist_small2 = [
@@ -50,12 +55,11 @@ filelist_all = [
     '090815_4_sn_reg'
 ]
 
-filelist = filelist_all
+filelist = filelist_small
+vtkfilename = 'volume_all.vtk'
 
 vtkgen = VtkGenerator()
-
 for filename in filelist:
-    print 'Processing: %s' % filename
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
 
 vtkgen.write_volume_vtk(vtkfilename, origin=(0.0, 0.0, 0.0), ratio=(4.0, 4.0, 4.0), div=(256, 256, 77))

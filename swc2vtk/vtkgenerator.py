@@ -22,7 +22,7 @@ ASCII
 DATASET UNSTRUCTURED_GRID
 '''
     volume_header_base = '''\
-# vtk DataFile Version 3.0
+# vtk DataFile Version 1.0
 SWC2VTK VOLUME
 ASCII
 DATASET STRUCTURED_POINTS
@@ -250,14 +250,15 @@ DATASET STRUCTURED_POINTS
                 file.write(self._coloringbyswc())
 
     def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
-        point_weight = 0.01
-        for point in self.point_list:
-            pos = (int(round((point[0] - origin[0]) / ratio[0], 0)),
-                   int(round((point[1] - origin[1]) / ratio[1], 0)),
-                   int(round((point[2] - origin[2]) / ratio[2], 0)))
+        point_weight = 0.2
+        # for point in self.point_list:
+        for k, record in tqdm(swc.data.items(), desc=swc.filename):
+            pos = (int(round((record['pos'][0] - origin[0]) / ratio[0], 0)),
+                   int(round((record['pos'][1] - origin[1]) / ratio[1], 0)),
+                   int(round((record['pos'][2] - origin[2]) / ratio[2], 0)))
             if pos[2] < 0 or 0 or pos[1] < 0 or pos[0] < 0 or pos[2] > len(world) or pos[1] > len(world[0]) or pos[
                 0] > len(world[0][0]):
-                print('Out of range: (%f, %f, %f)' % (point[0], point[1], point[2]))
+                print('Out of range: (%f, %f, %f)' % (record['pos'][0], record['pos'][1], record['pos'][2]))
             else:
                 world[pos[2]][pos[1]][pos[0]] += point_weight
 
@@ -269,7 +270,7 @@ DATASET STRUCTURED_POINTS
         vtkdata += 'DIMENSIONS %d %d %d\n' % (div[0], div[1], div[2])
         vtkdata += 'ORIGIN %f %f %f\n' % (origin[0], origin[1], origin[2])
         vtkdata += 'ASPECT_RATIO %f %f %f\n' % (ratio[0], ratio[1], ratio[2])
-        vtkdata += 'POINT_DATA %d\n' % div[0] * div[1] * div[2]
+        vtkdata += ('POINT_DATA %d\n' % (div[0] * div[1] * div[2]))
         vtkdata += 'SCALARS volume float\n'
         vtkdata += 'LOOKUP_TABLE default\n'
 
