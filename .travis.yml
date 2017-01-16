@@ -1,0 +1,15 @@
+language: python
+
+python:
+  - 3.3
+  - 3.4
+
+install:
+  - pip install numpy
+  - pip install tqdm
+
+script:
+  - coverage run --source=test_primitives setup.py test
+
+after_success:
+  - coveralls
