@@ -7,6 +7,8 @@ python:
 install:
   - pip install numpy
   - pip install tqdm
+  - pip install coverage
+  - pip install coveralls
 
 script:
   - coverage run --source=test_primitives setup.py test

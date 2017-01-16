@@ -1,4 +1,5 @@
 # swc2vtk
+![travisci](https://travis-ci.org/DaisukeMiyamoto/swc2vtk.svg?branch=master)
 ![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
 ![license](https://img.shields.io/badge/license-apache-blue.svg)
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
