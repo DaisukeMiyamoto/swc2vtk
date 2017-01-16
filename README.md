@@ -1,5 +1,6 @@
 # swc2vtk
 ![travisci](https://travis-ci.org/DaisukeMiyamoto/swc2vtk.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/DaisukeMiyamoto/swc2vtk/badge.svg?branch=master)](https://coveralls.io/github/DaisukeMiyamoto/swc2vtk?branch=master)
 ![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
 ![license](https://img.shields.io/badge/license-apache-blue.svg)
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
@@ -13,6 +14,8 @@ This software helps making easy and beautiful visualization of large scale multi
 - numpy
 
 ## Install
+- ~~$ pip install swc2vtk~~
+
 
 ## Usage
 
@@ -88,18 +91,20 @@ change SWC compartment drawing method. Largeer number is better.
   - `3`: one cylinder with a hemisphere
 
 ```python
+from swc2vtk.vtkgenerator import VtkGenerator
 vtkgen = VtkGenerator()
-vtkgen.add_swc('simple.swc'))
+vtkgen.add_swc('simple.swc')
 vtkgen.set_draw_mode(4)
-vtkgen.write_vtk('simple.vtk'))
+vtkgen.write_vtk('simple.vtk')
 ```
 
 - `Division Number`
 ```python
+from swc2vtk.vtkgenerator import VtkGenerator
 vtkgen = VtkGenerator()
-vtkgen.add_swc('simple.swc'))
+vtkgen.add_swc('simple.swc')
 vtkgen.set_division_number(20)
-vtkgen.write_vtk('simple.vtk'))
+vtkgen.write_vtk('simple.vtk')
 ```
 
 ### adjust compartment diameter
