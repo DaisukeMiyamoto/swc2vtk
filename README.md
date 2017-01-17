@@ -23,16 +23,16 @@ This software helps making easy and beautiful visualization of large scale multi
 
 ### Basic way to generate VTK file from one SWC file
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_vtk('simple.vtk')
 ```
 
 ### generate a VTK file from multiple SWC files
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_swc('simple1.swc')
 vtkgen.add_swc('simple2.swc')
@@ -41,12 +41,13 @@ vtkgen.write_vtk('combined.vtk')
 
 ### generate a VTK file from SWC file with simulation data
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_datafile('result.dat')
 vtkgen.write_vtk('simple.vtk')
 ```
+
 
 - data example  
 each rows correspondence to SWC compartments
@@ -59,8 +60,8 @@ each rows correspondence to SWC compartments
 
 ### generate VTK files from SWC file with sequential simulation data
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 
 vtkgen.add_datafile('result1.dat')
@@ -77,8 +78,8 @@ vtkgen.write_vtk('simple3.vtk')
 
 ### generate VTK file for volume rendering
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_volume_vtk('volume.vtk')
 ```
@@ -93,8 +94,8 @@ change SWC compartment drawing method. Largeer number is better.
   - `3`: one cylinder with a hemisphere
 
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.set_draw_mode(4)
 vtkgen.write_vtk('simple.vtk')
@@ -102,8 +103,8 @@ vtkgen.write_vtk('simple.vtk')
 
 - `Division Number`
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.set_division_number(20)
 vtkgen.write_vtk('simple.vtk')
