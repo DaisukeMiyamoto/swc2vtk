@@ -12,7 +12,7 @@ install:
   - pip install coveralls
 
 script:
-  - coverage run --source=test_primitives setup.py test
+  - coverage run --source=tests/test_primitives setup.py test
 
 after_success:
   - coveralls
