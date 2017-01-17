@@ -6,7 +6,9 @@ Created on Tue Jun 14 20:00:41 2016
 """
 
 import os
-from swc2vtk.vtkgenerator import VtkGenerator
+import swc2vtk
+
+# from swc2vtk.vtkgenerator import VtkGenerator
 
 filelist_simple = [
     'simple',
@@ -58,17 +60,17 @@ filelist_all = [
     '090815_4_sn_reg'
     ]
 
-# outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
-outputpos = ''
+outputpos = '/home/nebula/work/paraview/standardbrain20170117/'
+# outputpos = ''
 # filelist = filelist_small
-filelist = filelist_small2
+filelist = filelist_all
 
 for i, filename in enumerate(filelist):
     fixval = int(i * (256 / len(filelist)))
-    vtkgen = VtkGenerator()
+    vtkgen = swc2vtk.VtkGenerator()
     vtkgen.set_draw_mode(3)
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True)
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True, radius_data=True)
 
 # for i, filename in enumerate(filelist):
 #     fixval = int(i * (256 / len(filelist)))
