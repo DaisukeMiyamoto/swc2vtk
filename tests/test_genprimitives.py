@@ -24,6 +24,9 @@ class TestGenPrimitives(unittest.TestCase):
     def test_hemisphere(self):
         self.gen_primitives.hemisphere()
 
+    def test_hemisphere_cylinder(self):
+        self.gen_primitives.hemisphere_cylinder()
+
 
 def suite():
     suite = unittest.TestSuite()

@@ -65,12 +65,12 @@ outputpos = '/home/nebula/work/paraview/standardbrain20170117/'
 # filelist = filelist_small
 filelist = filelist_all
 
-for i, filename in enumerate(filelist):
-    fixval = int(i * (256 / len(filelist)))
-    vtkgen = swc2vtk.VtkGenerator()
-    vtkgen.set_draw_mode(3)
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True, radius_data=True)
+# for i, filename in enumerate(filelist):
+#     fixval = int(i * (256 / len(filelist)))
+#     vtkgen = swc2vtk.VtkGenerator()
+#     vtkgen.set_draw_mode(3)
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+#     vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True, radius_data=True)
 
 # for i, filename in enumerate(filelist):
 #     fixval = int(i * (256 / len(filelist)))
@@ -79,14 +79,16 @@ for i, filename in enumerate(filelist):
 #     vtkgen.write_vtk(outputpos + filename + '_flip.vtk')
 
 
-# vtkgen = VtkGenerator()
-# for filename in filelist:
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-#
-# vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True)
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.set_draw_mode(3)
+for filename in filelist:
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
 
-# vtkgen = VtkGenerator()
-# for filename in filelist:
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
-#
-# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True, normalize_diam=True)
+vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
+
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.set_draw_mode(3)
+for filename in filelist:
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
+
+vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)

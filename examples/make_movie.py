@@ -5,7 +5,6 @@ Created on Thu Jun  9 15:52:38 2016
 @author: nebula
 """
 
-import os
 import swc2vtk
 
 
@@ -44,12 +43,11 @@ datastep = 0.1
 nstep = int(stoptime / datastep)
 
 vtkgen = swc2vtk.VtkGenerator()
+vtkgen.set_draw_mode(3)
 for j, name in enumerate(cellname_list):
     swcfilename = '/home/nebula/work/data/test1220/' + name + '/' + name + '.swc'
-    print('Processing %s' % swcfilename)
     vtkgen.add_swc(swcfilename)
     swcfilename = '/home/nebula/work/data/test1220/' + name + '/' + name + '_flip.swc'
-    print('Processing %s' % swcfilename)
     vtkgen.add_swc(swcfilename)
 
 for i in range(0, nstep):
@@ -64,8 +62,5 @@ for i in range(0, nstep):
         datafile = datafile_base % (i * datastep)
         vtkgen.add_datafile(datafile)
 
-    vtkfile_base = '/home/nebula/work/paraview/sb_movie20170110/all2_%d.vtk'
-    vtkgen.write_vtk(vtkfile_base % i, datatitle='simulation')
-
-
-# test_swc_movie(100)
+    vtkfile_base = '/home/nebula/work/paraview/sb_movie20170117/simulation_%d.vtk'
+    vtkgen.write_vtk(vtkfile_base % i, datatitle='simulation', normalize_diam=True)
