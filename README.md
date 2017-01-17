@@ -1,7 +1,7 @@
 # swc2vtk
 ![travisci](https://travis-ci.org/DaisukeMiyamoto/swc2vtk.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/DaisukeMiyamoto/swc2vtk/badge.svg?branch=master)](https://coveralls.io/github/DaisukeMiyamoto/swc2vtk?branch=master)
-![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
+![python-2.7,3.3,3.4-blue](https://img.shields.io/badge/python-2.7,3.3,3.4-blue.svg)
 ![license](https://img.shields.io/badge/license-apache-blue.svg)
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
 ![NEURON](https://img.shields.io/badge/NEURON-7.4-green.svg)
