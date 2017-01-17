@@ -19,7 +19,7 @@ class GenPrimitives():
                                [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]])
         point_list = [v - [0.0, 0.5, 0.5] for v in point_list]
 
-        return (point_order, np.array(point_list))
+        return point_order, np.array(point_list)
 
     @staticmethod
     def cylinder(div=8, top_face_diam=1.0):

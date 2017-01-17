@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
-from swc2vtk.genprimitives import GenPrimitives
+import swc2vtk
 
 
 class TestGenPrimitives(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestGenPrimitives(unittest.TestCase):
         pass
 
     def setUp(self):
-        self.gen_primitives = GenPrimitives()
+        self.gen_primitives = swc2vtk.GenPrimitives()
 
     def test_cuboid(self):
         self.gen_primitives.cuboid()
@@ -23,6 +23,9 @@ class TestGenPrimitives(unittest.TestCase):
 
     def test_hemisphere(self):
         self.gen_primitives.hemisphere()
+
+    def test_hemisphere_cylinder(self):
+        self.gen_primitives.hemisphere_cylinder()
 
 
 def suite():

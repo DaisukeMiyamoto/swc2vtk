@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - 2.6
   - 2.7
   - 3.3
   - 3.4
@@ -9,11 +8,13 @@ python:
 install:
   - pip install numpy
   - pip install tqdm
-  - pip install coverage
   - pip install coveralls
 
 script:
-  - coverage run --source=test_primitives setup.py test
+  - coverage run --source=swc2vtk setup.py test
 
 after_success:
   - coveralls
+
+notifications:
+  slack: microbrain:dHXYnMz4KBlHXHLs64ju5h5Y

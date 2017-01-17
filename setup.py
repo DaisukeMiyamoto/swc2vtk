@@ -7,7 +7,7 @@ long_description = description
 if os.path.exists('README.txt'):
     long_description = open('README.txt').read()
 
-
+sys.path.append('./swc2vtk')
 sys.path.append('./tests')
 
 setup(
@@ -28,5 +28,5 @@ setup(
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Scientific/Engineering :: Medical Science Apps.",
     ],
-    test_suite = 'test_genprimitives.suite',
+    test_suite='tests',
 )

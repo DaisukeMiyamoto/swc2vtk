@@ -10,8 +10,9 @@ import math
 import numpy as np
 from tqdm import tqdm
 
-from swc2vtk.genprimitives import GenPrimitives
-from swc2vtk.swc import Swc
+# from swc2vtk.genprimitives import GenPrimitives
+# from swc2vtk.swc import Swc
+import swc2vtk
 
 
 class VtkGenerator():
@@ -52,25 +53,26 @@ DATASET STRUCTURED_POINTS
 
     def add_cylinder(self, pos_x=0, pos_y=0, pos_z=0, radius=1.0, height=1.0, rot_y=0, rot_z=0,
                      data=0.0, radius_ratio=1.0):
-        point_start = len(self.point_list)
 
         local_cell_list = []
         local_point_list = []
         if self.draw_mode == 0:
-            local_cell_list, local_point_list = GenPrimitives.cylinder()
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder()
         elif self.draw_mode == 1:
-            local_cell_list, local_point_list = GenPrimitives.cylinder(top_face_diam=radius_ratio)
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder(top_face_diam=radius_ratio)
         elif self.draw_mode == 2:
-            local_cell_list, local_point_list = GenPrimitives.cylinder_3cell(top_face_diam=radius_ratio)
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder_3cell(top_face_diam=radius_ratio)
             self.ncell_per_compartment = len(local_cell_list)
         elif self.draw_mode == 3:
-            local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder(top_face_diam=radius_ratio, height=height, radius=radius)
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.hemisphere_cylinder(top_face_diam=radius_ratio,
+                                                                                          height=height, radius=radius)
             self.ncell_per_compartment = len(local_cell_list)
             height = 1.0
             radius = 1.0
 
+        point_start = len(self.point_list)
         for cell in local_cell_list:
-            cell['points'] = [i + point_start for i in cell['points']]
+            cell['points'] = [(i + point_start) for i in cell['points']]
             cell['data'] = data
 
         # scale
@@ -88,7 +90,7 @@ DATASET STRUCTURED_POINTS
     def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
         point_start = len(self.point_list)
         # local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
-        local_cell_list, local_point_list = GenPrimitives.sphere()
+        local_cell_list, local_point_list = swc2vtk.GenPrimitives.sphere()
         for cell in local_cell_list:
             cell['points'] = [i + point_start for i in cell['points']]
             cell['data'] = data
@@ -135,7 +137,7 @@ DATASET STRUCTURED_POINTS
     def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
         self.converted = False
-        self.swc_list.append(Swc(swc_filename))
+        self.swc_list.append(swc2vtk.Swc(swc_filename))
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
         self.swc_list[-1].shift(shift_x, shift_y, shift_z)
 
@@ -209,6 +211,19 @@ DATASET STRUCTURED_POINTS
 
         return text
 
+    def _radius2text(self):
+        text = ''
+        text += 'SCALARS radius float 1\n'
+        text += 'LOOKUP_TABLE default\n'
+
+        for swc in self.swc_list:
+            for j, record in swc.data.items():
+                if j > 1:
+                    for k in range(self.ncell_per_compartment):
+                        text += str(record['radius']) + '\n'
+
+        return text
+
     def _coloringbyswc(self):
         text = ''
         text += 'SCALARS coloring float 1\n'
@@ -228,7 +243,7 @@ DATASET STRUCTURED_POINTS
         self.datafile_list = []
 
     def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False,
-                  diam_ratio=1.0, normalize_diam=False):
+                  diam_ratio=1.0, normalize_diam=False, radius_data=False):
         if not self.converted:
             self.convert_swc(diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 
@@ -248,6 +263,9 @@ DATASET STRUCTURED_POINTS
 
             if coloring:
                 file.write(self._coloringbyswc())
+
+            if radius_data:
+                file.write(self._radius2text())
 
     def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
         point_weight = 0.2
