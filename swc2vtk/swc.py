@@ -32,14 +32,14 @@ class Swc():
         self.data = {}
         self.scale = [1.0, 1.0, 1.0]
 
-        if (filename != ''):
+        if not (len(filename) == 0):
             self.filename = filename
-            self.loadswc()
+            self.load_swc(filename)
         else:
             pass
         
-    def loadswc(self):
-        with open(self.filename, 'r') as f:
+    def load_swc(self, filename):
+        with open(filename, 'r') as f:
             for line in f:
                 if line[0] == '#':
                     self.header += line
@@ -54,7 +54,6 @@ class Swc():
                             self.scale[1] = float(record[2])
                             self.scale[2] = float(record[3])
 
-
                 elif len(line) > 1:
                     record = line.strip().split(' ')
 
@@ -66,7 +65,7 @@ class Swc():
                                 'parent': int(record[6])}
                     self.data[int(record[0])] = one_data
 
-    def shift(self, x=0, y=0, z=0):
+    def shift(self, x=0.0, y=0.0, z=0.0):
         for k, val in self.data.items():
             val['pos'][0] += x
             val['pos'][1] += y
@@ -75,11 +74,11 @@ class Swc():
     def invert(self, x=False, y=False, z=False):
         for k, val in self.data.items():
             if x is True:
-                val['pos'][0] = -1.0 * val['pos'][0]
+                val['pos'][0] *= -1.0
             if y is True:
-                val['pos'][1] = -1.0 * val['pos'][1]
+                val['pos'][1] *= -1.0
             if z is True:
-                val['pos'][2] = -1.0 * val['pos'][2]
+                val['pos'][2] *= -1.0
 
 if __name__ == '__main__':
     swc = Swc(os.path.join('..', 'swc', 'simple.swc'))

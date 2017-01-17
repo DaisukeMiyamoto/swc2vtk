@@ -6,7 +6,7 @@ Created on Tue Jun 14 20:00:41 2016
 """
 
 import os
-from swc2vtk.swc2vtk import VtkGenerator
+from swc2vtk.vtkgenerator import VtkGenerator
 
 filelist_simple = [
     'simple',
@@ -16,10 +16,13 @@ filelist_simple = [
 ]
 
 filelist_small = [
-    '0993_regist',
+    '0664_regist',
+    '0965_regist',
+    '0970_regist'
 ]
 
 filelist_small2 = [
+    'Swc_BN_1056',
     '200000',
     '300000',
     '301000',
@@ -55,19 +58,19 @@ filelist_all = [
     '090815_4_sn_reg'
     ]
 
-outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
+# outputpos = '/home/nebula/work/paraview/standardbrain20170107/'
+outputpos = ''
 # filelist = filelist_small
 filelist = filelist_small2
 
 for i, filename in enumerate(filelist):
-    print 'Processing: %s' % filename
     fixval = int(i * (256 / len(filelist)))
     vtkgen = VtkGenerator()
+    vtkgen.set_draw_mode(3)
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-    vtkgen.write_vtk(outputpos + filename + '.vtk')
-#
+    vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True)
+
 # for i, filename in enumerate(filelist):
-#     print 'Processing: %s' % filename
 #     fixval = int(i * (256 / len(filelist)))
 #     vtkgen = VtkGenerator()
 #     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
@@ -76,14 +79,12 @@ for i, filename in enumerate(filelist):
 
 # vtkgen = VtkGenerator()
 # for filename in filelist:
-#     print 'Processing: %s' % filename
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), normalize_diam=True)
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
 #
-# vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=True)
+# vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True)
 
 # vtkgen = VtkGenerator()
 # for filename in filelist:
-#     print 'Processing: %s' % filename
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0, normalize_diam=True)
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
 #
-# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True)
+# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=True, normalize_diam=True)

@@ -6,7 +6,7 @@ Created on Thu Jun  9 15:52:38 2016
 """
 
 import os
-from swc2vtk.swc2vtk import VtkGenerator
+from swc2vtk.vtkgenerator import VtkGenerator
 
 
 # def test_swc_movie(stoptime=10.0):
