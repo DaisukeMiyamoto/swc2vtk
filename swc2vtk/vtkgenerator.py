@@ -216,15 +216,12 @@ DATASET STRUCTURED_POINTS
         text += 'SCALARS radius float 1\n'
         text += 'LOOKUP_TABLE default\n'
 
-        i = 0
         for swc in self.swc_list:
             for j, record in swc.data.items():
                 if j > 1:
                     for k in range(self.ncell_per_compartment):
-                        i += 1
                         text += str(record['radius']) + '\n'
 
-        print(i)
         return text
 
     def _coloringbyswc(self):

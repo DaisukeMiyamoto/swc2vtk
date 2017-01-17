@@ -6,38 +6,7 @@ Created on Thu Jun  9 15:52:38 2016
 """
 
 import os
-from swc2vtk.vtkgenerator import VtkGenerator
-
-
-# def test_swc_movie(stoptime=10.0):
-#     filename_base = os.path.join('movie1', 'swc_cuboid%d.vtk')
-#     datafile_base = os.path.join('/home', 'nebula', 'git', 'neuron_samples', 'simple', 'result', 't%.6f.dat')
-#     datastep = 0.25
-#
-#     vtkgen = VtkGenerator()
-#
-#     vtkgen.add_swc(os.path.join('swc', 'Swc_BN_1056.swc'))
-#
-#     nstep = int(stoptime / datastep)
-#
-#     for i in range(0, nstep):
-#         datafile = datafile_base % (i * datastep)
-#         print('t = %f (%s)' % (i * datastep, datafile))
-#
-#         vtkgen.write_vtk(filename_base % i, datatitle='simulation', datafile=datafile)
-
-def test_stdbrain_movie(vtkfile_base, datafile_base, swcfilename, stoptime=10.0, datastep=0.25):
-    vtkgen = VtkGenerator()
-    vtkgen.add_swc(swcfilename, diam_ratio=0.5)
-
-    nstep = int(stoptime / datastep)
-    for i in range(0, nstep):
-        datafile = datafile_base % (i * datastep)
-        print('t = %f (%s)' % (i * datastep, datafile))
-        vtkgen.clear_datafile()
-        vtkgen.add_datafile(datafile)
-
-        vtkgen.write_vtk(vtkfile_base % i, datatitle='simulation')
+import swc2vtk
 
 
 cellname_list = [
@@ -74,14 +43,14 @@ stoptime = 20.0
 datastep = 0.1
 nstep = int(stoptime / datastep)
 
-vtkgen = VtkGenerator()
+vtkgen = swc2vtk.VtkGenerator()
 for j, name in enumerate(cellname_list):
     swcfilename = '/home/nebula/work/data/test1220/' + name + '/' + name + '.swc'
     print('Processing %s' % swcfilename)
-    vtkgen.add_swc(swcfilename, diam_ratio=0.5)
+    vtkgen.add_swc(swcfilename)
     swcfilename = '/home/nebula/work/data/test1220/' + name + '/' + name + '_flip.swc'
     print('Processing %s' % swcfilename)
-    vtkgen.add_swc(swcfilename, diam_ratio=0.5)
+    vtkgen.add_swc(swcfilename)
 
 for i in range(0, nstep):
     print('t = %f/%f' % (i * datastep, stoptime))
