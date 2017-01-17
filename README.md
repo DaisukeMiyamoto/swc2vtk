@@ -12,9 +12,11 @@ This software helps making easy and beautiful visualization of large scale multi
 ## Dependency
 - tqdm
 - numpy
+- ~~PyVTK~~
+
 
 ## Install
-- ~~$ pip install swc2vtk~~
+- $ pip install swc2vtk
 
 
 ## Usage
