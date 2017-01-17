@@ -12,10 +12,11 @@ sys.path.append('./tests')
 
 setup(
     name='swc2vtk',
-    version='0.1.1',
+    version='0.1.4',
     packages=['swc2vtk'],
     package_dir={'swc2vtk': 'swc2vtk'},
     description=description,
+    long_description=long_description,
     author='nebula',
     author_email='miyamoto@brain.imi.i.u-tokyo.ac.jp',
     url='https://github.com/DaisukeMiyamoto/swc2vtk',
@@ -24,6 +25,8 @@ setup(
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Scientific/Engineering :: Medical Science Apps.",
