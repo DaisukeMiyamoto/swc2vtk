@@ -13,7 +13,7 @@ sys.path.append('./tests')
 
 setup(
     name='swc2vtk',
-    version='0.1.4',
+    version='0.1.5',
     packages=['swc2vtk'],
     package_dir={'swc2vtk': 'swc2vtk'},
     description=description,
