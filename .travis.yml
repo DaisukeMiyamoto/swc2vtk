@@ -17,3 +17,6 @@ script:
 
 after_success:
   - coveralls
+
+notifications:
+  slack: microbrain:dHXYnMz4KBlHXHLs64ju5h5Y
