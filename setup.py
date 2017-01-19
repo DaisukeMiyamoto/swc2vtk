@@ -1,14 +1,10 @@
 from setuptools import setup
 import os
-import sys
 
 description='SWC to VTK converter for visualize multi-compartment neurons and neural circuit simulations'
 long_description = description
 if os.path.exists('README.txt'):
     long_description = open('README.txt').read()
-
-sys.path.append('./swc2vtk')
-sys.path.append('./tests')
 
 setup(
     name='swc2vtk',

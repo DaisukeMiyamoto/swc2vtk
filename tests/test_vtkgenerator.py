@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+import os
 import swc2vtk
 
 
@@ -13,6 +14,7 @@ class TestVtkGenerator(unittest.TestCase):
         pass
 
     def setUp(self):
+        self.swc_file_path = os.path.join('tests', 'simple.swc')
         self.vtk_generator = swc2vtk.VtkGenerator()
 
     def tearDown(self):
@@ -26,7 +28,7 @@ class TestVtkGenerator(unittest.TestCase):
 
     def test_add_swc(self):
         simple_cmp_size = 11
-        self.vtk_generator.add_swc('simple.swc')
+        self.vtk_generator.add_swc(self.swc_file_path)
         self.assertEqual(simple_cmp_size, len(self.vtk_generator.swc_list[0].data))
 
 
