@@ -16,7 +16,7 @@ class TestVtkGenerator(unittest.TestCase):
     def setUp(self):
         self.swc_file_path = os.path.join('tests', 'simple.swc')
         self.data_file_path = os.path.join('tests', 'simple.dat')
-        self.output_file_path = os.path.join('tests', 'output.vtk')
+        self.output_file_path = os.path.join('output.vtk')
         self.vtk_generator = swc2vtk.VtkGenerator()
 
     def tearDown(self):
@@ -44,6 +44,22 @@ class TestVtkGenerator(unittest.TestCase):
         self.vtk_generator.add_swc(self.swc_file_path)
         self.vtk_generator.add_datafile(self.data_file_path)
         self.assertEqual(simple_cmp_size, len(self.vtk_generator.swc_list[0].data))
+
+    def test_draw_mode1(self):
+        self.vtk_generator.set_draw_mode(1)
+        self.vtk_generator.add_swc(self.swc_file_path)
+
+    def test_draw_mode2(self):
+        self.vtk_generator.set_draw_mode(2)
+        self.vtk_generator.add_swc(self.swc_file_path)
+
+    def test_draw_mode3(self):
+        self.vtk_generator.set_draw_mode(3)
+        self.vtk_generator.add_swc(self.swc_file_path)
+
+    def test_draw_mode4(self):
+        self.vtk_generator.set_draw_mode(4)
+        self.vtk_generator.add_swc(self.swc_file_path)
 
     def test_write_vtk_options(self):
         self.vtk_generator.add_swc(self.swc_file_path)
