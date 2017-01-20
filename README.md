@@ -9,6 +9,10 @@
 SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.  
 This software helps making easy and beautiful visualization of large scale multi-compartmental neuron simulation with highly parallelized environments.
 
+If you need any futher information, please check  
+http://daisukemiyamoto.github.io/swc2vtk/
+
+
 ## Dependency
 - tqdm
 - numpy
@@ -102,13 +106,7 @@ vtkgen.write_vtk('simple.vtk')
 ```
 
 - `Division Number`
-```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simple.swc')
-vtkgen.set_division_number(20)
-vtkgen.write_vtk('simple.vtk')
-```
+
 
 ### adjust compartment diameter
 - `normalize_diam`
@@ -132,5 +130,6 @@ vtkgen.write_vtk('simple.vtk')
 
 ## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
+- http://neuromorpho.org/
 - http://www.paraview.org/
 - http://www.vtk.org/
