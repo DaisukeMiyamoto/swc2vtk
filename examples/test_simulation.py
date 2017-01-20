@@ -6,7 +6,7 @@ Created on Thu Jun  9 15:52:38 2016
 """
 
 import os
-from swc2vtk.vtkgenerator import VtkGenerator
+import swc2vtk
 from tqdm import tqdm
 
 
@@ -16,16 +16,16 @@ cellname_list = [
     '301000',
     ]
 
-stoptime = 2000.0
+stoptime = 1000.0
 datastep = 0.25
 nstep = int(stoptime / datastep)
 
 for cellname in cellname_list:
-    vtkfile_base = os.path.join('..', 'vtk_data', cellname, cellname+'_%d.vtk')
+    vtkfile_base = os.path.join('/data/vtk_data/arase_simulation_5571105', 'vtk', cellname + '_%d.vtk')
     swcfilename = os.path.join('swc', cellname + '.swc')
-    datafile_base = os.path.join('..', 'data', cellname, cellname + 't%.6f.dat')
+    datafile_base = os.path.join('/data/vtk_data/arase_simulation_5571105', 'data', cellname, cellname + 't%.6f.dat')
 
-    vtkgen = VtkGenerator()
+    vtkgen = swc2vtk.VtkGenerator()
     vtkgen.set_draw_mode(3)
     vtkgen.add_swc(swcfilename)
 

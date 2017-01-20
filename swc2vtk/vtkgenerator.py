@@ -42,7 +42,7 @@ DATASET STRUCTURED_POINTS
         self.cell_text = ''
 
         self.converted = False
-        self.draw_mode = 0
+        self.draw_mode = 3
         self.ncell_per_compartment = 1
 
     def set_draw_mode(self, draw_mode):
@@ -136,6 +136,17 @@ DATASET STRUCTURED_POINTS
 
     def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
+        """add swc file for generating vtk file
+
+        :param swc_filename: swc filename
+        :param shift_x:
+        :param shift_y:
+        :param shift_z:
+        :param inv_x:
+        :param inv_y:
+        :param inv_z:
+        :return:
+        """
         self.converted = False
         self.swc_list.append(swc2vtk.Swc(swc_filename))
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
@@ -244,6 +255,18 @@ DATASET STRUCTURED_POINTS
 
     def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False,
                   diam_ratio=1.0, normalize_diam=False, radius_data=False):
+        """generate and write vtk to file
+
+        :param filename:
+        :param fixval:
+        :param datatitle:
+        :param movingval:
+        :param coloring:
+        :param diam_ratio:
+        :param normalize_diam:
+        :param radius_data:
+        :return:
+        """
         if not self.converted:
             self.convert_swc(diam_ratio=diam_ratio, normalize_diam=normalize_diam)
 

@@ -11,7 +11,7 @@ filename = 'simple'
 outputpos = ''
 
 vtkgen = VtkGenerator()
-vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+vtkgen.add_swc(os.path.join('tests', filename + '.swc'))
 
 for i in range(4):
     vtkgen.set_draw_mode(i)
