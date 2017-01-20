@@ -9,11 +9,11 @@ Welcome to swc2vtk's documentation!
 .. toctree::
    :maxdepth: 2
 
-                                 readme
-                                 examples
-                                 drawmode
-                                 gallery
-                                 apis/modules
+         readme
+         examples
+         drawmode
+         gallery
+         apis/modules
 
 
 Indices and tables
@@ -27,4 +27,4 @@ Indices and tables
 Example image
 =============
 
-.. image:: _static/sb_simulation.png
+.. image:: _static/sb_simulation_top.png
