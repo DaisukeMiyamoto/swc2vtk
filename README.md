@@ -1,7 +1,7 @@
 # swc2vtk
 ![travisci](https://travis-ci.org/DaisukeMiyamoto/swc2vtk.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/DaisukeMiyamoto/swc2vtk/badge.svg?branch=master)](https://coveralls.io/github/DaisukeMiyamoto/swc2vtk?branch=master)
-![python-2.7, 3.5-blue](https://img.shields.io/badge/python-2.7, 3.5-blue.svg)
+![python-2.7,3.3,3.4-blue](https://img.shields.io/badge/python-2.7,3.3,3.4-blue.svg)
 ![license](https://img.shields.io/badge/license-apache-blue.svg)
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
 ![NEURON](https://img.shields.io/badge/NEURON-7.4-green.svg)
@@ -9,28 +9,34 @@
 SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.  
 This software helps making easy and beautiful visualization of large scale multi-compartmental neuron simulation with highly parallelized environments.
 
+If you need any futher information, please check  
+http://daisukemiyamoto.github.io/swc2vtk/
+
+
 ## Dependency
 - tqdm
 - numpy
+- ~~PyVTK~~
+
 
 ## Install
-- ~~$ pip install swc2vtk~~
+- $ pip install swc2vtk
 
 
 ## Usage
 
 ### Basic way to generate VTK file from one SWC file
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_vtk('simple.vtk')
 ```
 
 ### generate a VTK file from multiple SWC files
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_swc('simple1.swc')
 vtkgen.add_swc('simple2.swc')
@@ -39,12 +45,13 @@ vtkgen.write_vtk('combined.vtk')
 
 ### generate a VTK file from SWC file with simulation data
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.add_datafile('result.dat')
 vtkgen.write_vtk('simple.vtk')
 ```
+
 
 - data example  
 each rows correspondence to SWC compartments
@@ -57,8 +64,8 @@ each rows correspondence to SWC compartments
 
 ### generate VTK files from SWC file with sequential simulation data
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 
 vtkgen.add_datafile('result1.dat')
@@ -75,8 +82,8 @@ vtkgen.write_vtk('simple3.vtk')
 
 ### generate VTK file for volume rendering
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.write_volume_vtk('volume.vtk')
 ```
@@ -91,21 +98,15 @@ change SWC compartment drawing method. Largeer number is better.
   - `3`: one cylinder with a hemisphere
 
 ```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
 vtkgen.add_swc('simple.swc')
 vtkgen.set_draw_mode(4)
 vtkgen.write_vtk('simple.vtk')
 ```
 
 - `Division Number`
-```python
-from swc2vtk.vtkgenerator import VtkGenerator
-vtkgen = VtkGenerator()
-vtkgen.add_swc('simple.swc')
-vtkgen.set_division_number(20)
-vtkgen.write_vtk('simple.vtk')
-```
+
 
 ### adjust compartment diameter
 - `normalize_diam`
@@ -129,5 +130,6 @@ vtkgen.write_vtk('simple.vtk')
 
 ## References
 - SWC format: http://research.mssm.edu/cnic/swc.html
+- http://neuromorpho.org/
 - http://www.paraview.org/
 - http://www.vtk.org/
