@@ -66,6 +66,10 @@ class TestVtkGenerator(unittest.TestCase):
         self.vtk_generator.write_vtk(self.output_file_path, fixval=True, movingval=True, coloring=True,
                                      diam_ratio=0.2, normalize_diam=True, radius_data=True)
 
+    def test_write_volume_vtk(self):
+        self.vtk_generator.add_swc(self.swc_file_path)
+        self.vtk_generator.write_volume_vtk(self.output_file_path, origin=(-100, -100, -100), ratio=(4.0, 4.0, 4.0))
+
 
 def suite():
     suite = unittest.TestSuite()
