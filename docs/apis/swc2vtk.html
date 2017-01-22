@@ -1,539 +1,410 @@
+
+
 <!DOCTYPE html>
-<!--[if IE 8]>
-<html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>swc2vtk package &mdash; swc2vtk 1.0.2 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
 
-    <title>swc2vtk package &mdash; swc2vtk 1.0.2 documentation</title>
+  
 
+  
+  
+    
 
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css"/>
+  
 
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
 
-    <link rel="index" title="Index"
-          href="../genindex.html"/>
-    <link rel="search" title="Search" href="../search.html"/>
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="swc2vtk 1.0.2 documentation" href="../index.html"/>
+        <link rel="up" title="swc2vtk" href="modules.html"/>
+        <link rel="prev" title="swc2vtk" href="modules.html"/> 
 
-
-    <script src="../_static/js/modernizr.min.js"></script>
+  
+  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
-<div class="wy-grid-for-nav">
+  <div class="wy-grid-for-nav">
 
-
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
+          
+            <a href="../index.html" class="icon icon-home"> swc2vtk
+          
 
-                <a href="../index.html" class="icon icon-home"> swc2vtk
+          
+          </a>
 
+          
+            
+            
+              <div class="version">
+                1.0.2
+              </div>
+            
+          
 
-                </a>
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
 
-
-                <div class="version">
-                    1.0.2
-                </div>
-
-
-                <div role="search">
-                    <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-                        <input type="text" name="q" placeholder="Search docs"/>
-                        <input type="hidden" name="check_keywords" value="yes"/>
-                        <input type="hidden" name="area" value="default"/>
-                    </form>
-                </div>
-
-
-            </div>
-
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <!-- Local TOC -->
-                <div class="local-toc">
-                    <ul>
-                        <li><a class="reference internal" href="#">swc2vtk package</a>
-                            <ul>
-                                <li><a class="reference internal" href="#submodules">Submodules</a></li>
-                                <li><a class="reference internal" href="#module-swc2vtk.genprimitives">swc2vtk.genprimitives
-                                    module</a></li>
-                                <li><a class="reference internal" href="#module-swc2vtk.swc">swc2vtk.swc module</a></li>
-                                <li><a class="reference internal" href="#module-swc2vtk.vtkgenerator">swc2vtk.vtkgenerator
-                                    module</a></li>
-                                <li><a class="reference internal" href="#module-swc2vtk">Module contents</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-
-            </div>
+          
         </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../drawmode.html">Draw Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../volume.html">Volume Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">swc2vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">swc2vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-swc2vtk.genprimitives">swc2vtk.genprimitives module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-swc2vtk.swc">swc2vtk.swc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-swc2vtk.vtkgenerator">swc2vtk.vtkgenerator module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-swc2vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-            <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-            <a href="../index.html">swc2vtk</a>
-        </nav>
-
-
-        <div class="wy-nav-content">
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">swc2vtk</a>
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
-                    <ul class="wy-breadcrumbs">
-                        <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
 
-                        <li>swc2vtk package</li>
-                        <li class="wy-breadcrumbs-aside">
-
-
-                            <a href="../_sources/apis/swc2vtk.rst.txt" rel="nofollow"> View page source</a>
+ 
 
 
-                        </li>
-                    </ul>
-                    <hr/>
-                </div>
-                <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-                    <div itemprop="articleBody">
 
-                        <div class="section" id="swc2vtk-package">
-                            <h1>swc2vtk package<a class="headerlink" href="#swc2vtk-package"
-                                                  title="Permalink to this headline">¶</a></h1>
-                            <div class="section" id="submodules">
-                                <h2>Submodules<a class="headerlink" href="#submodules"
-                                                 title="Permalink to this headline">¶</a></h2>
-                            </div>
-                            <div class="section" id="module-swc2vtk.genprimitives">
-                                <span id="swc2vtk-genprimitives-module"></span>
-                                <h2>swc2vtk.genprimitives module<a class="headerlink"
-                                                                   href="#module-swc2vtk.genprimitives"
-                                                                   title="Permalink to this headline">¶</a></h2>
-                                <p>Created on Thu Jun 9 12:37:20 2016</p>
-                                <p>&#64;author: nebula</p>
-                                <dl class="class">
-                                    <dt id="swc2vtk.genprimitives.GenPrimitives">
-                                        <em class="property">class </em><code class="descclassname">swc2vtk.genprimitives.</code><code
-                                            class="descname">GenPrimitives</code><a class="headerlink"
-                                                                                    href="#swc2vtk.genprimitives.GenPrimitives"
-                                                                                    title="Permalink to this definition">¶</a>
-                                    </dt>
-                                    <dd>
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.cuboid">
-                                                <em class="property">static </em><code
-                                                    class="descname">cuboid</code><span class="sig-paren">(</span><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.genprimitives.GenPrimitives.cuboid"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">swc2vtk</a> &raquo;</li>
+      
+    <li>swc2vtk package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/apis/swc2vtk.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="swc2vtk-package">
+<h1>swc2vtk package<a class="headerlink" href="#swc2vtk-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-swc2vtk.genprimitives">
+<span id="swc2vtk-genprimitives-module"></span><h2>swc2vtk.genprimitives module<a class="headerlink" href="#module-swc2vtk.genprimitives" title="Permalink to this headline">¶</a></h2>
+<p>Created on Thu Jun  9 12:37:20 2016</p>
+<p>&#64;author: nebula</p>
+<dl class="class">
+<dt id="swc2vtk.genprimitives.GenPrimitives">
+<em class="property">class </em><code class="descclassname">swc2vtk.genprimitives.</code><code class="descname">GenPrimitives</code><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.cuboid">
+<em class="property">static </em><code class="descname">cuboid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.cuboid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.cylinder">
-                                                <em class="property">static </em><code
-                                                    class="descname">cylinder</code><span class="sig-paren">(</span><em>div=8</em>,
-                                                <em>top_face_diam=1.0</em><span class="sig-paren">)</span><a
-                                                    class="headerlink"
-                                                    href="#swc2vtk.genprimitives.GenPrimitives.cylinder"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.cylinder">
+<em class="property">static </em><code class="descname">cylinder</code><span class="sig-paren">(</span><em>div=8</em>, <em>top_face_diam=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.cylinder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.cylinder_3cell">
-                                                <em class="property">static </em><code
-                                                    class="descname">cylinder_3cell</code><span
-                                                    class="sig-paren">(</span><em>div=8</em>, <em>top_face_diam=1.0</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.genprimitives.GenPrimitives.cylinder_3cell"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.cylinder_3cell">
+<em class="property">static </em><code class="descname">cylinder_3cell</code><span class="sig-paren">(</span><em>div=8</em>, <em>top_face_diam=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.cylinder_3cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.hemisphere">
-                                                <em class="property">static </em><code
-                                                    class="descname">hemisphere</code><span
-                                                    class="sig-paren">(</span><em>div=10</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.genprimitives.GenPrimitives.hemisphere"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.hemisphere">
+<em class="property">static </em><code class="descname">hemisphere</code><span class="sig-paren">(</span><em>div=10</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.hemisphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.hemisphere_cylinder">
-                                                <em class="property">static </em><code class="descname">hemisphere_cylinder</code><span
-                                                    class="sig-paren">(</span><em>div=8</em>, <em>top_face_diam=1.0</em>,
-                                                <em>height=1.0</em>, <em>radius=1.0</em><span class="sig-paren">)</span><a
-                                                    class="headerlink"
-                                                    href="#swc2vtk.genprimitives.GenPrimitives.hemisphere_cylinder"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.hemisphere_cylinder">
+<em class="property">static </em><code class="descname">hemisphere_cylinder</code><span class="sig-paren">(</span><em>div=8</em>, <em>top_face_diam=1.0</em>, <em>height=1.0</em>, <em>radius=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.hemisphere_cylinder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="staticmethod">
-                                            <dt id="swc2vtk.genprimitives.GenPrimitives.sphere">
-                                                <em class="property">static </em><code
-                                                    class="descname">sphere</code><span class="sig-paren">(</span><em>div=10</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.genprimitives.GenPrimitives.sphere"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.sphere">
+<em class="property">static </em><code class="descname">sphere</code><span class="sig-paren">(</span><em>div=10</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.sphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                    </dd>
-                                </dl>
+</dd></dl>
 
-                            </div>
-                            <div class="section" id="module-swc2vtk.swc">
-                                <span id="swc2vtk-swc-module"></span>
-                                <h2>swc2vtk.swc module<a class="headerlink" href="#module-swc2vtk.swc"
-                                                         title="Permalink to this headline">¶</a></h2>
-                                <p>Created on Thu Jun 9 15:52:38 2016</p>
-                                <p>&#64;author: nebula</p>
-                                <dl class="class">
-                                    <dt id="swc2vtk.swc.Swc">
-                                        <em class="property">class </em><code
-                                            class="descclassname">swc2vtk.swc.</code><code
-                                            class="descname">Swc</code><span
-                                            class="sig-paren">(</span><em>filename=''</em><span
-                                            class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.swc.Swc"
-                                                                         title="Permalink to this definition">¶</a></dt>
-                                    <dd>
-                                        <dl class="method">
-                                            <dt id="swc2vtk.swc.Swc.invert">
-                                                <code class="descname">invert</code><span class="sig-paren">(</span><em>x=False</em>,
-                                                <em>y=False</em>, <em>z=False</em><span class="sig-paren">)</span><a
-                                                    class="headerlink" href="#swc2vtk.swc.Swc.invert"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+</div>
+<div class="section" id="module-swc2vtk.swc">
+<span id="swc2vtk-swc-module"></span><h2>swc2vtk.swc module<a class="headerlink" href="#module-swc2vtk.swc" title="Permalink to this headline">¶</a></h2>
+<p>Created on Thu Jun  9 15:52:38 2016</p>
+<p>&#64;author: nebula</p>
+<dl class="class">
+<dt id="swc2vtk.swc.Swc">
+<em class="property">class </em><code class="descclassname">swc2vtk.swc.</code><code class="descname">Swc</code><span class="sig-paren">(</span><em>filename=''</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.swc.Swc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="swc2vtk.swc.Swc.invert">
+<code class="descname">invert</code><span class="sig-paren">(</span><em>x=False</em>, <em>y=False</em>, <em>z=False</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.swc.Swc.invert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.swc.Swc.load_swc">
-                                                <code class="descname">load_swc</code><span
-                                                    class="sig-paren">(</span><em>filename</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.swc.Swc.load_swc"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.swc.Swc.load_swc">
+<code class="descname">load_swc</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.swc.Swc.load_swc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.swc.Swc.shift">
-                                                <code class="descname">shift</code><span class="sig-paren">(</span><em>x=0.0</em>,
-                                                <em>y=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a
-                                                    class="headerlink" href="#swc2vtk.swc.Swc.shift"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.swc.Swc.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>x=0.0</em>, <em>y=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.swc.Swc.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                    </dd>
-                                </dl>
+</dd></dl>
 
-                            </div>
-                            <div class="section" id="module-swc2vtk.vtkgenerator">
-                                <span id="swc2vtk-vtkgenerator-module"></span>
-                                <h2>swc2vtk.vtkgenerator module<a class="headerlink" href="#module-swc2vtk.vtkgenerator"
-                                                                  title="Permalink to this headline">¶</a></h2>
-                                <p>Created on Thu Jun 9 12:37:20 2016</p>
-                                <p>&#64;author: nebula</p>
-                                <dl class="class">
-                                    <dt id="swc2vtk.vtkgenerator.VtkGenerator">
-                                        <em class="property">class </em><code class="descclassname">swc2vtk.vtkgenerator.</code><code
-                                            class="descname">VtkGenerator</code><a class="headerlink"
-                                                                                   href="#swc2vtk.vtkgenerator.VtkGenerator"
-                                                                                   title="Permalink to this definition">¶</a>
-                                    </dt>
-                                    <dd>
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.add_cylinder">
-                                                <code class="descname">add_cylinder</code><span
-                                                    class="sig-paren">(</span><em>pos_x=0</em>, <em>pos_y=0</em>, <em>pos_z=0</em>,
-                                                <em>radius=1.0</em>, <em>height=1.0</em>, <em>rot_y=0</em>,
-                                                <em>rot_z=0</em>, <em>data=0.0</em>, <em>radius_ratio=1.0</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.add_cylinder"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+</div>
+<div class="section" id="module-swc2vtk.vtkgenerator">
+<span id="swc2vtk-vtkgenerator-module"></span><h2>swc2vtk.vtkgenerator module<a class="headerlink" href="#module-swc2vtk.vtkgenerator" title="Permalink to this headline">¶</a></h2>
+<p>Created on Thu Jun  9 12:37:20 2016</p>
+<p>&#64;author: nebula</p>
+<dl class="class">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator">
+<em class="property">class </em><code class="descclassname">swc2vtk.vtkgenerator.</code><code class="descname">VtkGenerator</code><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_cylinder">
+<code class="descname">add_cylinder</code><span class="sig-paren">(</span><em>pos_x=0</em>, <em>pos_y=0</em>, <em>pos_z=0</em>, <em>radius=1.0</em>, <em>height=1.0</em>, <em>rot_y=0</em>, <em>rot_z=0</em>, <em>data=0.0</em>, <em>radius_ratio=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_cylinder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.add_cylinder_p2p">
-                                                <code class="descname">add_cylinder_p2p</code><span
-                                                    class="sig-paren">(</span><em>pos1=(0</em>, <em>0</em>, <em>0)</em>,
-                                                <em>pos2=(2</em>, <em>0</em>, <em>0)</em>, <em>size=1.0</em>,
-                                                <em>data=0</em>, <em>radius_ratio=1.0</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.add_cylinder_p2p"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_cylinder_p2p">
+<code class="descname">add_cylinder_p2p</code><span class="sig-paren">(</span><em>pos1=(0</em>, <em>0</em>, <em>0)</em>, <em>pos2=(2</em>, <em>0</em>, <em>0)</em>, <em>size=1.0</em>, <em>data=0</em>, <em>radius_ratio=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_cylinder_p2p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.add_datafile">
-                                                <code class="descname">add_datafile</code><span
-                                                    class="sig-paren">(</span><em>datafilename</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.add_datafile"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_datafile">
+<code class="descname">add_datafile</code><span class="sig-paren">(</span><em>datafilename</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_datafile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.add_sphere">
-                                                <code class="descname">add_sphere</code><span class="sig-paren">(</span><em>x=0</em>,
-                                                <em>y=0</em>, <em>z=0</em>, <em>size=1.0</em>, <em>data=0.0</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.add_sphere"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_sphere">
+<code class="descname">add_sphere</code><span class="sig-paren">(</span><em>x=0</em>, <em>y=0</em>, <em>z=0</em>, <em>size=1.0</em>, <em>data=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_sphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.add_swc">
-                                                <code class="descname">add_swc</code><span
-                                                    class="sig-paren">(</span><em>swc_filename</em>,
-                                                <em>shift_x=0.0</em>, <em>shift_y=0.0</em>, <em>shift_z=0.0</em>, <em>inv_x=False</em>,
-                                                <em>inv_y=False</em>, <em>inv_z=False</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.add_swc"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd><p>add swc file for generating vtk file</p>
-                                                <table class="docutils field-list" frame="void" rules="none">
-                                                    <col class="field-name"/>
-                                                    <col class="field-body"/>
-                                                    <tbody valign="top">
-                                                    <tr class="field-odd field">
-                                                        <th class="field-name">Parameters:</th>
-                                                        <td class="field-body">
-                                                            <ul class="first simple">
-                                                                <li><strong>swc_filename</strong> &#8211; swc filename
-                                                                </li>
-                                                                <li><strong>shift_x</strong> &#8211; </li>
-                                                                <li><strong>shift_y</strong> &#8211; </li>
-                                                                <li><strong>shift_z</strong> &#8211; </li>
-                                                                <li><strong>inv_x</strong> &#8211; </li>
-                                                                <li><strong>inv_y</strong> &#8211; </li>
-                                                                <li><strong>inv_z</strong> &#8211; </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="field-even field">
-                                                        <th class="field-name">Returns:</th>
-                                                        <td class="field-body"><p class="first last"></p>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_swc">
+<code class="descname">add_swc</code><span class="sig-paren">(</span><em>swc_filename</em>, <em>shift_x=0.0</em>, <em>shift_y=0.0</em>, <em>shift_z=0.0</em>, <em>inv_x=False</em>, <em>inv_y=False</em>, <em>inv_z=False</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_swc" title="Permalink to this definition">¶</a></dt>
+<dd><p>add swc file for generating vtk file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>swc_filename</strong> &#8211; swc filename</li>
+<li><strong>shift_x</strong> &#8211; </li>
+<li><strong>shift_y</strong> &#8211; </li>
+<li><strong>shift_z</strong> &#8211; </li>
+<li><strong>inv_x</strong> &#8211; </li>
+<li><strong>inv_y</strong> &#8211; </li>
+<li><strong>inv_z</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.clear_datafile">
-                                                <code class="descname">clear_datafile</code><span
-                                                    class="sig-paren">(</span><span class="sig-paren">)</span><a
-                                                    class="headerlink"
-                                                    href="#swc2vtk.vtkgenerator.VtkGenerator.clear_datafile"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.clear_datafile">
+<code class="descname">clear_datafile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.clear_datafile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.convert_swc">
-                                                <code class="descname">convert_swc</code><span
-                                                    class="sig-paren">(</span><em>diam_ratio=1.0</em>, <em>normalize_diam=False</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.convert_swc"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.convert_swc">
+<code class="descname">convert_swc</code><span class="sig-paren">(</span><em>diam_ratio=1.0</em>, <em>normalize_diam=False</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.convert_swc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="attribute">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.header_base">
-                                                <code class="descname">header_base</code><em class="property"> = '# vtk
-                                                DataFile Version 3.0\nSWC2VTK\nASCII\nDATASET
-                                                UNSTRUCTURED_GRID\n'</em><a class="headerlink"
-                                                                            href="#swc2vtk.vtkgenerator.VtkGenerator.header_base"
-                                                                            title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="attribute">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.header_base">
+<code class="descname">header_base</code><em class="property"> = '# vtk DataFile Version 3.0\nSWC2VTK\nASCII\nDATASET UNSTRUCTURED_GRID\n'</em><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.header_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.set_draw_mode">
-                                                <code class="descname">set_draw_mode</code><span
-                                                    class="sig-paren">(</span><em>draw_mode</em><span class="sig-paren">)</span><a
-                                                    class="headerlink"
-                                                    href="#swc2vtk.vtkgenerator.VtkGenerator.set_draw_mode"
-                                                    title="Permalink to this definition">¶</a></dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.set_draw_mode">
+<code class="descname">set_draw_mode</code><span class="sig-paren">(</span><em>draw_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.set_draw_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.show_state">
-                                                <code class="descname">show_state</code><span class="sig-paren">(</span><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.show_state"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.show_state">
+<code class="descname">show_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.show_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="attribute">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.volume_header_base">
-                                                <code class="descname">volume_header_base</code><em class="property"> =
-                                                '# vtk DataFile Version 1.0\nSWC2VTK VOLUME\nASCII\nDATASET
-                                                STRUCTURED_POINTS\n'</em><a class="headerlink"
-                                                                            href="#swc2vtk.vtkgenerator.VtkGenerator.volume_header_base"
-                                                                            title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="attribute">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.volume_header_base">
+<code class="descname">volume_header_base</code><em class="property"> = '# vtk DataFile Version 1.0\nSWC2VTK VOLUME\nASCII\nDATASET STRUCTURED_POINTS\n'</em><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.volume_header_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.write_volume_vtk">
-                                                <code class="descname">write_volume_vtk</code><span
-                                                    class="sig-paren">(</span><em>filename</em>, <em>origin=(0.0</em>,
-                                                <em>0.0</em>, <em>0.0)</em>, <em>ratio=(1.0</em>, <em>1.0</em>,
-                                                <em>1.0)</em>, <em>div=(256</em>, <em>256</em>, <em>64)</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.write_volume_vtk"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd></dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.write_volume_vtk">
+<code class="descname">write_volume_vtk</code><span class="sig-paren">(</span><em>filename</em>, <em>origin=(0.0</em>, <em>0.0</em>, <em>0.0)</em>, <em>ratio=(1.0</em>, <em>1.0</em>, <em>1.0)</em>, <em>div=(256</em>, <em>256</em>, <em>64)</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.write_volume_vtk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-                                        <dl class="method">
-                                            <dt id="swc2vtk.vtkgenerator.VtkGenerator.write_vtk">
-                                                <code class="descname">write_vtk</code><span
-                                                    class="sig-paren">(</span><em>filename</em>, <em>fixval=None</em>,
-                                                <em>datatitle='filedata'</em>, <em>movingval=False</em>, <em>coloring=False</em>,
-                                                <em>diam_ratio=1.0</em>, <em>normalize_diam=False</em>, <em>radius_data=False</em><span
-                                                    class="sig-paren">)</span><a class="headerlink"
-                                                                                 href="#swc2vtk.vtkgenerator.VtkGenerator.write_vtk"
-                                                                                 title="Permalink to this definition">¶</a>
-                                            </dt>
-                                            <dd><p>generate and write vtk to file</p>
-                                                <table class="docutils field-list" frame="void" rules="none">
-                                                    <col class="field-name"/>
-                                                    <col class="field-body"/>
-                                                    <tbody valign="top">
-                                                    <tr class="field-odd field">
-                                                        <th class="field-name">Parameters:</th>
-                                                        <td class="field-body">
-                                                            <ul class="first simple">
-                                                                <li><strong>filename</strong> &#8211; </li>
-                                                                <li><strong>fixval</strong> &#8211; </li>
-                                                                <li><strong>datatitle</strong> &#8211; </li>
-                                                                <li><strong>movingval</strong> &#8211; </li>
-                                                                <li><strong>coloring</strong> &#8211; </li>
-                                                                <li><strong>diam_ratio</strong> &#8211; </li>
-                                                                <li><strong>normalize_diam</strong> &#8211; </li>
-                                                                <li><strong>radius_data</strong> &#8211; </li>
-                                                            </ul>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="field-even field">
-                                                        <th class="field-name">Returns:</th>
-                                                        <td class="field-body"><p class="first last"></p>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </dd>
-                                        </dl>
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.write_vtk">
+<code class="descname">write_vtk</code><span class="sig-paren">(</span><em>filename</em>, <em>fixedval=None</em>, <em>datatitle='filedata'</em>, <em>movingval=False</em>, <em>coloring=False</em>, <em>diam_ratio=1.0</em>, <em>normalize_diam=False</em>, <em>radius_data=False</em>, <em>type_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.write_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate and write vtk to file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<em>text</em>) &#8211; Output VTK filename</li>
+<li><strong>fixedval</strong> (<em>float</em>) &#8211; add fixed value to CELL_DATA in VTK file</li>
+<li><strong>datatitle</strong> (<em>text</em>) &#8211; change title of CELL_DATA from appended data file</li>
+<li><strong>movingval</strong> (<em>bool</em>) &#8211; add moving value to CELL_DATA in VTK file</li>
+<li><strong>coloring</strong> (<em>bool</em>) &#8211; add coloring data to CELL_DATA in VTK file</li>
+<li><strong>diam_ratio</strong> (<em>float</em>) &#8211; multiply diam_ratio to all diameter of SWC compartments</li>
+<li><strong>normalize_diam</strong> (<em>bool</em>) &#8211; sqrt(diam) to normalize diameter of SWC compartments</li>
+<li><strong>radius_data</strong> (<em>bool</em>) &#8211; add radius information of SWC compartments to CELL_DATA in VTK file</li>
+<li><strong>type_data</strong> (<em>bool</em>) &#8211; Output type information of SWC compartments to CELL_DATA in VTK file</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-                                    </dd>
-                                </dl>
+</dd></dl>
 
-                            </div>
-                            <div class="section" id="module-swc2vtk">
-                                <span id="module-contents"></span>
-                                <h2>Module contents<a class="headerlink" href="#module-swc2vtk"
-                                                      title="Permalink to this headline">¶</a></h2>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <footer>
-
-
-                    <hr/>
-
-                    <div role="contentinfo">
-                        <p>
-                            &copy; Copyright 2017, DaisukeMiyamoto.
-
-                        </p>
-                    </div>
-                    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                        href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a
-                        href="https://readthedocs.org">Read the Docs</a>.
-
-                </footer>
-
-            </div>
-        </div>
-
-    </section>
-
+</div>
+<div class="section" id="module-swc2vtk">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-swc2vtk" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 
-<script type="text/javascript">
-    var DOCUMENTATION_OPTIONS = {
-        URL_ROOT: '../',
-        VERSION: '1.0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE: true
-    };
-</script>
-<script type="text/javascript" src="../_static/jquery.js"></script>
-<script type="text/javascript" src="../_static/underscore.js"></script>
-<script type="text/javascript" src="../_static/doctools.js"></script>
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="swc2vtk" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, DaisukeMiyamoto.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
 
 
-<script type="text/javascript" src="../_static/js/theme.js"></script>
+  
 
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
 
-<script type="text/javascript">
-    jQuery(function () {
-        SphinxRtdTheme.StickyNav.enable();
-    });
-</script>
+  
 
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
 
 </body>
 </html>

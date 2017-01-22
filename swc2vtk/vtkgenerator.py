@@ -316,15 +316,13 @@ DATASET STRUCTURED_POINTS
             if type_data:
                 file.write(self._type2text())
 
-    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
-        point_weight = 0.2
-        # for point in self.point_list:
+    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0), point_weight=0.2):
         for k, record in tqdm(swc.data.items(), desc=swc.filename):
             pos = (int(round((record['pos'][0] - origin[0]) / ratio[0], 0)),
                    int(round((record['pos'][1] - origin[1]) / ratio[1], 0)),
                    int(round((record['pos'][2] - origin[2]) / ratio[2], 0)))
-            if pos[2] < 0 or 0 or pos[1] < 0 or pos[0] < 0 or pos[2] > len(world) or pos[1] > len(world[0]) or pos[
-                0] > len(world[0][0]):
+            if pos[2] < 0 or pos[1] < 0 or pos[0] < 0\
+                    or pos[2] >= len(world) or pos[1] >= len(world[0]) or pos[0] >= len(world[0][0]):
                 print('Out of range: (%f, %f, %f)' % (record['pos'][0], record['pos'][1], record['pos'][2]))
             else:
                 world[pos[2]][pos[1]][pos[0]] += point_weight

@@ -68,7 +68,7 @@ class TestVtkGenerator(unittest.TestCase):
 
     def test_write_volume_vtk(self):
         self.vtk_generator.add_swc(self.swc_file_path)
-        self.vtk_generator.write_volume_vtk(self.output_file_path, origin=(-100, -100, -100), ratio=(4.0, 4.0, 4.0))
+        self.vtk_generator.write_volume_vtk('simple.vtk', origin=(-10.0, -10.0, -10.0), ratio=(1, 1, 1), div=(20, 20, 20))\
 
 
 def suite():
