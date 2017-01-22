@@ -32,24 +32,25 @@ Sample Program
 
 
 ``draw_mode = 1``
-------------------
+-----------------
 
 .. image:: _static/simple.0001.png
 
 
 ``draw_mode = 2``
-------------------
+-----------------
 
 .. image:: _static/simple.0002.png
 
 
-``draw_mode = 3`` (default)
-------------------
+``draw_mode = 3``
+-----------------
+This is default setting.
 
 .. image:: _static/simple.0003.png
 
 ``draw_mode = 3`` with Gourand Shading
----------------------------------------
+--------------------------------------
 ``draw_mode = 3`` with Gourand shading by Paraview could make best quality of 3D model.
 
 .. image:: _static/simple_filtered.0003.png

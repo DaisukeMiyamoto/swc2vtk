@@ -6,11 +6,9 @@
 ![paraview](https://img.shields.io/badge/Paraview-5.2-green.svg)
 ![NEURON](https://img.shields.io/badge/NEURON-7.4-green.svg)
 
-SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.  
-This software helps making easy and beautiful visualization of large scale multi-compartmental neuron simulation with highly parallelized environments.
-
-If you need any futher information, please check  
-http://daisukemiyamoto.github.io/swc2vtk/
+SWC to VTK converter for visualizing neurons and neural circuit simulations in ParaView.
+This software helps making beautiful visualization of large scale multi-compartmental neuron simulations with a parallelized environment.
+If you need any further information, please check http://daisukemiyamoto.github.io/swc2vtk/ .
 
 
 ## Dependency
@@ -79,38 +77,6 @@ vtkgen.clear_datafile()
 vtkgen.add_datafile('result3.dat')
 vtkgen.write_vtk('simple3.vtk')
 ```
-
-### generate VTK file for volume rendering
-```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simple.swc')
-vtkgen.write_volume_vtk('volume.vtk')
-```
-
-## Settings
-### Visualization Quality
-- `Draw Mode`
-change SWC compartment drawing method. Largeer number is better.
-  - `0`: simple cylinder
-  - `1`: one cylinder with variable top surface
-  - `2`: one cylinder with three cell mode
-  - `3`: one cylinder with a hemisphere
-
-```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simple.swc')
-vtkgen.set_draw_mode(4)
-vtkgen.write_vtk('simple.vtk')
-```
-
-- `Division Number`
-
-
-### adjust compartment diameter
-- `normalize_diam`
-
 
 ## Output Examples
 ### Single Neuron Morphology

@@ -182,12 +182,12 @@ DATASET STRUCTURED_POINTS
         
         return text
 
-    def _fixval2text(self, title='fixval', fixval=0.0):
+    def _fixedval2text(self, title='fixedval', fixedval=0.0):
         text = ''
         text += 'SCALARS '+title+' float 1\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in self.cell_list:
-            text += str(fixval)+'\n'
+            text += str(fixedval)+'\n'
 
         return text
 
@@ -235,6 +235,19 @@ DATASET STRUCTURED_POINTS
 
         return text
 
+    def _type2text(self):
+        text = ''
+        text += 'SCALARS type float 1\n'
+        text += 'LOOKUP_TABLE default\n'
+
+        for swc in self.swc_list:
+            for j, record in swc.data.items():
+                if j > 1:
+                    for k in range(self.ncell_per_compartment):
+                        text += str(record['type']) + '\n'
+
+        return text
+
     def _coloringbyswc(self):
         text = ''
         text += 'SCALARS coloring float 1\n'
@@ -253,18 +266,28 @@ DATASET STRUCTURED_POINTS
     def clear_datafile(self):
         self.datafile_list = []
 
-    def write_vtk(self, filename, fixval=None, datatitle='filedata', movingval=False, coloring=False,
-                  diam_ratio=1.0, normalize_diam=False, radius_data=False):
+    def write_vtk(self, filename, fixedval=None, datatitle='filedata', movingval=False, coloring=False,
+                  diam_ratio=1.0, normalize_diam=False, radius_data=False, type_data=False):
         """generate and write vtk to file
 
-        :param filename:
-        :param fixval:
-        :param datatitle:
-        :param movingval:
-        :param coloring:
-        :param diam_ratio:
-        :param normalize_diam:
-        :param radius_data:
+        :param filename: Output VTK filename
+        :param fixedval: add fixed value to CELL_DATA in VTK file
+        :param datatitle: change title of CELL_DATA from appended data file
+        :param movingval: add moving value to CELL_DATA in VTK file
+        :param coloring: add coloring data to CELL_DATA in VTK file
+        :param diam_ratio: multiply diam_ratio to all diameter of SWC compartments
+        :param normalize_diam: sqrt(diam) to normalize diameter of SWC compartments
+        :param radius_data: add radius information of SWC compartments to CELL_DATA in VTK file
+        :param type_data: Output type information of SWC compartments to CELL_DATA in VTK file
+        :type filename: text
+        :type fixedval: float
+        :type datatitle: text
+        :type movingval: bool
+        :type coloring: bool
+        :type diam_ratio: float
+        :type normalize_diam: bool
+        :type radius_data: bool
+        :type type_data: bool
         :return:
         """
         if not self.converted:
@@ -275,8 +298,8 @@ DATASET STRUCTURED_POINTS
             file.write(self.point_text)
             file.write(self.cell_text)
 
-            if fixval is not None:
-                file.write(self._fixval2text(fixval=fixval))
+            if fixedval is not None:
+                file.write(self._fixedval2text(fixedval=fixedval))
 
             if movingval:
                 file.write(self._movingval2text())
@@ -290,15 +313,16 @@ DATASET STRUCTURED_POINTS
             if radius_data:
                 file.write(self._radius2text())
 
-    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0)):
-        point_weight = 0.2
-        # for point in self.point_list:
+            if type_data:
+                file.write(self._type2text())
+
+    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0), point_weight=0.2):
         for k, record in tqdm(swc.data.items(), desc=swc.filename):
             pos = (int(round((record['pos'][0] - origin[0]) / ratio[0], 0)),
                    int(round((record['pos'][1] - origin[1]) / ratio[1], 0)),
                    int(round((record['pos'][2] - origin[2]) / ratio[2], 0)))
-            if pos[2] < 0 or 0 or pos[1] < 0 or pos[0] < 0 or pos[2] > len(world) or pos[1] > len(world[0]) or pos[
-                0] > len(world[0][0]):
+            if pos[2] < 0 or pos[1] < 0 or pos[0] < 0\
+                    or pos[2] >= len(world) or pos[1] >= len(world[0]) or pos[0] >= len(world[0][0]):
                 print('Out of range: (%f, %f, %f)' % (record['pos'][0], record['pos'][1], record['pos'][2]))
             else:
                 world[pos[2]][pos[1]][pos[0]] += point_weight

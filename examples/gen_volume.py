@@ -55,11 +55,12 @@ filelist_all = [
     '090815_4_sn_reg'
 ]
 
-filelist = filelist_small
-vtkfilename = 'volume_all.vtk'
+filelist = filelist_all
+vtkfilename = 'volume_all2.vtk'
 
 vtkgen = VtkGenerator()
 for filename in filelist:
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
 
 vtkgen.write_volume_vtk(vtkfilename, origin=(0.0, 0.0, 0.0), ratio=(4.0, 4.0, 4.0), div=(256, 256, 77))
