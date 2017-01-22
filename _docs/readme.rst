@@ -27,5 +27,8 @@ Quick example
 .. image:: _static/simple.0003.png
 
 
-Citation
+Reference
 ---------
+
+Citation
+--------
