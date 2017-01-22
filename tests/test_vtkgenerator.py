@@ -63,8 +63,8 @@ class TestVtkGenerator(unittest.TestCase):
 
     def test_write_vtk_options(self):
         self.vtk_generator.add_swc(self.swc_file_path)
-        self.vtk_generator.write_vtk(self.output_file_path, fixval=True, movingval=True, coloring=True,
-                                     diam_ratio=0.2, normalize_diam=True, radius_data=True)
+        self.vtk_generator.write_vtk(self.output_file_path, fixedval=True, movingval=True, coloring=True,
+                                     diam_ratio=0.2, normalize_diam=True, radius_data=True, type_data=True)
 
     def test_write_volume_vtk(self):
         self.vtk_generator.add_swc(self.swc_file_path)

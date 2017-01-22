@@ -88,30 +88,6 @@ vtkgen.add_swc('simple.swc')
 vtkgen.write_volume_vtk('volume.vtk')
 ```
 
-## Settings
-### Visualization Quality
-- `Draw Mode`
-change SWC compartment drawing method. Largeer number is better.
-  - `0`: simple cylinder
-  - `1`: one cylinder with variable top surface
-  - `2`: one cylinder with three cell mode
-  - `3`: one cylinder with a hemisphere
-
-```python
-import swc2vtk
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.add_swc('simple.swc')
-vtkgen.set_draw_mode(4)
-vtkgen.write_vtk('simple.vtk')
-```
-
-- `Division Number`
-
-
-### adjust compartment diameter
-- `normalize_diam`
-
-
 ## Output Examples
 ### Single Neuron Morphology
 ![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron_small.png)
