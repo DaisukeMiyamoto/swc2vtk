@@ -15,7 +15,7 @@ Sample Code
 .. code-block:: python
 
     import swc2vtk
-    vtkgen = VtkGenerator()
+    vtkgen = swc2vtk.VtkGenerator()
     vtkgen.add_swc('simple.swc'))
     vtkgen.write_volume_vtk('simple.vtk', origin=(-10.0, -10.0, -10.0), ratio=(1, 1, 1), div=(20, 20, 20))
 

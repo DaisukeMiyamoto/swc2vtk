@@ -60,7 +60,7 @@ filelist_all = [
     '090815_4_sn_reg'
     ]
 
-outputpos = '/home/nebula/work/paraview/standardbrain20170117/'
+outputpos = '/home/nebula/work/paraview/standardbrain20170123/'
 # outputpos = ''
 # filelist = filelist_small
 filelist = filelist_all
@@ -83,12 +83,13 @@ vtkgen = swc2vtk.VtkGenerator()
 vtkgen.set_draw_mode(3)
 for filename in filelist:
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-
-vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
-
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.set_draw_mode(3)
-for filename in filelist:
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
 
-vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
+vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=True, normalize_diam=True, radius_data=True)
+
+# vtkgen = swc2vtk.VtkGenerator()
+# vtkgen.set_draw_mode(3)
+# for filename in filelist:
+#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
+#
+# vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
