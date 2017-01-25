@@ -122,12 +122,14 @@ DATASET STRUCTURED_POINTS
 
             for record in tqdm(swc_data.data.values(), desc='Converting: ' + swc_data.filename):
                 if normalize_diam:
-                    record['radius'] = math.sqrt(record['radius'])
+                    tmp_radius = math.sqrt(record['radius']) * diam_ratio
+                else:
+                    tmp_radius = record['radius'] * diam_ratio
 
                 self.ncell_per_compartment = 1
                 if record['parent'] > 0:
                     parent_record = swc_data.data[record['parent']]
-                    self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
+                    self.add_cylinder_p2p(record['pos'], parent_record['pos'], tmp_radius,
                                           float(record['id']) / data_size,
                                           radius_ratio=(parent_record['radius']/record['radius']))
 
