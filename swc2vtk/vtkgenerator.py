@@ -274,19 +274,26 @@ DATASET STRUCTURED_POINTS
         if swc_index < len(self.swc_list):
             if compartment_index in self.swc_list[swc_index].data:
                 self.add_mark(self.swc_list[swc_index].data[compartment_index]['pos'], size=size, data=data)
+                return self.swc_list[swc_index].data[compartment_index]['pos']
             else:
                 print('Warning: Invalid compartment index')
         else:
             print('Warning: Invalid swc inexx')
 
-    def add_connection(self, swc_index1, swc_compartment1, swc_index2, swc_compartment2, size=1.0):
-        pass
+    def add_swc_connection(self, swc_index1, swc_compartment1, swc_index2, swc_compartment2, size=1.0, data=1.0):
+        pos1 = self.add_swc_mark(swc_index1, swc_compartment1, size, data)
+        pos2 = self.add_swc_mark(swc_index2, swc_compartment2, size, data)
+        local_cell_list, local_point_list = \
+            swc2vtk.GenPrimitives.line(pos1, pos2, data, point_start=len(self.annotation_point_list))
+
+        self.annotation_cell_list.extend(local_cell_list)
+        self.annotation_point_list.extend(local_point_list)
 
     def write_annotation_vtk(self, filename):
         with open(filename, 'w') as wfile:
             wfile.write(self.header)
             wfile.write(self._point2text(self.annotation_point_list))
-            wfile.write(self._cell2text(self.annotation_cell_list), title='annotation_data')
+            wfile.write(self._cell2text(self.annotation_cell_list, title='annotation_data'))
 
     def write_swc(self, filename, swc_index=0, comment='swc2vtk'):
         swc = self.swc_list[swc_index]
