@@ -91,25 +91,6 @@ DATASET STRUCTURED_POINTS
         self.point_list.extend(local_point_list)
         self.cell_list.extend(local_cell_list)
 
-    # @staticmethod
-    # def add_sphere(x=0, y=0, z=0, size=1.0, data=0.0, point_start=0):
-    #     # point_start = len(self.point_list)
-    #
-    #     local_cell_list, local_point_list = swc2vtk.GenPrimitives.sphere()
-    #
-    #     for cell in local_cell_list:
-    #         cell['points'] = [i + point_start for i in cell['points']]
-    #         cell['data'] = data
-    #
-    #     # scale
-    #     local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
-    #     # move
-    #     local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
-    #
-    #     # self.point_list.extend(local_point_list)
-    #     # self.cell_list.extend(local_cell_list)
-    #     return local_cell_list, local_point_list
-
     def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, radius_ratio=1.0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
@@ -281,9 +262,9 @@ DATASET STRUCTURED_POINTS
     def clear_datafile(self):
         self.datafile_list = []
 
-    def add_mark(self, pos=(0, 0, 0), data=0.0):
+    def add_mark(self, pos=(0, 0, 0), size=1.0, data=0.0):
         self.annotation_cell_list, self.annotation_point_list = \
-            swc2vtk.GenPrimitives.sphere(pos, data, len(self.annotation_cell_list))
+            swc2vtk.GenPrimitives.sphere(pos, size=size, data=data, point_start=len(self.annotation_cell_list))
 
     def add_synapse(self, pre_swc_index, pre_swc_compartment, post_swc_index, post_swc_compartment, diam=0.2):
         pass
@@ -291,8 +272,8 @@ DATASET STRUCTURED_POINTS
     def write_annotation_vtk(self, filename):
         with open(filename, 'w') as wfile:
             wfile.write(self.header)
-            wfile.write(self.annotation_point_list)
-            wfile.write(self.annotation_cell_list)
+            wfile.write(self._point2text(self.annotation_point_list))
+            wfile.write(self._cell2text(self.annotation_cell_list))
 
     def write_swc(self, filename, swc_index=0, comment='swc2vtk'):
         swc = self.swc_list[swc_index]
