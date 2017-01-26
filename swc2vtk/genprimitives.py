@@ -204,3 +204,12 @@ class GenPrimitives():
         local_point_list = np.array([ v+pos for v in local_point_list])
 
         return local_cell_list, local_point_list
+
+    @staticmethod
+    def line(self, pos1=(0, 0, 0), pos2=(1, 0, 0), data=0.0):
+        local_cell_list = []
+        local_point_list = np.array([pos1, pos2])
+        cell = {'type': 3, 'data': data, 'points': [0, 1]}
+        local_cell_list.append(cell)
+
+        return local_cell_list, local_point_list
