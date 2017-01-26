@@ -37,6 +37,8 @@ DATASET STRUCTURED_POINTS
         self.point_list = []
         self.cell_list = []
         self.datafile_list = []
+        self.annotation_point_list = []
+        self.annotation_cell_list = []
 
         self.point_text = ''
         self.cell_text = ''
@@ -89,21 +91,24 @@ DATASET STRUCTURED_POINTS
         self.point_list.extend(local_point_list)
         self.cell_list.extend(local_cell_list)
 
-    def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
-        point_start = len(self.point_list)
-        # local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
-        local_cell_list, local_point_list = swc2vtk.GenPrimitives.sphere()
-        for cell in local_cell_list:
-            cell['points'] = [i + point_start for i in cell['points']]
-            cell['data'] = data
-
-        # scale
-        local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
-        # move
-        local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
-
-        self.point_list.extend(local_point_list)
-        self.cell_list.extend(local_cell_list)
+    # @staticmethod
+    # def add_sphere(x=0, y=0, z=0, size=1.0, data=0.0, point_start=0):
+    #     # point_start = len(self.point_list)
+    #
+    #     local_cell_list, local_point_list = swc2vtk.GenPrimitives.sphere()
+    #
+    #     for cell in local_cell_list:
+    #         cell['points'] = [i + point_start for i in cell['points']]
+    #         cell['data'] = data
+    #
+    #     # scale
+    #     local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
+    #     # move
+    #     local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
+    #
+    #     # self.point_list.extend(local_point_list)
+    #     # self.cell_list.extend(local_cell_list)
+    #     return local_cell_list, local_point_list
 
     def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, radius_ratio=1.0):
         pos1 = np.array(pos1)
@@ -138,8 +143,8 @@ DATASET STRUCTURED_POINTS
                                       float(record['id']) / data_size,
                                       radius_ratio=(drawing_parent_radius/drawing_radius))
 
-        self.point_text = self._point2text()
-        self.cell_text = self._cell2text()
+        self.point_text = self._point2text(self.point_list)
+        self.cell_text = self._cell2text(self.cell_list)
 
     def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
@@ -159,32 +164,34 @@ DATASET STRUCTURED_POINTS
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
         self.swc_list[-1].shift(shift_x, shift_y, shift_z)
 
-    def _point2text(self):
-        text = 'POINTS %d float\n' % (len(self.point_list))
-        for point in tqdm(self.point_list, desc='Generating Points'):
+    @staticmethod
+    def _point2text(point_list):
+        text = 'POINTS %d float\n' % (len(point_list))
+        for point in tqdm(point_list, desc='Generating Points'):
             text += '%f %f %f\n' % (point[0], point[1], point[2])
             
         return text
 
-    def _cell2text(self):
-        num_data = sum([len(cell['points'])+1 for cell in self.cell_list])
+    @staticmethod
+    def _cell2text(cell_list):
+        num_data = sum([len(cell['points'])+1 for cell in cell_list])
         
-        text = '\nCELLS %d %d\n' % (len(self.cell_list), num_data)
-        for cell in self.cell_list:
+        text = '\nCELLS %d %d\n' % (len(cell_list), num_data)
+        for cell in cell_list:
             text += str(len(cell['points']))
             for x in cell['points']:
                 text += ' '+str(x)
 
             text += '\n'
 
-        text += '\nCELL_TYPES %d\n' % (len(self.cell_list))
-        for cell in self.cell_list:
+        text += '\nCELL_TYPES %d\n' % (len(cell_list))
+        for cell in cell_list:
             text += str(cell['type'])+'\n'
 
-        text += '\nCELL_DATA %d\n' % (len(self.cell_list))
+        text += '\nCELL_DATA %d\n' % (len(cell_list))
         text += 'SCALARS data float 1\n'
         text += 'LOOKUP_TABLE default\n'
-        for cell in self.cell_list:
+        for cell in cell_list:
             text += str(cell['data'])+'\n'
         
         return text
@@ -273,6 +280,19 @@ DATASET STRUCTURED_POINTS
 
     def clear_datafile(self):
         self.datafile_list = []
+
+    def add_mark(self, pos=(0, 0, 0), data=0.0):
+        self.annotation_cell_list, self.annotation_point_list = \
+            swc2vtk.GenPrimitives.sphere(pos, data, len(self.annotation_cell_list))
+
+    def add_synapse(self, pre_swc_index, pre_swc_compartment, post_swc_index, post_swc_compartment, diam=0.2):
+        pass
+
+    def write_annotation_vtk(self, filename):
+        with open(filename, 'w') as wfile:
+            wfile.write(self.header)
+            wfile.write(self.annotation_point_list)
+            wfile.write(self.annotation_cell_list)
 
     def write_swc(self, filename, swc_index=0, comment='swc2vtk'):
         swc = self.swc_list[swc_index]
