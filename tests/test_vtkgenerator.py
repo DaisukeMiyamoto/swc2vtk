@@ -71,8 +71,8 @@ class TestVtkGenerator(unittest.TestCase):
     def test_add_mark(self):
         self.vtk_generator.add_mark()
 
-    def test_add_synapse(self):
-        self.vtk_generator.add_synapse(0, 0, 100, 200)
+    def test_add_connection(self):
+        self.vtk_generator.add_connection(0, 0, 100, 200)
 
 
 def suite():
