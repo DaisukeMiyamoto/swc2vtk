@@ -73,6 +73,9 @@ DATASET STRUCTURED_POINTS
             self.ncell_per_compartment = len(local_cell_list)
             height = 1.0
             radius = 1.0
+        elif self.draw_mode == 4:
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.line()
+            self.ncell_per_compartment = 1
 
         point_start = len(self.point_list)
         for cell in local_cell_list:
@@ -304,7 +307,6 @@ DATASET STRUCTURED_POINTS
                 swcfile.write('%d %d %f %f %f %f %d\n' % (record['id'], record['type'],
                                                         record['pos'][0], record['pos'][1], record['pos'][2],
                                                         record['radius'], record['parent']))
-
 
     def write_vtk(self, filename, fixedval=None, datatitle='filedata', movingval=False, coloring=False,
                   diam_ratio=1.0, normalize_diam=False, radius_data=False, type_data=False):
