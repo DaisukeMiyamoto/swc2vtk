@@ -160,6 +160,11 @@
 <dt id="swc2vtk.genprimitives.GenPrimitives">
 <em class="property">class </em><code class="descclassname">swc2vtk.genprimitives.</code><code class="descname">GenPrimitives</code><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.base_sphere">
+<em class="property">static </em><code class="descname">base_sphere</code><span class="sig-paren">(</span><em>div=10</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.base_sphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
 <dt id="swc2vtk.genprimitives.GenPrimitives.cuboid">
 <em class="property">static </em><code class="descname">cuboid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.cuboid" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -185,8 +190,13 @@
 <dd></dd></dl>
 
 <dl class="staticmethod">
+<dt id="swc2vtk.genprimitives.GenPrimitives.line">
+<em class="property">static </em><code class="descname">line</code><span class="sig-paren">(</span><em>pos1=(0</em>, <em>0</em>, <em>0)</em>, <em>pos2=(1</em>, <em>0</em>, <em>0)</em>, <em>data=0.0</em>, <em>point_start=0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
 <dt id="swc2vtk.genprimitives.GenPrimitives.sphere">
-<em class="property">static </em><code class="descname">sphere</code><span class="sig-paren">(</span><em>div=10</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.sphere" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">sphere</code><span class="sig-paren">(</span><em>pos=(0</em>, <em>0</em>, <em>0)</em>, <em>size=1.0</em>, <em>data=0.0</em>, <em>point_start=0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.genprimitives.GenPrimitives.sphere" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -240,8 +250,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_sphere">
-<code class="descname">add_sphere</code><span class="sig-paren">(</span><em>x=0</em>, <em>y=0</em>, <em>z=0</em>, <em>size=1.0</em>, <em>data=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_sphere" title="Permalink to this definition">¶</a></dt>
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_mark">
+<code class="descname">add_mark</code><span class="sig-paren">(</span><em>pos=(0</em>, <em>0</em>, <em>0)</em>, <em>size=1.0</em>, <em>data=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_mark" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -271,6 +281,16 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_swc_connection">
+<code class="descname">add_swc_connection</code><span class="sig-paren">(</span><em>swc_index1</em>, <em>swc_compartment1</em>, <em>swc_index2</em>, <em>swc_compartment2</em>, <em>size=1.0</em>, <em>data=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_swc_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.add_swc_mark">
+<code class="descname">add_swc_mark</code><span class="sig-paren">(</span><em>swc_index</em>, <em>compartment_index</em>, <em>size=1.0</em>, <em>data=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.add_swc_mark" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="swc2vtk.vtkgenerator.VtkGenerator.clear_datafile">
 <code class="descname">clear_datafile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.clear_datafile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -298,6 +318,16 @@
 <dl class="attribute">
 <dt id="swc2vtk.vtkgenerator.VtkGenerator.volume_header_base">
 <code class="descname">volume_header_base</code><em class="property"> = '# vtk DataFile Version 1.0\nSWC2VTK VOLUME\nASCII\nDATASET STRUCTURED_POINTS\n'</em><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.volume_header_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.write_annotation_vtk">
+<code class="descname">write_annotation_vtk</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.write_annotation_vtk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swc2vtk.vtkgenerator.VtkGenerator.write_swc">
+<code class="descname">write_swc</code><span class="sig-paren">(</span><em>filename</em>, <em>swc_index=0</em>, <em>comment='swc2vtk'</em><span class="sig-paren">)</span><a class="headerlink" href="#swc2vtk.vtkgenerator.VtkGenerator.write_swc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

@@ -37,6 +37,8 @@ DATASET STRUCTURED_POINTS
         self.point_list = []
         self.cell_list = []
         self.datafile_list = []
+        self.annotation_point_list = []
+        self.annotation_cell_list = []
 
         self.point_text = ''
         self.cell_text = ''
@@ -58,8 +60,10 @@ DATASET STRUCTURED_POINTS
         local_point_list = []
         if self.draw_mode == 0:
             local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder()
+            self.ncell_per_compartment = 1
         elif self.draw_mode == 1:
             local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder(top_face_diam=radius_ratio)
+            self.ncell_per_compartment = 1
         elif self.draw_mode == 2:
             local_cell_list, local_point_list = swc2vtk.GenPrimitives.cylinder_3cell(top_face_diam=radius_ratio)
             self.ncell_per_compartment = len(local_cell_list)
@@ -69,6 +73,9 @@ DATASET STRUCTURED_POINTS
             self.ncell_per_compartment = len(local_cell_list)
             height = 1.0
             radius = 1.0
+        elif self.draw_mode == 4:
+            local_cell_list, local_point_list = swc2vtk.GenPrimitives.line()
+            self.ncell_per_compartment = 1
 
         point_start = len(self.point_list)
         for cell in local_cell_list:
@@ -87,22 +94,6 @@ DATASET STRUCTURED_POINTS
         self.point_list.extend(local_point_list)
         self.cell_list.extend(local_cell_list)
 
-    def add_sphere(self, x=0, y=0, z=0, size=1.0, data=0.0):
-        point_start = len(self.point_list)
-        # local_cell_list, local_point_list = GenPrimitives.hemisphere_cylinder()
-        local_cell_list, local_point_list = swc2vtk.GenPrimitives.sphere()
-        for cell in local_cell_list:
-            cell['points'] = [i + point_start for i in cell['points']]
-            cell['data'] = data
-
-        # scale
-        local_point_list = np.array([ v*[size, size, size] for v in local_point_list])
-        # move
-        local_point_list = np.array([ v+[x, y, z] for v in local_point_list])
-
-        self.point_list.extend(local_point_list)
-        self.cell_list.extend(local_cell_list)
-
     def add_cylinder_p2p(self, pos1=(0, 0, 0), pos2=(2, 0, 0), size=1.0, data=0, radius_ratio=1.0):
         pos1 = np.array(pos1)
         pos2 = np.array(pos2)
@@ -110,9 +101,9 @@ DATASET STRUCTURED_POINTS
 
         rot_y = -np.arctan2(local_pos[2], local_pos[0])
         rot_z = np.arctan2(local_pos[1], np.sqrt(local_pos[0]**2 + local_pos[2]**2))
-        len = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
+        length = np.sqrt(local_pos[0]**2 + local_pos[1]**2 + local_pos[2]**2)
 
-        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, len, rot_y, rot_z, data, radius_ratio=radius_ratio)
+        self.add_cylinder(pos1[0], pos1[1], pos1[2], size, length, rot_y, rot_z, data, radius_ratio=radius_ratio)
 
     def convert_swc(self, diam_ratio=1.0, normalize_diam=False):
         self.converted = True
@@ -121,18 +112,23 @@ DATASET STRUCTURED_POINTS
             data_size = len(swc_data.data)
 
             for record in tqdm(swc_data.data.values(), desc='Converting: ' + swc_data.filename):
+                if record['parent'] <= 0:
+                    continue
+
+                parent_record = swc_data.data[record['parent']]
                 if normalize_diam:
-                    record['radius'] = math.sqrt(record['radius'])
+                    drawing_radius = math.sqrt(record['radius']) * diam_ratio
+                    drawing_parent_radius = math.sqrt(parent_record['radius']) * diam_ratio
+                else:
+                    drawing_radius = record['radius'] * diam_ratio
+                    drawing_parent_radius = parent_record['radius'] * diam_ratio
 
-                self.ncell_per_compartment = 1
-                if record['parent'] > 0:
-                    parent_record = swc_data.data[record['parent']]
-                    self.add_cylinder_p2p(record['pos'], parent_record['pos'], record['radius'] * diam_ratio,
-                                          float(record['id']) / data_size,
-                                          radius_ratio=(parent_record['radius']/record['radius']))
+                self.add_cylinder_p2p(record['pos'], parent_record['pos'], drawing_radius,
+                                      float(record['id']) / data_size,
+                                      radius_ratio=(drawing_parent_radius/drawing_radius))
 
-        self.point_text = self._point2text()
-        self.cell_text = self._cell2text()
+        self.point_text = self._point2text(self.point_list)
+        self.cell_text = self._cell2text(self.cell_list)
 
     def add_swc(self, swc_filename,
                 shift_x=0.0, shift_y=0.0, shift_z=0.0, inv_x=False, inv_y=False, inv_z=False):
@@ -152,51 +148,55 @@ DATASET STRUCTURED_POINTS
         self.swc_list[-1].invert(inv_x, inv_y, inv_z)
         self.swc_list[-1].shift(shift_x, shift_y, shift_z)
 
-    def _point2text(self):
-        text = 'POINTS %d float\n' % (len(self.point_list))
-        for point in tqdm(self.point_list, desc='Generating Points'):
+    @staticmethod
+    def _point2text(point_list):
+        text = 'POINTS %d float\n' % (len(point_list))
+        for point in tqdm(point_list, desc='Generating Points'):
             text += '%f %f %f\n' % (point[0], point[1], point[2])
             
         return text
 
-    def _cell2text(self):
-        num_data = sum([len(cell['points'])+1 for cell in self.cell_list])
+    @staticmethod
+    def _cell2text(cell_list, title='data'):
+        num_data = sum([len(cell['points'])+1 for cell in cell_list])
         
-        text = '\nCELLS %d %d\n' % (len(self.cell_list), num_data)
-        for cell in self.cell_list:
+        text = '\nCELLS %d %d\n' % (len(cell_list), num_data)
+        for cell in cell_list:
             text += str(len(cell['points']))
             for x in cell['points']:
                 text += ' '+str(x)
 
             text += '\n'
 
-        text += '\nCELL_TYPES %d\n' % (len(self.cell_list))
-        for cell in self.cell_list:
+        text += '\nCELL_TYPES %d\n' % (len(cell_list))
+        for cell in cell_list:
             text += str(cell['type'])+'\n'
 
-        text += '\nCELL_DATA %d\n' % (len(self.cell_list))
-        text += 'SCALARS data float 1\n'
+        text += '\nCELL_DATA %d\n' % (len(cell_list))
+        text += 'SCALARS ' + title + ' float 1\n'
         text += 'LOOKUP_TABLE default\n'
-        for cell in self.cell_list:
+        for cell in cell_list:
             text += str(cell['data'])+'\n'
         
         return text
 
-    def _fixedval2text(self, title='fixedval', fixedval=0.0):
+    @staticmethod
+    def _fixedval2text(cell_list, title='fixedval', fixedval=0.0):
         text = ''
         text += 'SCALARS '+title+' float 1\n'
         text += 'LOOKUP_TABLE default\n'
-        for cell in self.cell_list:
+        for cell in cell_list:
             text += str(fixedval)+'\n'
 
         return text
 
-    def _movingval2text(self, title='movingval', num=100):
+    @staticmethod
+    def _movingval2text(cell_list, title='movingval', num=100):
         text = ''
         text += 'SCALARS '+title+' float ' + str(num) + '\n'
         text += 'LOOKUP_TABLE default\n'
 
-        for i in range(len(self.cell_list)):
+        for i in range(len(cell_list)):
             val = i
             for j in range(num):
                 text += str(val) + ' '
@@ -256,7 +256,8 @@ DATASET STRUCTURED_POINTS
         for i, swc in enumerate(self.swc_list):
             val = i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
-                text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
+                for k in range(self.ncell_per_compartment):
+                    text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
 
         return text
 
@@ -265,6 +266,48 @@ DATASET STRUCTURED_POINTS
 
     def clear_datafile(self):
         self.datafile_list = []
+
+    def add_mark(self, pos=(0, 0, 0), size=1.0, data=0.0):
+        local_cell_list, local_point_list = \
+            swc2vtk.GenPrimitives.sphere(pos, size=size, data=data, point_start=len(self.annotation_point_list))
+        self.annotation_cell_list.extend(local_cell_list)
+        self.annotation_point_list.extend(local_point_list)
+
+    def add_swc_mark(self, swc_index, compartment_index, size=1.0, data=0.0):
+        if swc_index < len(self.swc_list):
+            # print self.swc_list[swc_index].data
+            if compartment_index in self.swc_list[swc_index].data:
+                self.add_mark(self.swc_list[swc_index].data[compartment_index]['pos'], size=size, data=data)
+                return self.swc_list[swc_index].data[compartment_index]['pos']
+            else:
+                print('Warning: Invalid compartment index (swc_id=%d, compartment_id=%d)' % (swc_index, compartment_index))
+        else:
+            print('Warning: Invalid swc index (swc_id=%d)' % swc_index)
+
+    def add_swc_connection(self, swc_index1, swc_compartment1, swc_index2, swc_compartment2, size=1.0, data=1.0):
+        pos1 = self.add_swc_mark(swc_index1, swc_compartment1, size, data)
+        pos2 = self.add_swc_mark(swc_index2, swc_compartment2, size, data)
+        local_cell_list, local_point_list = \
+            swc2vtk.GenPrimitives.line(pos1, pos2, data, point_start=len(self.annotation_point_list))
+
+        self.annotation_cell_list.extend(local_cell_list)
+        self.annotation_point_list.extend(local_point_list)
+
+    def write_annotation_vtk(self, filename):
+        with open(filename, 'w') as wfile:
+            wfile.write(self.header)
+            wfile.write(self._point2text(self.annotation_point_list))
+            wfile.write(self._cell2text(self.annotation_cell_list, title='annotation_data'))
+
+    def write_swc(self, filename, swc_index=0, comment='swc2vtk'):
+        swc = self.swc_list[swc_index]
+        with open(filename, 'w') as swcfile:
+            swcfile.write(swc.header)
+            swcfile.write('# ' + comment + '\n')
+            for j, record in swc.data.items():
+                swcfile.write('%d %d %f %f %f %f %d\n' % (record['id'], record['type'],
+                                                        record['pos'][0], record['pos'][1], record['pos'][2],
+                                                        record['radius'], record['parent']))
 
     def write_vtk(self, filename, fixedval=None, datatitle='filedata', movingval=False, coloring=False,
                   diam_ratio=1.0, normalize_diam=False, radius_data=False, type_data=False):
@@ -299,10 +342,10 @@ DATASET STRUCTURED_POINTS
             file.write(self.cell_text)
 
             if fixedval is not None:
-                file.write(self._fixedval2text(fixedval=fixedval))
+                file.write(self._fixedval2text(self.cell_list, fixedval=fixedval))
 
             if movingval:
-                file.write(self._movingval2text())
+                file.write(self._movingval2text(self.cell_list))
 
             if len(self.datafile_list) > 0:
                 file.write(self._file2text(self.datafile_list, datatitle))
@@ -316,7 +359,8 @@ DATASET STRUCTURED_POINTS
             if type_data:
                 file.write(self._type2text())
 
-    def _swc2volume(self, swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0), point_weight=0.2):
+    @staticmethod
+    def _swc2volume(swc, world, origin=(0.0, 0.0, 0.0), ratio=(1.0, 1.0, 1.0), point_weight=0.2):
         for k, record in tqdm(swc.data.items(), desc=swc.filename):
             pos = (int(round((record['pos'][0] - origin[0]) / ratio[0], 0)),
                    int(round((record['pos'][1] - origin[1]) / ratio[1], 0)),

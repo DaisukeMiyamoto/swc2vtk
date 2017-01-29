@@ -8,19 +8,13 @@ Created on Tue Jun 14 20:00:41 2016
 import os
 import swc2vtk
 
-# from swc2vtk.vtkgenerator import VtkGenerator
 
 filelist_simple = [
     'simple',
-    'simple',
-    'simple',
-    'simple'
 ]
 
 filelist_small = [
     '0664_regist',
-    '0965_regist',
-    '0970_regist'
 ]
 
 filelist_small2 = [
@@ -44,7 +38,7 @@ filelist_all = [
     '0663_regist',
     '0664_regist',
     '0965_regist',
-    # '0966_regist',
+    '0966_regist',
     '0967_regist',
     '0969_regist',
     '0970_regist',
@@ -60,35 +54,25 @@ filelist_all = [
     '090815_4_sn_reg'
     ]
 
-outputpos = '/home/nebula/work/paraview/standardbrain20170117/'
-# outputpos = ''
-# filelist = filelist_small
+
+# input_dir = '/home/nebula/git/LAL-VPCmapping/converted_swc'
+input_dir = './swc'
+output_dir = '/home/nebula/work/paraview/standardbrain20170129/'
+
+# filelist = filelist_small2
 filelist = filelist_all
+if not os.path.isdir(output_dir):
+    os.mkdir(output_dir)
 
 # for i, filename in enumerate(filelist):
-#     fixval = int(i * (256 / len(filelist)))
 #     vtkgen = swc2vtk.VtkGenerator()
-#     vtkgen.set_draw_mode(3)
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
-#     vtkgen.write_vtk(os.path.join(outputpos, filename + '.vtk'), normalize_diam=True, radius_data=True)
-
-# for i, filename in enumerate(filelist):
-#     fixval = int(i * (256 / len(filelist)))
-#     vtkgen = VtkGenerator()
-#     vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
-#     vtkgen.write_vtk(outputpos + filename + '_flip.vtk')
+#     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
+#     vtkgen.write_vtk(os.path.join(output_dir, filename + '.vtk'), radius_data=True)
 
 
 vtkgen = swc2vtk.VtkGenerator()
-vtkgen.set_draw_mode(3)
 for filename in filelist:
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
+    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
+    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'), inv_x=True, shift_x=1024.0)
 
-vtkgen.write_vtk(outputpos + 'all_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
-
-vtkgen = swc2vtk.VtkGenerator()
-vtkgen.set_draw_mode(3)
-for filename in filelist:
-    vtkgen.add_swc(os.path.join('swc', filename + '.swc'), inv_x=True, shift_x=1024.0)
-
-vtkgen.write_vtk(outputpos + 'all_flip_normalize2.vtk', coloring=False, normalize_diam=True, radius_data=True)
+vtkgen.write_vtk(os.path.join(output_dir, 'all.vtk'), coloring=True, normalize_diam=True, radius_data=True)

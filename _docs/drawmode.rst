@@ -11,18 +11,17 @@ Sample Program
 .. code-block:: python
 
     import os
-    from swc2vtk.vtkgenerator import VtkGenerator
+    import swc2vtk
 
     filename = 'simple'
     outputpos = ''
 
-    vtkgen = VtkGenerator()
+    vtkgen = swc2vtk.VtkGenerator()
     vtkgen.add_swc(os.path.join('swc', filename + '.swc'))
 
     for i in range(4):
         vtkgen.set_draw_mode(i)
         vtkgen.write_vtk(os.path.join(outputpos, filename + '_draw'+str(i)+'.vtk'))
-
 
 
 ``draw_mode = 0``

@@ -152,7 +152,7 @@
 <li><a class="reference download internal" href="_downloads/simple.swc" download=""><code class="xref download docutils literal"><span class="pre">simple.swc</span></code></a></li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">swc2vtk</span>
-<span class="n">vtkgen</span> <span class="o">=</span> <span class="n">VtkGenerator</span><span class="p">()</span>
+<span class="n">vtkgen</span> <span class="o">=</span> <span class="n">swc2vtk</span><span class="o">.</span><span class="n">VtkGenerator</span><span class="p">()</span>
 <span class="n">vtkgen</span><span class="o">.</span><span class="n">add_swc</span><span class="p">(</span><span class="s1">&#39;simple.swc&#39;</span><span class="p">))</span>
 <span class="n">vtkgen</span><span class="o">.</span><span class="n">write_volume_vtk</span><span class="p">(</span><span class="s1">&#39;simple.vtk&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">),</span> <span class="n">ratio</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">div</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 </pre></div>

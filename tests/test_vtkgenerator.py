@@ -25,9 +25,6 @@ class TestVtkGenerator(unittest.TestCase):
     def test_add_cylinder(self):
         self.vtk_generator.add_cylinder()
 
-    def test_add_sphere(self):
-        self.vtk_generator.add_sphere()
-
     def test_add_swc(self):
         simple_cmp_size = 11
         self.vtk_generator.add_swc(self.swc_file_path)
@@ -69,6 +66,15 @@ class TestVtkGenerator(unittest.TestCase):
     def test_write_volume_vtk(self):
         self.vtk_generator.add_swc(self.swc_file_path)
         self.vtk_generator.write_volume_vtk('simple.vtk', origin=(-10.0, -10.0, -10.0), ratio=(1, 1, 1), div=(20, 20, 20))\
+
+
+    def test_add_mark(self):
+        self.vtk_generator.add_swc(self.swc_file_path)
+        self.vtk_generator.add_mark()
+
+    def test_add_swc_connection(self):
+        self.vtk_generator.add_swc(self.swc_file_path)
+        self.vtk_generator.add_swc_connection(0, 0, 100, 200)
 
 
 def suite():
