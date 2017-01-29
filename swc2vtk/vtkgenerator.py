@@ -211,14 +211,23 @@ DATASET STRUCTURED_POINTS
         text += 'SCALARS ' + title + ' float 1\n'
         text += 'LOOKUP_TABLE default\n'
 
-        for filename in datafile_list:
+        if not (len(datafile_list) == len(self.swc_list)):
+            print('Warning: there is mismatch of data file and swc file (datafile=%d, swcfile=%d)'
+                  % (len(datafile_list), len(self.swc_list)))
+        for datafile_list_index, filename in enumerate(datafile_list):
+            data_num = 0
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
             for i in range(len(read_data)):
                 if read_data[i][0] != '#':
+                    data_num += 1
                     for j in range(self.ncell_per_compartment):
                         text += read_data[i].rstrip() + '\n'
+
+            if not (data_num == len(self.swc_list[datafile_list_index].data)):
+                print('Warning: there is mismatch of data file lines and swc file lines (index=%d, datafile=%d, swcfile=%d)'
+                      % (datafile_list_index, data_num, len(self.swc_list[datafile_list_index].data)))
 
         return text
 
