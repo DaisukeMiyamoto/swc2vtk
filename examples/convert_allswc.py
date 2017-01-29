@@ -57,22 +57,22 @@ filelist_all = [
 
 # input_dir = '/home/nebula/git/LAL-VPCmapping/converted_swc'
 input_dir = './swc'
-output_dir = '/home/nebula/work/paraview/standardbrain_colored20170125/'
+output_dir = '/home/nebula/work/paraview/standardbrain20170129/'
 
-filelist = filelist_small2
-# filelist = filelist_all
+# filelist = filelist_small2
+filelist = filelist_all
 if not os.path.isdir(output_dir):
     os.mkdir(output_dir)
 
-for i, filename in enumerate(filelist):
-    vtkgen = swc2vtk.VtkGenerator()
-    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
-    vtkgen.write_vtk(os.path.join(output_dir, filename + '.vtk'), radius_data=True, type_data=True)
-
-
-# vtkgen = swc2vtk.VtkGenerator()
-# for filename in filelist:
+# for i, filename in enumerate(filelist):
+#     vtkgen = swc2vtk.VtkGenerator()
 #     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
-#     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'), inv_x=True, shift_x=1024.0)
-#
-# vtkgen.write_vtk(os.path.join(output_dir, 'all_normalize.vtk'), coloring=True, normalize_diam=True, radius_data=True, type_data=True)
+#     vtkgen.write_vtk(os.path.join(output_dir, filename + '.vtk'), radius_data=True)
+
+
+vtkgen = swc2vtk.VtkGenerator()
+for filename in filelist:
+    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
+    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'), inv_x=True, shift_x=1024.0)
+
+vtkgen.write_vtk(os.path.join(output_dir, 'all.vtk'), coloring=True, normalize_diam=True, radius_data=True)

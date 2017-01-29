@@ -13,6 +13,7 @@ Welcome to swc2vtk's documentation!
    examples
    drawmode
    volume
+   annotations
    gallery
    apis/modules
 

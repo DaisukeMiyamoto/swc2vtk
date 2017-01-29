@@ -275,13 +275,14 @@ DATASET STRUCTURED_POINTS
 
     def add_swc_mark(self, swc_index, compartment_index, size=1.0, data=0.0):
         if swc_index < len(self.swc_list):
+            # print self.swc_list[swc_index].data
             if compartment_index in self.swc_list[swc_index].data:
                 self.add_mark(self.swc_list[swc_index].data[compartment_index]['pos'], size=size, data=data)
                 return self.swc_list[swc_index].data[compartment_index]['pos']
             else:
-                print('Warning: Invalid compartment index')
+                print('Warning: Invalid compartment index (swc_id=%d, compartment_id=%d)' % (swc_index, compartment_index))
         else:
-            print('Warning: Invalid swc inexx')
+            print('Warning: Invalid swc index (swc_id=%d)' % swc_index)
 
     def add_swc_connection(self, swc_index1, swc_compartment1, swc_index2, swc_compartment2, size=1.0, data=1.0):
         pos1 = self.add_swc_mark(swc_index1, swc_compartment1, size, data)
