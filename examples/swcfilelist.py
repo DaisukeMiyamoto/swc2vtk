@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-filelist_all = [
+filelist_lalvpc = [
     '0004_regist',
     '0005_regist',
     '0008_regist',
@@ -28,4 +28,18 @@ filelist_all = [
     '1068_regist',
     '1080_regist',
     '090815_4_sn_reg'
+]
+
+filelist_simple = [
+    'simple',
+]
+
+filelist_small = [
+    '0664_regist',
+]
+
+filelist_antenna = [
+    '200000',
+    '300000',
+    '301000',
 ]
