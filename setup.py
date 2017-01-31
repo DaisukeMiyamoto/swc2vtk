@@ -8,7 +8,7 @@ if os.path.exists('README.txt'):
 
 setup(
     name='swc2vtk',
-    version='1.0.4',
+    version='1.1.0',
     packages=['swc2vtk'],
     package_dir={'swc2vtk': 'swc2vtk'},
     description=description,

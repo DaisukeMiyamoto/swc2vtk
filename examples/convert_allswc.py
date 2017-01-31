@@ -64,15 +64,15 @@ filelist = filelist_all
 if not os.path.isdir(output_dir):
     os.mkdir(output_dir)
 
-# for i, filename in enumerate(filelist):
-#     vtkgen = swc2vtk.VtkGenerator()
-#     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
-#     vtkgen.write_vtk(os.path.join(output_dir, filename + '.vtk'), radius_data=True)
-
-
-vtkgen = swc2vtk.VtkGenerator()
-for filename in filelist:
+for i, filename in enumerate(filelist):
+    vtkgen = swc2vtk.VtkGenerator()
     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
-    vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'), inv_x=True, shift_x=1024.0)
+    vtkgen.write_vtk(os.path.join(output_dir, filename + '.vtk'), radius_data=True, normalize_diam=True)
 
-vtkgen.write_vtk(os.path.join(output_dir, 'all.vtk'), coloring=True, normalize_diam=True, radius_data=True)
+
+# vtkgen = swc2vtk.VtkGenerator()
+# for filename in filelist:
+#     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'))
+#     vtkgen.add_swc(os.path.join(input_dir, filename + '.swc'), inv_x=True, shift_x=1024.0)
+#
+# vtkgen.write_vtk(os.path.join(output_dir, 'all.vtk'), coloring=True, normalize_diam=True, radius_data=True)
