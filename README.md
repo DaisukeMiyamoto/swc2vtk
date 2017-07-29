@@ -80,12 +80,10 @@ vtkgen.write_vtk('simple3.vtk')
 
 ## Output Examples
 ### Single Neuron Morphology
-![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron_small.png)
-
-- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron.png)
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/blob/master/_docs/_static/singleneuron_small.png)
 
 ### Coloring Multiple SWC Files
-![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
+![simulation](https://github.com/DaisukeMiyamoto/swc2vtk/blob/master/_docs/_static/sb_simulation_top.png)
 
 ### Single Neuron Simulation
 
