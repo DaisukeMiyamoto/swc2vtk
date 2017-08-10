@@ -60,6 +60,23 @@ each rows correspondence to SWC compartments
 -65.0
 ```
 
+- data output example for NEURON
+```c
+proc saveData() { local i localobj outfile strdef filename
+    filename = $s1
+    
+    printf("filename: %s\n", filename)
+    outfile = new File()
+    outfile.wopen(filename)
+    for(i=0; i<SectionNum; i=i+1){
+    	  access Dend[i]
+        outfile.printf("%f\n", v)
+    }
+    outfile.printf("\n")
+    outfile.close()
+}
+```
+
 ### generate VTK files from SWC file with sequential simulation data
 ```python
 import swc2vtk
