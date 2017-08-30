@@ -57,10 +57,10 @@ filelist_all = [
 
 # input_dir = '/home/nebula/git/LAL-VPCmapping/converted_swc'
 input_dir = './swc'
-output_dir = '/home/nebula/work/paraview/standardbrain20170129/'
+output_dir = '/home/nebula/work/paraview/standardbrain20170830/'
 
-# filelist = filelist_small2
-filelist = filelist_all
+filelist = filelist_small2
+#filelist = filelist_all
 if not os.path.isdir(output_dir):
     os.mkdir(output_dir)
 

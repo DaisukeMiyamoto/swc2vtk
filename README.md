@@ -41,6 +41,30 @@ vtkgen.add_swc('simple2.swc')
 vtkgen.write_vtk('combined.vtk')
 ```
 
+### set fixed value for coloring VTK file
+
+```python
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.add_swc('simple1.swc')
+vtkgen.write_vtk('simple1.vtk', fixedval=0.5)
+
+vtkgen2 = swc2vtk.VtkGenerator()
+vtkgen2.add_swc('simple2.swc')
+vtkgen2.write_vtk('simple2.vtk', fixedval=1.0)
+```
+
+### set fixed value for coloring neuron in a VTK file
+
+```python
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.add_swc('simple.swc')
+vtkgen.add_swc('simple1.swc')
+vtkgen.add_swc('simple2.swc')
+vtkgen.write_vtk('combined.vtk', coloring=True)
+```
+
 ### generate a VTK file from SWC file with simulation data
 ```python
 import swc2vtk
