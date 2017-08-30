@@ -257,13 +257,16 @@ DATASET STRUCTURED_POINTS
 
         return text
 
-    def _coloringbyswc(self):
+    def _coloringbyswc(self, fixedval):
         text = ''
         text += 'SCALARS coloring float 1\n'
         text += 'LOOKUP_TABLE default\n'
 
+        if fixedval is None:
+            fixedval = 0.0
+
         for i, swc in enumerate(self.swc_list):
-            val = i * (1.0 / len(self.swc_list))
+            val = fixedval + i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
                 for k in range(self.ncell_per_compartment):
                     text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
@@ -360,7 +363,7 @@ DATASET STRUCTURED_POINTS
                 file.write(self._file2text(self.datafile_list, datatitle))
 
             if coloring:
-                file.write(self._coloringbyswc())
+                file.write(self._coloringbyswc(fixedval))
 
             if radius_data:
                 file.write(self._radius2text())
