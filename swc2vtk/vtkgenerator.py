@@ -152,7 +152,7 @@ DATASET STRUCTURED_POINTS
     def _point2text(point_list):
         text = 'POINTS %d float\n' % (len(point_list))
         for point in tqdm(point_list, desc='Generating Points'):
-            text += '%f %f %f\n' % (point[0], point[1], point[2])
+            text += '%.6f %.6f %.6f\n' % (point[0], point[1], point[2])
             
         return text
 
@@ -173,20 +173,20 @@ DATASET STRUCTURED_POINTS
             text += str(cell['type'])+'\n'
 
         text += '\nCELL_DATA %d\n' % (len(cell_list))
-        text += 'SCALARS ' + title + ' float 1\n'
+        text += 'SCALARS ' + title + ' float\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += "%.10f\n" % cell['data']
+            text += "%.6f\n" % cell['data']
         
         return text
 
     @staticmethod
     def _fixedval2text(cell_list, title='fixedval', fixedval=0.0):
         text = ''
-        text += 'SCALARS '+title+' float 1\n'
+        text += 'SCALARS '+title+' float\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += "%.10f\n" % fixedval
+            text += "%.6f\n" % fixedval
 
         return text
 
@@ -208,7 +208,7 @@ DATASET STRUCTURED_POINTS
 
     def _file2text(self, datafile_list, title):
         text = ''
-        text += 'SCALARS ' + title + ' float 1\n'
+        text += 'SCALARS ' + title + ' float\n'
         text += 'LOOKUP_TABLE default\n'
 
         if not (len(datafile_list) == len(self.swc_list)):
@@ -233,20 +233,20 @@ DATASET STRUCTURED_POINTS
 
     def _radius2text(self):
         text = ''
-        text += 'SCALARS radius float 1\n'
+        text += 'SCALARS radius float\n'
         text += 'LOOKUP_TABLE default\n'
 
         for swc in self.swc_list:
             for j, record in swc.data.items():
                 if j > 1:
                     for k in range(self.ncell_per_compartment):
-                        text += "%.10f\n" % record['radius']
+                        text += "%.6f\n" % record['radius']
 
         return text
 
     def _type2text(self):
         text = ''
-        text += 'SCALARS type float 1\n'
+        text += 'SCALARS type float\n'
         text += 'LOOKUP_TABLE default\n'
 
         for swc in self.swc_list:
@@ -259,7 +259,7 @@ DATASET STRUCTURED_POINTS
 
     def _coloringbyswc(self, fixedval):
         text = ''
-        text += 'SCALARS coloring float 1\n'
+        text += 'SCALARS coloring float\n'
         text += 'LOOKUP_TABLE default\n'
 
         if fixedval is None:
@@ -269,7 +269,7 @@ DATASET STRUCTURED_POINTS
             val = fixedval + i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
                 for k in range(self.ncell_per_compartment):
-                    text += "%.10f\n" % (val + (1.0 / len(self.swc_list) / (len(swc.data) - 1)))
+                    text += "%.6f\n" % (val + (1.0 / len(self.swc_list) / (len(swc.data) - 1)))
 
         return text
 
