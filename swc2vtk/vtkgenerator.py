@@ -176,7 +176,7 @@ DATASET STRUCTURED_POINTS
         text += 'SCALARS ' + title + ' float 1\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += str(cell['data'])+'\n'
+            text += "%.10f\n" % cell['data']
         
         return text
 
@@ -186,7 +186,7 @@ DATASET STRUCTURED_POINTS
         text += 'SCALARS '+title+' float 1\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += str(fixedval)+'\n'
+            text += "%.10f\n" % fixedval
 
         return text
 
@@ -240,7 +240,7 @@ DATASET STRUCTURED_POINTS
             for j, record in swc.data.items():
                 if j > 1:
                     for k in range(self.ncell_per_compartment):
-                        text += str(record['radius']) + '\n'
+                        text += "%.10f\n" % record['radius']
 
         return text
 
@@ -269,7 +269,7 @@ DATASET STRUCTURED_POINTS
             val = fixedval + i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
                 for k in range(self.ncell_per_compartment):
-                    text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
+                    text += "%.10f\n" % (val + (1.0 / len(self.swc_list) / (len(swc.data) - 1)))
 
         return text
 
