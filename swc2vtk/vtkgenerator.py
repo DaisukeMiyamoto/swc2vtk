@@ -220,12 +220,12 @@ DATASET STRUCTURED_POINTS
                 read_data = f.readlines()
 
             for i in range(len(read_data)):
-                if read_data[i][0] != '#':
+                if read_data[i][0] != '#' and (read_data[i].rstrip()) != '':
                     data_num += 1
                     for j in range(self.ncell_per_compartment):
-                        text += read_data[i].rstrip() + '\n'
+                        text += '%.3f\n' % float(read_data[i].rstrip())
 
-            if not (data_num == len(self.swc_list[datafile_list_index].data)):
+            if data_num + 1 != len(self.swc_list[datafile_list_index].data):
                 print('Warning: there is mismatch of data file lines and swc file lines (index=%d, datafile=%d, swcfile=%d)'
                       % (datafile_list_index, data_num, len(self.swc_list[datafile_list_index].data)))
 
