@@ -152,7 +152,7 @@ DATASET STRUCTURED_POINTS
     def _point2text(point_list):
         text = 'POINTS %d float\n' % (len(point_list))
         for point in tqdm(point_list, desc='Generating Points'):
-            text += '%f %f %f\n' % (point[0], point[1], point[2])
+            text += '%.6f %.6f %.6f\n' % (point[0], point[1], point[2])
             
         return text
 
@@ -173,20 +173,20 @@ DATASET STRUCTURED_POINTS
             text += str(cell['type'])+'\n'
 
         text += '\nCELL_DATA %d\n' % (len(cell_list))
-        text += 'SCALARS ' + title + ' float 1\n'
+        text += 'SCALARS ' + title + ' float\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += str(cell['data'])+'\n'
+            text += "%.6f\n" % cell['data']
         
         return text
 
     @staticmethod
     def _fixedval2text(cell_list, title='fixedval', fixedval=0.0):
         text = ''
-        text += 'SCALARS '+title+' float 1\n'
+        text += 'SCALARS '+title+' float\n'
         text += 'LOOKUP_TABLE default\n'
         for cell in cell_list:
-            text += str(fixedval)+'\n'
+            text += "%.6f\n" % fixedval
 
         return text
 
@@ -208,36 +208,45 @@ DATASET STRUCTURED_POINTS
 
     def _file2text(self, datafile_list, title):
         text = ''
-        text += 'SCALARS ' + title + ' float 1\n'
+        text += 'SCALARS ' + title + ' float\n'
         text += 'LOOKUP_TABLE default\n'
 
-        for filename in datafile_list:
+        if not (len(datafile_list) == len(self.swc_list)):
+            print('Warning: there is mismatch of data file and swc file (datafile=%d, swcfile=%d)'
+                  % (len(datafile_list), len(self.swc_list)))
+        for datafile_list_index, filename in enumerate(datafile_list):
+            data_num = 0
             with open(filename, 'r') as f:
                 read_data = f.readlines()
 
             for i in range(len(read_data)):
-                if read_data[i][0] != '#':
+                if read_data[i][0] != '#' and (read_data[i].rstrip()) != '':
+                    data_num += 1
                     for j in range(self.ncell_per_compartment):
-                        text += read_data[i].rstrip() + '\n'
+                        text += '%.3f\n' % float(read_data[i].rstrip())
+
+            if data_num + 1 != len(self.swc_list[datafile_list_index].data):
+                print('Warning: there is mismatch of data file lines and swc file lines (index=%d, datafile=%d, swcfile=%d)'
+                      % (datafile_list_index, data_num, len(self.swc_list[datafile_list_index].data)))
 
         return text
 
     def _radius2text(self):
         text = ''
-        text += 'SCALARS radius float 1\n'
+        text += 'SCALARS radius float\n'
         text += 'LOOKUP_TABLE default\n'
 
         for swc in self.swc_list:
             for j, record in swc.data.items():
                 if j > 1:
                     for k in range(self.ncell_per_compartment):
-                        text += str(record['radius']) + '\n'
+                        text += "%.6f\n" % record['radius']
 
         return text
 
     def _type2text(self):
         text = ''
-        text += 'SCALARS type float 1\n'
+        text += 'SCALARS type float\n'
         text += 'LOOKUP_TABLE default\n'
 
         for swc in self.swc_list:
@@ -248,16 +257,19 @@ DATASET STRUCTURED_POINTS
 
         return text
 
-    def _coloringbyswc(self):
+    def _coloringbyswc(self, fixedval):
         text = ''
-        text += 'SCALARS coloring float 1\n'
+        text += 'SCALARS coloring float\n'
         text += 'LOOKUP_TABLE default\n'
 
+        if fixedval is None:
+            fixedval = 0.0
+
         for i, swc in enumerate(self.swc_list):
-            val = i * (1.0 / len(self.swc_list))
+            val = fixedval + i * (1.0 / len(self.swc_list))
             for j in range(len(swc.data) - 1):
                 for k in range(self.ncell_per_compartment):
-                    text += str(val + (1.0 / len(self.swc_list) / (len(swc.data) - 1))) + '\n'
+                    text += "%.6f\n" % (val + (1.0 / len(self.swc_list) / (len(swc.data) - 1)))
 
         return text
 
@@ -351,7 +363,7 @@ DATASET STRUCTURED_POINTS
                 file.write(self._file2text(self.datafile_list, datatitle))
 
             if coloring:
-                file.write(self._coloringbyswc())
+                file.write(self._coloringbyswc(fixedval))
 
             if radius_data:
                 file.write(self._radius2text())

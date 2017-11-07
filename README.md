@@ -41,6 +41,30 @@ vtkgen.add_swc('simple2.swc')
 vtkgen.write_vtk('combined.vtk')
 ```
 
+### set fixed value for coloring VTK file
+
+```python
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.add_swc('simple1.swc')
+vtkgen.write_vtk('simple1.vtk', fixedval=0.5)
+
+vtkgen2 = swc2vtk.VtkGenerator()
+vtkgen2.add_swc('simple2.swc')
+vtkgen2.write_vtk('simple2.vtk', fixedval=1.0)
+```
+
+### set fixed value for coloring neuron in a VTK file
+
+```python
+import swc2vtk
+vtkgen = swc2vtk.VtkGenerator()
+vtkgen.add_swc('simple.swc')
+vtkgen.add_swc('simple1.swc')
+vtkgen.add_swc('simple2.swc')
+vtkgen.write_vtk('combined.vtk', coloring=True)
+```
+
 ### generate a VTK file from SWC file with simulation data
 ```python
 import swc2vtk
@@ -58,6 +82,23 @@ each rows correspondence to SWC compartments
 -65.0
 -65.0
 -65.0
+```
+
+- data output example for NEURON
+```c
+proc saveData() { local i localobj outfile strdef filename
+    filename = $s1
+    
+    printf("filename: %s\n", filename)
+    outfile = new File()
+    outfile.wopen(filename)
+    for(i=0; i<SectionNum; i=i+1){
+    	  access Dend[i]
+        outfile.printf("%f\n", v)
+    }
+    outfile.printf("\n")
+    outfile.close()
+}
 ```
 
 ### generate VTK files from SWC file with sequential simulation data
@@ -80,12 +121,10 @@ vtkgen.write_vtk('simple3.vtk')
 
 ## Output Examples
 ### Single Neuron Morphology
-![single](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron_small.png)
-
-- [high resolution version](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/singleneuron.png)
+![single](https://github.com/DaisukeMiyamoto/swc2vtk/blob/master/_docs/_static/singleneuron_small.png)
 
 ### Coloring Multiple SWC Files
-![Coloring](https://github.com/DaisukeMiyamoto/swc2vtk/releases/download/v0.01/standardbrain_small20170110.png)
+![simulation](https://github.com/DaisukeMiyamoto/swc2vtk/blob/master/_docs/_static/sb_simulation_top.png)
 
 ### Single Neuron Simulation
 
